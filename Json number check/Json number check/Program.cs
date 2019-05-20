@@ -80,7 +80,7 @@ namespace Json_number_check
 
         public static bool CheckAfterTheE(string line)
         {
-            int plus = 0, minus = 0, firstE = -1,dot=0 ;
+            int firstE = -1 ;
             FindFirstE(ref firstE, line);
             if (firstE == -1) return true;
             if (!EIsInTheCorrectSpot(line, firstE)) return false;
