@@ -16,32 +16,25 @@ namespace Json_number_check
 
         public static bool JsonNumCheck(string line)
         {
-            if (!CheckIfCorrectCharacters(line)) return false;
-            if (!CheckBeforeTheE(line)) return false;
-            if (!CheckAfterTheE(line)) return false;
-            return true;
+            return CheckIfCorrectCharacters(line)
+                && CheckBeforeTheE(line)
+                && CheckAfterTheE(line);
         }
 
         public static bool CheckIfCorrectCharacters(string line)
         {
             string correctCharacters = "0123456789.-+Ee";
-            for(int i=0;i<line.Length;i++)
+            foreach(char c in line)
             {
-                bool check = false;
-                for(int j=0;j<correctCharacters.Length;j++)
-                {
-                    if(line[i]==correctCharacters[j])
-                    {
-                        check = true;
-                    }
-                }
-                if (check == false) return false;
+                if (!correctCharacters.Contains(c)) return false;
             }
             return true;
         }
 
         public static bool CheckBeforeTheE(string line)
         {
+            if (HasLeadingZero(line) || StartsWithAny(line, "+."))
+                return false;
             if ((line[0] == '0'&&line[1]!='.')||line[0]=='+'||line[0]=='.') return false;
             if (line[0] == '-' && line[1] == '0' && line[2] != '.') return false;
             int count = 0;
@@ -71,6 +64,19 @@ namespace Json_number_check
             if (count > 1) return false;
             return true;
         }
+
+        private static bool StartsWithAny(string line, string input)
+        {
+            return line.Length > 0 && input.Contains(line[0]);
+        }
+
+        private static bool HasLeadingZero(string line)
+        {
+            return line.Length > 1 
+                && line[0] == '0'
+                && line[1] == '.';
+        }
+
         public static bool CheckAfterTheE(string line)
         {
             int plus = 0, minus = 0, firstE = -1,dot=0 ;
