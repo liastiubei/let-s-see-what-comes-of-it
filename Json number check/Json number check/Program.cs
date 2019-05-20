@@ -33,36 +33,37 @@ namespace Json_number_check
 
         public static bool CheckBeforeTheE(string line)
         {
-            if (HasLeadingZero(line) || StartsWithAny(line, "+."))
+            if (HasLeadingZeroWithoutDot(line) || StartsWithAny(line, "+."))
                 return false;
-            if ((line[0] == '0'&&line[1]!='.')||line[0]=='+'||line[0]=='.') return false;
-            if (line[0] == '-' && line[1] == '0' && line[2] != '.') return false;
-            int count = 0;
-            for(int i=1;i<line.Length;i++)
+            if (HasLeadingMinusFollowedByZeroWithoutDot(line))
+                return false;
+            if (HasTooManyMinusPlusOrDots(line)) return false;
+            return true;
+        }
+
+        private static bool HasTooManyMinusPlusOrDots(string line)
+        {
+            bool count=false;
+            for (int i = 1; i < line.Length; i++)
             {
                 if (line[i] == 'e' || line[i] == 'E') break;
-                if (line[i] == '-' || line[i] == '+') return false;
-                if(line[i]=='.')
+                if (line[i] == '-' || line[i] == '+') return true;
+                if (line[i] == '.')
                 {
-                    count++;
-                    bool check1 = false, check2=false;
-                    for(int j=0;j<=9;j++)
-                    {
-                        if(line[i+1].ToString()==j.ToString())
-                        {
-                            check1 = true;
-                        }
-                        if (line[i-1].ToString() == j.ToString())
-                        {
-                            check2 = true;
-                        }
-
-                    }
-                    if (!check1||!check2) return false;
+                    if (count) return true;
+                    count = true;
+                    if (!"0123456789".Contains(line[i - 1]) || !"0123456789".Contains(line[i + 1])) return true;
                 }
             }
-            if (count > 1) return false;
-            return true;
+            return false;
+        }
+
+        private static bool HasLeadingMinusFollowedByZeroWithoutDot(string line)
+        {
+            return line.Length > 2
+                && line[0] == '-'
+                && line[1] == '0'
+                && line[2] != '.';
         }
 
         private static bool StartsWithAny(string line, string input)
@@ -70,16 +71,50 @@ namespace Json_number_check
             return line.Length > 0 && input.Contains(line[0]);
         }
 
-        private static bool HasLeadingZero(string line)
+        private static bool HasLeadingZeroWithoutDot(string line)
         {
             return line.Length > 1 
                 && line[0] == '0'
-                && line[1] == '.';
+                && line[1] != '.';
         }
 
         public static bool CheckAfterTheE(string line)
         {
             int plus = 0, minus = 0, firstE = -1,dot=0 ;
+            FindFirstE(ref firstE, line);
+            if (firstE == -1) return true;
+            if (!EIsInTheCorrectSpot(line, firstE)) return false;
+            if (!CorrectPlusMinusEsOrDots(line, firstE)) return false;
+            return true;
+        }
+
+        private static bool CorrectPlusMinusEsOrDots(string line, int firstE)
+        {
+            int plus = 0, minus = 0, dot = 0;
+            if (line[firstE + 1] == '.')
+                return false;
+            for (int i = firstE + 1; i < line.Length; i++)
+            {
+                if (line[i] == '+') plus++;
+                if (line[i] == '-') minus++;
+                if (line[i] == '.') dot++;
+                if (line[i] == 'e' || line[i] == 'E')
+                    return false; ;
+                if (plus > 1 || minus > 1||(plus > 0 && minus > 0)||dot>1)
+                    return false;
+            }
+            if (plus == 1 || minus == 1)
+            {
+                if (!"+-".Contains(line[firstE + 1]))
+                    return false;
+                if (line[firstE + 2] == '.')
+                    return false;
+            }
+            return true;
+        }
+
+        private static void FindFirstE(ref int firstE, string line)
+        {
             for (int i = 0; i < line.Length; i++)
             {
                 if (line[i] == 'e' || line[i] == 'E')
@@ -88,29 +123,14 @@ namespace Json_number_check
                     break;
                 }
             }
-            if (firstE == -1) return true;
+        }
+
+        private static bool EIsInTheCorrectSpot(string line, int firstE)
+        {
             if (firstE == 0) return false;
             if (firstE == 1 && line[0] == '-') return false;
             if (firstE == line.Length - 1) return false;
-            for(int i=firstE+1;i<line.Length;i++)
-            {
-                if (line[i] == '+') plus++;
-                if (line[i] == '-') minus++;
-                if (line[i] == '.') dot++;
-                if (line[i] == 'e' || line[i] == 'E') return false; ;
-                if (plus > 1 || minus > 1) return false;
-                if (plus > 0 && minus > 0) return false;
-                if (dot > 1) return false;
-            }
-            if (line[firstE + 1] == '.') return false;
-            if(plus==1||minus==1)
-            {
-                if (line[firstE + 1] != '+' && line[firstE+1] != '-')
-                    return false;
-                if (line[firstE + 2] == '.') return false; 
-            }
             return true;
-
         }
     }
 }
