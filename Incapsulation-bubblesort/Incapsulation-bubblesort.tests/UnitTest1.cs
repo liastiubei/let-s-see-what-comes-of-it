@@ -7,39 +7,61 @@ namespace Incapsulation_bubblesort.tests
     {
         
         [Fact]
-        public void Test1()
+        public void CheckIfBubbleSortingWorksForGivenTask()
         {
-            Program.SoccerTeam[] team = { new Program.SoccerTeam("CFR Cluj ", 36, 0),
-                                    new Program.SoccerTeam("FCSB ", 31, 1),
-                                    new Program.SoccerTeam("U Craiova ", 32, 2),
-                                    new Program.SoccerTeam("Dinamo ", 24, 3),
-                                    new Program.SoccerTeam("Viitorul ", 22, 4),
-                                    new Program.SoccerTeam("Astra Giurgiu ", 25, 5),
-                                    new Program.SoccerTeam("CSMS Iasi ", 21, 6),
-                                    new Program.SoccerTeam("FC Botosani ", 22, 7),
-                                    new Program.SoccerTeam("FC Voluntari ", 17, 8),
-                                    new Program.SoccerTeam("Chiajna ", 18, 9),
-                                    new Program.SoccerTeam("ACS Poli Tim ", 14, 10),
-                                    new Program.SoccerTeam("Sepsi OSK ", 14, 11),
-                                    new Program.SoccerTeam("Gaz Metan ", 8, 12),
-                                    new Program.SoccerTeam("Juventus ", 10, 13)};
+            Soccer.Program.SoccerTeam[] allTeams = { new Soccer.Program.SoccerTeam("CFR Cluj ", 36),
+                                    new Soccer.Program.SoccerTeam("FCSB ", 31),
+                                    new Soccer.Program.SoccerTeam("U Craiova ", 32),
+                                    new Soccer.Program.SoccerTeam("Dinamo ", 24),
+                                    new Soccer.Program.SoccerTeam("Viitorul ",24),
+                                    new Soccer.Program.SoccerTeam("Astra Giurgiu ", 25),
+                                    new Soccer.Program.SoccerTeam("CSMS Iasi ", 21),
+                                    new Soccer.Program.SoccerTeam("FC Botosani ", 22),
+                                    new Soccer.Program.SoccerTeam("FC Voluntari ", 17),
+                                    new Soccer.Program.SoccerTeam("Chiajna ", 18),
+                                    new Soccer.Program.SoccerTeam("ACS Poli Tim ", 14),
+                                    new Soccer.Program.SoccerTeam("Sepsi OSK ", 14),
+                                    new Soccer.Program.SoccerTeam("Gaz Metan ", 8),
+                                    new Soccer.Program.SoccerTeam("Juventus ", 10)};
+            Soccer.Program.SoccerTeam[] rearangedTeam = { new Soccer.Program.SoccerTeam("CFR Cluj ", 36),
+                                    new Soccer.Program.SoccerTeam("U Craiova ", 32),
+                                    new Soccer.Program.SoccerTeam("FCSB ", 31),
+                                    new Soccer.Program.SoccerTeam("Astra Giurgiu ", 25),
+                                    new Soccer.Program.SoccerTeam("Dinamo ", 24),
+                                    new Soccer.Program.SoccerTeam("Viitorul ", 24),
+                                    new Soccer.Program.SoccerTeam("FC Botosani ", 22),
+                                    new Soccer.Program.SoccerTeam("CSMS Iasi ", 21),
+                                    new Soccer.Program.SoccerTeam("Chiajna ", 18),
+                                    new Soccer.Program.SoccerTeam("FC Voluntari ", 17),
+                                    new Soccer.Program.SoccerTeam("ACS Poli Tim ", 14),
+                                    new Soccer.Program.SoccerTeam("Sepsi OSK ", 14),
+                                    new Soccer.Program.SoccerTeam("Juventus ", 10),
+                                    new Soccer.Program.SoccerTeam("Gaz Metan ", 8)};
+            Program.BubbleSort teams = new Program.BubbleSort(allTeams);
+            Program.BubbleSort newTeams =new Program.BubbleSort(rearangedTeam);
+            teams.BubbleSorting();
+            Assert.True(newTeams.CompareRanking(teams));
+        }
 
-            Program.SoccerTeam[] rearangedTeam = { new Program.SoccerTeam("CFR Cluj ", 36, 0),
-                                    new Program.SoccerTeam("U Craiova ", 32, 1),
-                                    new Program.SoccerTeam("FCSB ", 31, 2),
-                                    new Program.SoccerTeam("Astra Giurgiu ", 25, 3),
-                                    new Program.SoccerTeam("Dinamo ", 24, 4),
-                                    new Program.SoccerTeam("Viitorul ", 22, 5),
-                                    new Program.SoccerTeam("FC Botosani ", 22, 6),
-                                    new Program.SoccerTeam("CSMS Iasi ", 21,7),
-                                    new Program.SoccerTeam("Chiajna ", 18, 8),
-                                    new Program.SoccerTeam("FC Voluntari ", 17, 9),
-                                    new Program.SoccerTeam("ACS Poli Tim ", 14, 10),
-                                    new Program.SoccerTeam("Sepsi OSK ", 14, 11),
-                                    new Program.SoccerTeam("Juventus ", 10, 12),
-                                    new Program.SoccerTeam("Gaz Metan ", 8, 13)};
-            
-            Assert.Equal(rearangedTeam, Program.BubbleSort(team));
+        [Fact]
+        public void CheckIfMinMaxWorks()
+        {
+            Soccer.Program.SoccerTeam[] allTeams = { new Soccer.Program.SoccerTeam("CFR Cluj ", 36),
+                                    new Soccer.Program.SoccerTeam("FCSB ", 31),
+                                    new Soccer.Program.SoccerTeam("U Craiova ", 32),
+                                    new Soccer.Program.SoccerTeam("Dinamo ", 24),
+                                    new Soccer.Program.SoccerTeam("Viitorul ",24),
+                                    new Soccer.Program.SoccerTeam("Astra Giurgiu ", 25),
+                                    new Soccer.Program.SoccerTeam("CSMS Iasi ", 21),
+                                    new Soccer.Program.SoccerTeam("FC Botosani ", 22),
+                                    new Soccer.Program.SoccerTeam("FC Voluntari ", 17),
+                                    new Soccer.Program.SoccerTeam("Chiajna ", 18),
+                                    new Soccer.Program.SoccerTeam("ACS Poli Tim ", 14),
+                                    new Soccer.Program.SoccerTeam("Sepsi OSK ", 14),
+                                    new Soccer.Program.SoccerTeam("Gaz Metan ", 8),
+                                    new Soccer.Program.SoccerTeam("Juventus ", 10)};
+            Program.BubbleSort teams = new Program.BubbleSort(allTeams);
+            Assert.Equal((45, 64), teams.GetMinMaxIndex(45, 64));
         }
     }
 }

@@ -4,101 +4,85 @@ namespace Incapsulation_bubblesort
 {
     public class Program
     {
-        public class SoccerTeam
+        public class BubbleSort
         {
-            private string name;
-            private int points;
-            private int index;
+            private Soccer.Program.SoccerTeam[] teams;
 
-            public SoccerTeam(string name, int points, int index)
+            public BubbleSort(Soccer.Program.SoccerTeam[] teams)
             {
-                this.name = name;
-                this.points = points;
-                this.index = index;
+                this.teams = teams;
             }
 
-            public void Swap(SoccerTeam theOtherTeam, SoccerTeam[] teams)
+            public Soccer.Program.SoccerTeam[] Copy()
             {
-                (SoccerTeam minIndexTeam, SoccerTeam maxIndexTeam) = this.GetMinMaxIndex(theOtherTeam);
-                string message = "Swapping elements with indexes ({0}, {1}) and values ({2}, {3})";
-                Console.WriteLine(string.Format(message, minIndexTeam.index, maxIndexTeam.index, minIndexTeam.name, maxIndexTeam.name));
-
-                SoccerTeam temp = teams[minIndexTeam.index];
-                teams[minIndexTeam.index] = teams[maxIndexTeam.index];
-                teams[maxIndexTeam.index] = temp;
-                int indexSwitch = minIndexTeam.index;
-                minIndexTeam.index = maxIndexTeam.index;
-                maxIndexTeam.index = indexSwitch;
+                Soccer.Program.SoccerTeam[] copiedTeams = this.teams;
+                return copiedTeams;
             }
 
-            public (SoccerTeam minIndexTeam, SoccerTeam maxIndexTeam) GetMinMaxIndex(SoccerTeam secondTeam)
+            public void BubbleSorting()
             {
-                if (this.index > secondTeam.index)
-                    return (secondTeam, this);
-                return (this, secondTeam);
-            }
-
-            public void PrintThisLine()
-            {
-                Console.WriteLine(this.name + "- " + this.points);
-            }
-
-            public bool CompareIfSmaller(SoccerTeam secondTeam)
-            {
-                return this.points < secondTeam.points;
-            }
-            
-        }
-
-        public static SoccerTeam[] BubbleSort(SoccerTeam[] teams)
-        {
-            bool checkIfCorrect = false;
-            while (checkIfCorrect == false)
-            {
-                checkIfCorrect = true;
-                for (int i = 0; i < teams.Length - 1; i++)
+                bool checkIfCorrect = false;
+                while (checkIfCorrect == false)
                 {
-                    if (teams[i].CompareIfSmaller(teams[i+1]))
+                    checkIfCorrect = true;
+                    for (int i = 0; i < this.teams.Length - 1; i++)
                     {
-                        teams[i].Swap(teams[i+1], teams);
-                        checkIfCorrect = false;
+                        if (teams[i].CompareIfSmaller(teams[i + 1]))
+                        {
+                            this.Swap(i, i+1);
+                            checkIfCorrect = false;
+                        }
                     }
                 }
             }
-            return teams;
-        }
 
-        private static SoccerTeam ReadTeam(int i)
-        {
-            string[] teamData = Console.ReadLine().Split('-');
-            int points = Convert.ToInt32(teamData[1]) + Convert.ToInt32(teamData[2]);
-            SoccerTeam result = new SoccerTeam(teamData[0], points, i);
-            return result;
-        }
-
-        private static SoccerTeam[] ReadAllTeams()
-        {
-            SoccerTeam[] teams = new SoccerTeam[14];
-            for (int i = 0; i < 14; i++)
+            public (int minIndex, int maxIndex) GetMinMaxIndex(int index1, int index2)
             {
-                teams[i] = ReadTeam(i);
+                if (index1 > index2)
+                    return (index2, index1);
+                return (index1, index2);
             }
-            return teams;
-        }
 
-        public static void DoTheBubbleSortAndPrint()
-        {
-            SoccerTeam[] teams = ReadAllTeams();
-            teams=BubbleSort(teams);
-            for (int i = 0; i < teams.Length; i++)
-                teams[i].PrintThisLine();
-            Console.Read();
+            private void Swap(int index1, int index2)
+            {
+                (int minIndex, int maxIndex) = this.GetMinMaxIndex(index1, index2);
+                Console.WriteLine(this.teams[minIndex].StringSwappingMessage(minIndex,maxIndex, this.teams[maxIndex]));
+                Soccer.Program.SoccerTeam temp = this.teams[minIndex];
+                this.teams[minIndex] = this.teams[maxIndex];
+                this.teams[maxIndex] = temp;
+            }
+
+            public void ReadAllTeams()
+            {
+                for (int i = 0; i < 14; i++)
+                {
+                    string[] teamData = Console.ReadLine().Split('-');
+                    int points = Convert.ToInt32(teamData[1]) + Convert.ToInt32(teamData[2]);
+                    this.teams[i] = new Soccer.Program.SoccerTeam(teamData[0], points);
+                }
+            }
+
+            public bool CompareRanking(BubbleSort newRanking)
+            {
+                for (int i = 0; i < 14; i++)
+                    if (!this.teams[i].CompareIfTheSame(newRanking.teams[i])) return false;
+                return true;
+            }
+
         }
 
         static void Main(string[] args)
         {
-            DoTheBubbleSortAndPrint();
-            
+            BubbleSort teams = new BubbleSort(new Soccer.Program.SoccerTeam[14]);
+            teams.ReadAllTeams();
+            BubbleSort oldTeams = teams;
+            for (int i = 0; i < 14; i++)
+                Console.WriteLine(teams.Copy()[i].Print());
+            Console.Read();
+
         }
+
+
+    
     }
 }
