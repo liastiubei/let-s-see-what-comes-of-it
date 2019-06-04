@@ -30,5 +30,15 @@ namespace BBS_tests
             return true;
         }
 
+        public void Sorting()
+        {
+            for (int i = 0; i < this.teams.Length-1; i++)
+            {
+                if (this.teams[i].IsSmallerThan(this.teams[i + 1]))
+                {
+                    this.teams[i].Swap(this.teams[i + 1]);
+                }
+            }
+        }
     }
 }

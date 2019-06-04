@@ -27,5 +27,20 @@ namespace BBS_tests
             return this.name == that.name && this.score == that.score;
         }
 
+        internal bool IsSmallerThan(Team that)
+        {
+            return this.score < that.score;
+        }
+
+        internal void Swap(Team that)
+        {
+            string swapName = this.name;
+            this.name = that.name;
+            that.name = swapName;
+
+            int swapNum = this.score;
+            this.score = that.score;
+            that.score = swapNum;
+        }
     }
 }

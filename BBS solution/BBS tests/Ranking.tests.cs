@@ -22,5 +22,20 @@ namespace BBS_tests
             rankings.Read(lines);
             Assert.True(rankings.Equal(correctRankings));
         }
+
+        [Fact]
+        public void CheckIfRandom1SwitchBubbleSortWorks_ShouldReturnTrue()
+        {
+            Team[] correctTeams ={new Team("Echipa1 ", 100),
+                                    new Team("Echipa2 ", 96),
+                                    new Team("Echipa3 ", 90)};
+            Team[] teams = {new Team("Echipa1 ", 100),
+                                    new Team("Echipa3 ", 90),
+                                    new Team("Echipa2 ", 96)};
+            Ranking wrongRanking = new Ranking(teams);
+            Ranking correctRanking = new Ranking(correctTeams);
+            wrongRanking.Sorting();
+            Assert.True(correctRanking.Equal(wrongRanking));
+        }
     }
 }
