@@ -12,7 +12,7 @@ namespace Incapsulation_bubblesort
             {
                 this.teams = teams;
             }
-
+            
             public Soccer.Program.SoccerTeam[] Copy()
             {
                 Soccer.Program.SoccerTeam[] copiedTeams = this.teams;
