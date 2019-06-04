@@ -19,24 +19,11 @@ namespace BBS_tests
             this.score2 = score2;
         }
 
-        internal bool CheckIfNamesMatch1(string name, ref int score1)
+        internal int GiveScore(string name)
         {
-            if(this.team1==name)
-            {
-                score1 = this.score1;
-                return true;
-            }
-            return false;
-        }
-
-        internal bool CheckIfNamesMatch2(string name, ref int score2)
-        {
-            if (this.team2 == name)
-            {
-                score2 = this.score2;
-                return true;
-            }
-            return false;
+            if (this.team1 == name) return score1;
+            if (this.team2 == name) return score2;
+            return 0;
         }
     }
 }

@@ -14,14 +14,7 @@ namespace BBS_tests
             this.name = name;
             this.score = score;
         }
-
-        public void Read(string line)
-        {
-            string[] teamData = line.Split('-');
-            this.score = Convert.ToInt32(teamData[1]) + Convert.ToInt32(teamData[2]);
-            this.name = teamData[0];
-        }
-
+        
         public bool Equal(Team that)
         {
             return this.name == that.name && this.score == that.score;
@@ -32,26 +25,11 @@ namespace BBS_tests
             return this.score < that.score;
         }
 
-        internal void Swap(Team that)
+        internal int GetPoints(Game game)
         {
-            string swapName = this.name;
-            this.name = that.name;
-            that.name = swapName;
-
-            int swapNum = this.score;
-            this.score = that.score;
-            that.score = swapNum;
+            return game.GiveScore(this.name) ;
         }
-
-        internal bool Search1stTeam(Game game, ref int score1)
-        {
-            return game.CheckIfNamesMatch1(this.name, ref score1);
-        }
-
-        internal bool Search2ndTeam(Game game, ref int score2)
-        {
-            return game.CheckIfNamesMatch2(this.name, ref score2);
-        }
+        
 
         internal void AddToScore(int score)
         {
