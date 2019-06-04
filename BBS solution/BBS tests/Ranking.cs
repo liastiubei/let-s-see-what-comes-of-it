@@ -32,11 +32,17 @@ namespace BBS_tests
 
         public void Sorting()
         {
-            for (int i = 0; i < this.teams.Length-1; i++)
+            bool check = false;
+            while (!check)
             {
-                if (this.teams[i].IsSmallerThan(this.teams[i + 1]))
+                check = true;
+                for (int i = 0; i < this.teams.Length - 1; i++)
                 {
-                    this.teams[i].Swap(this.teams[i + 1]);
+                    if (this.teams[i].IsSmallerThan(this.teams[i + 1]))
+                    {
+                        this.teams[i].Swap(this.teams[i + 1]);
+                        check = false;
+                    }
                 }
             }
         }
