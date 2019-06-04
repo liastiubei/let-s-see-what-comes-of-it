@@ -37,5 +37,22 @@ namespace BBS_tests
             wrongRanking.Sorting();
             Assert.True(correctRanking.Equal(wrongRanking));
         }
+
+        [Fact]
+        public void CheckIfRandomSeveralNotOverlappingSwitchesBubbleSortWorks_ShouldReturnTrue()
+        {
+            Team[] correctTeams ={new Team("Echipa1 ", 100),
+                                    new Team("Echipa2 ", 96),
+                                    new Team("Echipa3 ", 90),
+                                    new Team("Echipa4 ", 89) };
+            Team[] teams = {new Team("Echipa2 ", 96),
+                                    new Team("Echipa1 ", 100),
+                                    new Team("Echipa4 ", 89),
+                                    new Team("Echipa3 ", 90) };
+            Ranking wrongRanking = new Ranking(teams);
+            Ranking correctRanking = new Ranking(correctTeams);
+            wrongRanking.Sorting();
+            Assert.True(correctRanking.Equal(wrongRanking));
+        }
     }
 }
