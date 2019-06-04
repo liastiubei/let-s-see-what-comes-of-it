@@ -71,5 +71,35 @@ namespace BBS_tests
             wrongRanking.Sorting();
             Assert.True(correctRanking.Equal(wrongRanking));
         }
+
+        [Fact]
+        public void CheckIfUpdateWorks_ShouldReturnTrue()
+        {
+            Team[] teams ={new Team("Echipa1 ", 100),
+                                    new Team("Echipa2 ", 96),
+                                    new Team("Echipa3 ", 90),
+                                    new Team("Echipa4 ", 89)};
+            Ranking rankings = new Ranking(teams);
+            rankings.Update(new Game("Echipa1 ","Echipa3 ",1,2));
+            Team[] newTeams={new Team("Echipa1 ", 101),
+                   new Team("Echipa2 ", 96),
+                   new Team("Echipa3 ", 92),
+                   new Team("Echipa4 ", 89)};
+            Ranking newRankings = new Ranking(newTeams);
+            Assert.True(newRankings.Equal(rankings));
+        }
+
+        [Fact]
+        public void CheckIfSearchWorks_ShouldReturnTrue()
+        {
+            Team[] teams ={new Team("Echipa1 ", 100),
+                                    new Team("Echipa2 ", 96),
+                                    new Team("Echipa3 ", 90),
+                                    new Team("Echipa4 ", 89)};
+            Ranking rankings = new Ranking(teams);
+            Game game=new Game("Echipa1 ", "Echipa3 ", 1, 2);
+            (int index1, int index2,int sc1, int sc2)=rankings.Search(game);
+            Assert.Equal((0,2,1,2), rankings.Search(game));
+        }
     }
 }

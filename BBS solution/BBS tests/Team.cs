@@ -42,5 +42,15 @@ namespace BBS_tests
             this.score = that.score;
             that.score = swapNum;
         }
+
+        internal bool Search1stTeam(Game game, ref int score1)
+        {
+            return game.CheckIfNamesMatch1(this.name, ref score1);
+        }
+
+        internal bool Search2ndTeam(Game game, ref int score2)
+        {
+            return game.CheckIfNamesMatch2(this.name, ref score2);
+        }
     }
 }

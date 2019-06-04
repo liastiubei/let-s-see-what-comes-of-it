@@ -46,5 +46,28 @@ namespace BBS_tests
                 }
             }
         }
+
+        internal void Update(Game game)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal (int index1, int index2, int score1, int score2) Search(Game game)
+        {
+            int index1=-1, index2=-1, score1=0, score2=0;
+            for(int i=0;i<this.teams.Length;i++)
+            {
+                if (this.teams[i].Search1stTeam(game, ref score1))
+                {
+                    index1 = i;
+                }
+
+                if (this.teams[i].Search2ndTeam(game,ref score2))
+                {
+                    index2 = i;
+                }
+            }
+            return (index1, index2, score1, score2);
+        }
     }
 }
