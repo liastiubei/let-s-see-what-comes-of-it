@@ -49,7 +49,17 @@ namespace BBS_tests
 
         internal void Update(Game game)
         {
-            throw new NotImplementedException();
+            (int index1, int index2, int score1, int score2) = this.Search(game);
+            if (index1 == -1 || index2 == -1)
+            {
+                Console.WriteLine("Can't update the ranking because one of the teams cannot be found");
+            }
+            else
+            {
+                this.teams[index1].AddToScore(score1);
+                this.teams[index2].AddToScore(score2);
+                this.Sorting();
+            }
         }
 
         internal (int index1, int index2, int score1, int score2) Search(Game game)

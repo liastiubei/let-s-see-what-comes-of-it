@@ -80,10 +80,10 @@ namespace BBS_tests
                                     new Team("Echipa3 ", 90),
                                     new Team("Echipa4 ", 89)};
             Ranking rankings = new Ranking(teams);
-            rankings.Update(new Game("Echipa1 ","Echipa3 ",1,2));
-            Team[] newTeams={new Team("Echipa1 ", 101),
+            rankings.Update(new Game("Echipa1 ","Echipa3 ",4,20));
+            Team[] newTeams={new Team("Echipa3 ", 110),
+                   new Team("Echipa1 ", 104),
                    new Team("Echipa2 ", 96),
-                   new Team("Echipa3 ", 92),
                    new Team("Echipa4 ", 89)};
             Ranking newRankings = new Ranking(newTeams);
             Assert.True(newRankings.Equal(rankings));

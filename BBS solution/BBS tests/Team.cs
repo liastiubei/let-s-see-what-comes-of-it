@@ -52,5 +52,10 @@ namespace BBS_tests
         {
             return game.CheckIfNamesMatch2(this.name, ref score2);
         }
+
+        internal void AddToScore(int score)
+        {
+            this.score += score;
+        }
     }
 }
