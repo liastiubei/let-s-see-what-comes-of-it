@@ -50,7 +50,7 @@ namespace BBS_tests
         {
             for(int i=0;i<this.teams.Length;i++)
             {
-                this.teams[i].AddToScore(this.teams[i].GetPoints(game));
+                this.teams[i].Update(game);
             }
             this.Sorting();
         }

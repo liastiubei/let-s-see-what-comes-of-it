@@ -21,9 +21,14 @@ namespace BBS_tests
 
         internal int GiveScore(string name)
         {
-            if (this.team1 == name) return score1;
-            if (this.team2 == name) return score2;
+            if (this.team1 == name&&score1>score2) return 3;
+            if (this.team1 == name&&score1==score2) return 1;
+            
+            if (this.team2 == name && score2 > score1) return 3;
+            if (this.team2 == name && score2 == score1) return 1;
+            
             return 0;
         }
+        
     }
 }

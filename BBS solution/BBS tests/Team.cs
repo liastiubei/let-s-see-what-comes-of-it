@@ -25,15 +25,10 @@ namespace BBS_tests
             return this.score < that.score;
         }
 
-        internal int GetPoints(Game game)
+        internal void Update(Game game)
         {
-            return game.GiveScore(this.name) ;
+            this.score += game.GiveScore(this.name) ;
         }
         
-
-        internal void AddToScore(int score)
-        {
-            this.score += score;
-        }
     }
 }
