@@ -20,10 +20,17 @@ namespace range.tests
         }
 
         [Fact]
-        public void ChecksRangeForRangeOfSeveralLetter_ShouldReturnTrur()
+        public void ChecksRangeForRangeOfSeveralLetter_ShouldReturnTrue()
         {
             var range = new Range('a', 'r');
             Assert.True(range.Match("pampom"));
+        }
+
+        [Fact]
+        public void ChecksRangeForRangeOfNumbers_ShouldReturnTrue()
+        {
+            var range = new Range('1', '7');
+            Assert.True(range.Match("45"));
         }
 
 
