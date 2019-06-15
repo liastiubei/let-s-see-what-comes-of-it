@@ -11,5 +11,14 @@ namespace range.tests
             var range = new Range('a', 'a');
             Assert.True(range.Match("a"));
         }
+
+        [Fact]
+        public void ChecksRangeForRangeOf1Letter_ShouldReturnFalse()
+        {
+            var range = new Range('a', 'a');
+            Assert.True(!range.Match("c"));
+        }
+
+        
     }
 }
