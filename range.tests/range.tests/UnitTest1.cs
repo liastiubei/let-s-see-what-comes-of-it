@@ -19,6 +19,13 @@ namespace range.tests
             Assert.True(!range.Match("c"));
         }
 
-        
+        [Fact]
+        public void ChecksRangeForRangeOfSeveralLetter_ShouldReturnTrur()
+        {
+            var range = new Range('a', 'r');
+            Assert.True(range.Match("pampom"));
+        }
+
+
     }
 }
