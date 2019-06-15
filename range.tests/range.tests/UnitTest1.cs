@@ -33,6 +33,13 @@ namespace range.tests
             Assert.True(range.Match("45"));
         }
 
+        [Fact]
+        public void ChecksRangeForRangeOfNumbersAndLetters_ShouldReturnTrue()
+        {
+            var range = new Range('1', 'p');
+            Assert.True(range.Match("9A2"));
+        }
+
 
     }
 }
