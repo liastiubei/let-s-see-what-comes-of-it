@@ -37,7 +37,8 @@ namespace range.tests
         public void ChecksRangeForRangeOfNumbersAndLetters_ShouldReturnTrue()
         {
             var range = new Range('1', 'p');
-            Assert.True(range.Match("9A2"));
+            Assert.True(range.Match("9A2" +
+                ""));
         }
 
 
