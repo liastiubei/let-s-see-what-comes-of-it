@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Choice
 {
-    class Range
+    class Range:IPattern
     {
         private char start;
         private char end;

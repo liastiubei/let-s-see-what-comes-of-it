@@ -18,5 +18,16 @@ namespace Choice
             var character = new Character('a');
             Assert.True(!character.Match("118932a"));
         }
+
+        [Fact]
+        public void CheckIfChoiceWorks1_ShouldReturnTrue()
+        {
+            var digit = new Choice(
+                new Character('0'),
+                new Range('1', '9')
+                );
+            Assert.True(digit.Match("118932a"));
+        }
+
     }
 }

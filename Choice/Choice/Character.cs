@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Choice
 {
-    class Character
+    class Character:IPattern
     {
         private char character;
 

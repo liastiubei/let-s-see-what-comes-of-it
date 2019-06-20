@@ -6,5 +6,6 @@ namespace Choice
 {
     interface IPattern
     {
+        bool Match(string text);
     }
 }
