@@ -6,9 +6,10 @@ namespace Choice
     public class UnitTest1
     {
         [Fact]
-        public void Test1()
+        public void CheckIfCharacterMatchWorks_ShouldReturnTrue()
         {
-
+            var character = new Character('a');
+            Assert.True(character.Match("asparagus"));
         }
     }
 }
