@@ -13,7 +13,7 @@ namespace Choice
             this.character = character;
         }
 
-        public bool Match(string text)
+        public IMatch Match(string text)
         {
             return text[0] == this.character;
         }
