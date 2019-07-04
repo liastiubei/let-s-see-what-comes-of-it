@@ -18,5 +18,12 @@ namespace remake_of_range__choice__etc
             Range range = new Range('a', 'g');
             Assert.True(!range.Match("xulescu"));
         }
+
+        [Fact]
+        public void CheckIfCharacterWorks_ShouldReturnTrue()
+        {
+            Character c = new Character('a');
+            Assert.True(c.Match("aura"));
+        }
     }
 }
