@@ -32,5 +32,12 @@ namespace remake_of_range__choice__etc
             Character c = new Character('a');
             Assert.False(c.Match("Chocolate"));
         }
+
+        [Fact]
+        public void CheckIfChoiceWorks1_ShouldReturnTrue()
+        {
+            Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
+            Assert.True(choice.Match("elefant"));
+        }
     }
 }
