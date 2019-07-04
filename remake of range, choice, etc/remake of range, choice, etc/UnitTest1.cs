@@ -36,15 +36,23 @@ namespace remake_of_range__choice__etc
         [Fact]
         public void CheckIfChoiceWorks1_ShouldReturnTrue()
         {
-            Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
+            var choice = new Choice(new Character('a'), new Range('c', 'f'));
             Assert.True(choice.Match("elefant"));
         }
 
         [Fact]
         public void CheckIfChoiceWorks2_ShouldReturnFalse()
         {
-            Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
+            var choice = new Choice(new Character('a'), new Range('c', 'f'));
             Assert.False(choice.Match("bicicle"));
+        }
+
+        [Fact]
+        public void CheckIfChoiceWorks3_ShouldReturnTrue()
+        {
+            Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
+            var stuff = new Choice(choice, new Character('z'));
+            Assert.True(stuff.Match("zilnic"));
         }
     }
 }

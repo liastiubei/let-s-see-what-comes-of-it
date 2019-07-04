@@ -6,18 +6,20 @@ namespace remake_of_range__choice__etc
 {
     class Choice:IPattern
     {
-        Character character;
-        Range range;
+        public IPattern[] pattern;
 
-        public Choice(Character character, Range range)
+        public Choice(params IPattern[] pattern)
         {
-            this.character = character;
-            this.range = range;
+            this.pattern=pattern;
         }
 
         public bool Match(string line)
         {
-            return this.character.Match(line) || this.range.Match(line);
+            foreach (var p in this.pattern)
+            {
+                if (p.Match(line)) return true;
+            }
+            return false;
         }
     }
 }

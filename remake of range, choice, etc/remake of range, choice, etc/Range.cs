@@ -4,7 +4,7 @@ using System.Text;
 
 namespace remake_of_range__choice__etc
 {
-    class Range
+    class Range:IPattern
     {
         char start;
         char end;
