@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Choice
 {
-    class Match:IMatch
+    public class Match:IMatch
     {
         string thisText;
 
@@ -12,11 +12,11 @@ namespace Choice
         {
             this.thisText = text;
         }
-        bool Success(string text)
+        public bool Success(string text)
         {
             return this.RemainingText(text) != text;
         }
-        string RemainingText(string text)
+        public string RemainingText(string text)
         {
             if (text.Length < this.thisText.Length) return text;
             string newText = "";

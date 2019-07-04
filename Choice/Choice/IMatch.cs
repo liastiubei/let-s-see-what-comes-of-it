@@ -6,7 +6,7 @@ namespace Choice
 {
     interface IMatch
     {
-        bool Success();
-        string RemainingText();
+        bool Success(string text);
+        string RemainingText(string text);
     }
 }
