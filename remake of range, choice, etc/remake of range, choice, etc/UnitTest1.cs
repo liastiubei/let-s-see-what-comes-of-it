@@ -76,5 +76,12 @@ namespace remake_of_range__choice__etc
             Assert.Equal("bcd",ab.Match("abcd").RemainingText());
         }
 
+        [Fact]
+        public void CheckIfSequenceWorksRemainingText2_ShouldReturnAppropiateResponse()
+        {
+            var ab = new Sequence(new Character('a'), new Character('b'), new Character('c'));
+            Assert.Equal("alfabet", ab.Match("alfabet").RemainingText());
+        }
+
     }
 }
