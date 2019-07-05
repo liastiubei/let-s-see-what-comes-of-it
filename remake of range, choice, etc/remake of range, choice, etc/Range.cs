@@ -13,9 +13,11 @@ namespace remake_of_range__choice__etc
             this.start = start;
             this.end = end;
         }
-        public bool Match(string text)
+        public IMatch Match(string text)
         {
-            return text[0] >= this.start && text[0] <= this.end;
+            bool itMatches = text[0] >= this.start && text[0] <= this.end;
+            Match range = new Match(itMatches);
+            return range;
         }
     }
 }

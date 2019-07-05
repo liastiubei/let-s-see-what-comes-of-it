@@ -4,8 +4,9 @@ using System.Text;
 
 namespace remake_of_range__choice__etc
 {
-    interface IPattern
+    interface IMatch
     {
-        IMatch Match(string text);
+        bool Succes();
+        string RemainingText(string text);
     }
 }

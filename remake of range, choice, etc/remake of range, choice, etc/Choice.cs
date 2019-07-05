@@ -13,13 +13,19 @@ namespace remake_of_range__choice__etc
             this.pattern=pattern;
         }
 
-        public bool Match(string line)
+        public IMatch Match(string line)
         {
-            foreach (var p in this.pattern)
+            foreach (IPattern p in this.pattern)
             {
-                if (p.Match(line)) return true;
+                if(p.Match(line).Succes())
+                {
+                    Match trueMatch = new Match(p.Match(line).Succes());
+                    return trueMatch;
+                }
             }
-            return false;
+            Match falseMatch = new Match(false);
+            return falseMatch;
+            
         }
     }
 }
