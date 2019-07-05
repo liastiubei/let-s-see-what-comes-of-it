@@ -24,7 +24,7 @@ namespace remake_of_range__choice__etc
         {
             if (this.Succes())
             {
-                this.remainedText = this.remainedText.Substring(1);
+                this.remainedText = this.remainedText.Substring(1, this.remainedText.Length-1);
                 return this.remainedText;
             }
             else return this.remainedText;

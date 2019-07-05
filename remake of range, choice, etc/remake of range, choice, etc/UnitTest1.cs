@@ -68,6 +68,13 @@ namespace remake_of_range__choice__etc
             var ab = new Sequence(new Character('a'), new Character('b'));
             Assert.False(ab.Match("acbd").Succes());
         }
+        
+        [Fact]
+        public void CheckIfSequenceWorksRemainingText1_ShouldReturnAppropiateResponse()
+        {
+            var ab = new Sequence(new Character('a'));
+            Assert.Equal("bcd",ab.Match("abcd").RemainingText());
+        }
 
     }
 }

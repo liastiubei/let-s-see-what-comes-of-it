@@ -20,7 +20,7 @@ namespace remake_of_range__choice__etc
             {
                 if(patterns[i].Match(match.remainedText).Succes())
                 {
-                    match.remainedText = match.RemainingText();
+                    if(i<this.patterns.Length-1)match.remainedText = match.RemainingText();
                 }
                 else
                 {
