@@ -61,5 +61,13 @@ namespace remake_of_range__choice__etc
             var ab = new Sequence(new Character('a'), new Character('b'));
             Assert.True(ab.Match("abcd").Succes());
         }
+
+        [Fact]
+        public void CheckIfSequenceWorksBoolValue2_ShouldReturnFalse()
+        {
+            var ab = new Sequence(new Character('a'), new Character('b'));
+            Assert.False(ab.Match("acbd").Succes());
+        }
+
     }
 }
