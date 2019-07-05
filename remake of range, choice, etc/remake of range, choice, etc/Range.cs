@@ -16,7 +16,7 @@ namespace remake_of_range__choice__etc
         public IMatch Match(string text)
         {
             bool itMatches = text[0] >= this.start && text[0] <= this.end;
-            Match range = new Match(itMatches);
+            Match range = new Match(itMatches,"");
             return range;
         }
     }

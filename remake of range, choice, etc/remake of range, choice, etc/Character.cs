@@ -15,7 +15,7 @@ namespace remake_of_range__choice__etc
 
         public IMatch Match(string text)
         {
-            Match character = new Match(text[0] == this.character);
+            Match character = new Match(text[0] == this.character,"");
             return character;
             
         }

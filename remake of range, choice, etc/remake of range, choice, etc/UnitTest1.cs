@@ -54,5 +54,12 @@ namespace remake_of_range__choice__etc
             var stuff = new Choice(choice, new Character('z'));
             Assert.True(stuff.Match("zilnic").Succes());
         }
+
+        [Fact]
+        public void CheckIfSequenceWorksBoolValue1_ShouldReturnTrue()
+        {
+            var ab = new Sequence(new Character('a'), new Character('b'));
+            Assert.True(ab.Match("abcd").Succes());
+        }
     }
 }

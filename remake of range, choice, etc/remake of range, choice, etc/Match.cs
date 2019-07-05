@@ -6,13 +6,13 @@ namespace remake_of_range__choice__etc
 {
     class Match:IMatch
     {
-        public IPattern[] pattern;
         bool itMatches;
+        public string remainedText;
 
-        public Match(bool itMatches ,params IPattern[] pattern)
+        public Match(bool itMatches ,string remainedText)
         {
-            this.pattern = pattern;
             this.itMatches = itMatches;
+            this.remainedText = remainedText;
         }
 
         public bool Succes()
@@ -20,11 +20,14 @@ namespace remake_of_range__choice__etc
             return this.itMatches;
         }
 
-        public string RemainingText(string text)
+        public string RemainingText()
         {
             if (this.Succes())
-                return text.Substring(this.pattern.Length);
-            else return text;
+            {
+                this.remainedText = this.remainedText.Substring(1);
+                return this.remainedText;
+            }
+            else return this.remainedText;
         }
     }
 }

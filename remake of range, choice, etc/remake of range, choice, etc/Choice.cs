@@ -19,11 +19,11 @@ namespace remake_of_range__choice__etc
             {
                 if(p.Match(line).Succes())
                 {
-                    Match trueMatch = new Match(p.Match(line).Succes());
+                    Match trueMatch = new Match(p.Match(line).Succes(),"");
                     return trueMatch;
                 }
             }
-            Match falseMatch = new Match(false);
+            Match falseMatch = new Match(false,"");
             return falseMatch;
             
         }
