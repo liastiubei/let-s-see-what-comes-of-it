@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace remake_of_range__choice__etc
+namespace RemakeOfRangeChoiceEtc
 {
-    class Sequence
+    class Sequence : IPattern
     {
-        public IPattern[] patterns;
+        private readonly IPattern[] patterns;
 
         public Sequence(params IPattern[] patterns)
         {
@@ -15,19 +15,18 @@ namespace remake_of_range__choice__etc
 
         public IMatch Match(string text)
         {
-            Match match = new Match(true, text);
-            for(int i=0;i<this.patterns.Length;i++)
+            var match = new Match(true, text);
+            foreach (var pattern in patterns)
             {
-                if(patterns[i].Match(match.remainedText).Succes())
+                if (!pattern.Match(match.RemainingText()).Success())
                 {
-                    if(i<this.patterns.Length-1)match.remainedText = match.RemainingText();
+                    return new Match(false, text);
                 }
-                else
-                {
-                    match = new Match(false, text);
-                    return match;
-                }
+
+                string remainingText = match.RemainingText();
+                match = new Match(true, pattern.Match(match.RemainingText()).RemainingText());
             }
+
             return match;
         }
     }

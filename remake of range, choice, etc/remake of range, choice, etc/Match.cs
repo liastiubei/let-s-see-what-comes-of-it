@@ -2,32 +2,27 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace remake_of_range__choice__etc
+namespace RemakeOfRangeChoiceEtc
 {
-    class Match:IMatch
+    class Match : IMatch
     {
-        bool itMatches;
-        public string remainedText;
+        readonly bool itMatches;
+        private readonly string remainedText;
 
-        public Match(bool itMatches ,string remainedText)
+        public Match(bool itMatches, string remainedText)
         {
             this.itMatches = itMatches;
             this.remainedText = remainedText;
         }
 
-        public bool Succes()
+        public bool Success()
         {
             return this.itMatches;
         }
 
         public string RemainingText()
         {
-            if (this.Succes())
-            {
-                this.remainedText = this.remainedText.Substring(1, this.remainedText.Length-1);
-                return this.remainedText;
-            }
-            else return this.remainedText;
+            return this.remainedText;
         }
     }
 }

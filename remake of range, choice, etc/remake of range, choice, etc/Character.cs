@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace remake_of_range__choice__etc
+namespace RemakeOfRangeChoiceEtc
 {
     class Character : IPattern
     {
-        private char character;
+        private readonly char character;
 
         public Character(char character)
         {
@@ -15,9 +15,7 @@ namespace remake_of_range__choice__etc
 
         public IMatch Match(string text)
         {
-            Match character = new Match(text[0] == this.character,"");
-            return character;
-            
+            return new Match(text[0] == this.character, text.Substring(1));
         }
     }
 }

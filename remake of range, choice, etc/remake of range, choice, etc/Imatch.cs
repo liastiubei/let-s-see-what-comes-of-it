@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace remake_of_range__choice__etc
+namespace RemakeOfRangeChoiceEtc
 {
     interface IMatch
     {
-        bool Succes();
+        bool Success();
+
         string RemainingText();
     }
 }

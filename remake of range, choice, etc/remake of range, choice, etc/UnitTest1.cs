@@ -1,87 +1,94 @@
 using System;
 using Xunit;
 
-namespace remake_of_range__choice__etc
+namespace RemakeOfRangeChoiceEtc
 {
     public class UnitTest1
     {
         [Fact]
-        public void CheckIfRangeWorks1_ShouldReturnTrue()
+        public void CheckIfRangeWorks1ShouldReturnTrue()
         {
             Range range = new Range('a', 'i');
-            Assert.True(range.Match("hellicopter").Succes());
+            Assert.True(range.Match("hellicopter").Success());
         }
 
         [Fact]
-        public void CheckIfRangeWorks2_ShouldReturnFalse()
+        public void CheckIfRangeWorks2ShouldReturnFalse()
         {
             Range range = new Range('a', 'g');
-            Assert.False(range.Match("xulescu").Succes());
+            Assert.False(range.Match("xulescu").Success());
         }
 
         [Fact]
-        public void CheckIfCharacterWorks1_ShouldReturnTrue()
+        public void CheckIfCharacterWorks1ShouldReturnTrue()
         {
             Character c = new Character('a');
-            Assert.True(c.Match("aura").Succes());
+            Assert.True(c.Match("aura").Success());
         }
 
         [Fact]
-        public void CheckIfCharacterWorks2_ShouldReturnFalse()
+        public void CheckIfCharacterWorks2ShouldReturnFalse()
         {
             Character c = new Character('a');
-            Assert.False(c.Match("Chocolate").Succes());
+            Assert.False(c.Match("Chocolate").Success());
         }
 
         [Fact]
-        public void CheckIfChoiceWorks1_ShouldReturnTrue()
+        public void CheckIfChoiceWorks1ShouldReturnTrue()
         {
             var choice = new Choice(new Character('a'), new Range('c', 'f'));
-            Assert.True(choice.Match("elefant").Succes());
+            Assert.True(choice.Match("elefant").Success());
         }
 
         [Fact]
-        public void CheckIfChoiceWorks2_ShouldReturnFalse()
+        public void CheckIfChoiceWorks2ShouldReturnFalse()
         {
             var choice = new Choice(new Character('a'), new Range('c', 'f'));
-            Assert.False(choice.Match("bicicle").Succes());
+            Assert.False(choice.Match("bicicle").Success());
         }
 
         [Fact]
-        public void CheckIfChoiceWorks3_ShouldReturnTrue()
+        public void CheckIfChoiceWorks3ShouldReturnTrue()
         {
             Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
             var stuff = new Choice(choice, new Character('z'));
-            Assert.True(stuff.Match("zilnic").Succes());
+            Assert.True(stuff.Match("zilnic").Success());
         }
 
         [Fact]
-        public void CheckIfSequenceWorksBoolValue1_ShouldReturnTrue()
+        public void CheckIfSequenceWorksBoolValue1ShouldReturnTrue()
         {
             var ab = new Sequence(new Character('a'), new Character('b'));
-            Assert.True(ab.Match("abcd").Succes());
+            Assert.True(ab.Match("abcd").Success());
         }
 
         [Fact]
-        public void CheckIfSequenceWorksBoolValue2_ShouldReturnFalse()
+        public void CheckIfSequenceWorksBoolValue2ShouldReturnFalse()
         {
             var ab = new Sequence(new Character('a'), new Character('b'));
-            Assert.False(ab.Match("acbd").Succes());
+            Assert.False(ab.Match("acbd").Success());
         }
-        
+
         [Fact]
-        public void CheckIfSequenceWorksRemainingText1_ShouldReturnAppropiateResponse()
+        public void CheckIfSequenceWorksRemainingText1ShouldReturnAppropiateResponse()
         {
             var ab = new Sequence(new Character('a'));
-            Assert.Equal("bcd",ab.Match("abcd").RemainingText());
+            Assert.Equal("bcd", ab.Match("abcd").RemainingText());
         }
 
         [Fact]
-        public void CheckIfSequenceWorksRemainingText2_ShouldReturnAppropiateResponse()
+        public void CheckIfSequenceWorksRemainingText2ShouldReturnAppropiateResponse()
         {
-            var ab = new Sequence(new Character('a'), new Character('b'), new Character('c'));
-            Assert.Equal("alfabet", ab.Match("alfabet").RemainingText());
+            var abc = new Sequence(new Character('a'), new Character('b'), new Character('c'));
+            Assert.Equal("alfabet", abc.Match("alfabet").RemainingText());
         }
 
+        [Fact]
+        public void CheckIfSequenceWorksRemainingText3ShouldReturnAppropiateResponse()
+        {
+            var ab = new Sequence(new Character('a'), new Character('b'));
+            var seq = new Sequence(ab, new Character('0'), new Range('a', 'e'));
+            Assert.Equal("", seq.Match("ab0d").RemainingText());
+        }
     }
 }

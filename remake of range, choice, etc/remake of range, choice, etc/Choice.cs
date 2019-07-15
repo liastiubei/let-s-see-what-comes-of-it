@@ -2,30 +2,29 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace remake_of_range__choice__etc
+namespace RemakeOfRangeChoiceEtc
 {
-    class Choice:IPattern
+    class Choice : IPattern
     {
-        public IPattern[] pattern;
+        public IPattern[] Pattern;
 
         public Choice(params IPattern[] pattern)
         {
-            this.pattern=pattern;
+            this.Pattern = pattern;
         }
 
         public IMatch Match(string line)
         {
-            foreach (IPattern p in this.pattern)
+            foreach (IPattern p in this.Pattern)
             {
-                if(p.Match(line).Succes())
+                var success = p.Match(line).Success();
+                if (success)
                 {
-                    Match trueMatch = new Match(p.Match(line).Succes(),"");
-                    return trueMatch;
+                    return new Match(success, line.Substring(1));
                 }
             }
-            Match falseMatch = new Match(false,"");
-            return falseMatch;
-            
+
+            return new Match(false, line);
         }
     }
 }
