@@ -79,7 +79,7 @@ namespace RemakeOfRangeChoiceEtc
         [Fact]
         public void CheckIfSequenceWorksRemainingText2ShouldReturnAppropiateResponse()
         {
-            var abc = new Sequence(new Character('a'), new Character('b'), new Character('c'));
+            var abc = new Sequence(new Character('b'), new Character('c'), new Character('d'));
             Assert.Equal("alfabet", abc.Match("alfabet").RemainingText());
         }
 
