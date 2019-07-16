@@ -18,13 +18,13 @@ namespace RemakeOfRangeChoiceEtc
             var match = new Match(true, text);
             foreach (var pattern in patterns)
             {
-                if (!pattern.Match(match.RemainingText()).Success())
+                var matchingPattern = pattern.Match(match.RemainingText());
+                if (matchingPattern.Success())
                 {
                     return new Match(false, text);
                 }
 
-                string remainingText = match.RemainingText();
-                match = new Match(true, pattern.Match(match.RemainingText()).RemainingText());
+                match = new Match(true, matchingPattern.RemainingText());
             }
 
             return match;

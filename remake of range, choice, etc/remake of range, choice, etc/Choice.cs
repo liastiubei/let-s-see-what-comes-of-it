@@ -17,10 +17,10 @@ namespace RemakeOfRangeChoiceEtc
         {
             foreach (IPattern p in this.Pattern)
             {
-                var success = p.Match(line).Success();
-                if (success)
+                var match = p.Match(line);
+                if (match.Success())
                 {
-                    return new Match(success, line.Substring(1));
+                    return match;
                 }
             }
 
