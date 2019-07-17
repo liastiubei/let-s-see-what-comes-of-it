@@ -15,12 +15,9 @@ namespace RemakeOfRangeChoiceEtc
 
         public IMatch Match(string text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return new Match(false, text);
-            }
-
-            return new Match(text[0] == this.character, text.Substring(1));
+            return !string.IsNullOrEmpty(text) && text[0] == this.character
+                 ? new Match(true, text.Substring(1))
+                 : new Match(false, text);
         }
     }
 }
