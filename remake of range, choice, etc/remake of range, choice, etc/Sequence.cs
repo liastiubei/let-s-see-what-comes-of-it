@@ -19,7 +19,7 @@ namespace RemakeOfRangeChoiceEtc
             foreach (var pattern in patterns)
             {
                 var matchingPattern = pattern.Match(match.RemainingText());
-                if (matchingPattern.Success())
+                if (!matchingPattern.Success())
                 {
                     return new Match(false, text);
                 }
