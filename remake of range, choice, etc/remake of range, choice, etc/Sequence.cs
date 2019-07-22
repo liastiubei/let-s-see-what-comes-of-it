@@ -15,15 +15,14 @@ namespace RemakeOfRangeChoiceEtc
 
         public IMatch Match(string text)
         {
-            var match = new Match(true, text);
+            IMatch match = new Match(true, text);
             foreach (var pattern in patterns)
             {
-                if (!pattern.Match(match.RemainingText()).Success())
+                match = pattern.Match(match.RemainingText());
+                if (match.Success())
                 {
                     return new Match(false, text);
                 }
-
-                match = new Match(true, pattern.Match(match.RemainingText()).RemainingText());
             }
 
             return match;
