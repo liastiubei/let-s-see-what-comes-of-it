@@ -29,7 +29,7 @@ namespace RemakeOfRangeChoiceEtc
         [Fact]
         public void CheckIfRangeWorksWhenTextIsEmptyShouldReturnFalse()
         {
-            Range range = new Range('a', 'g');
+            Range range = new Range('a', 'f');
             Assert.False(range.Match("").Success());
         }
 
