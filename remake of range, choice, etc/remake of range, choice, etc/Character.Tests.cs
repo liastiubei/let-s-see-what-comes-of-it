@@ -32,5 +32,19 @@ namespace RemakeOfRangeChoiceEtc
             Character c = new Character('c');
             Assert.False(c.Match("").Success());
         }
+
+        [Fact]
+        public void CheckIfCharacterReturnsCorrectRemainingTextWhenSuccesIsTrue()
+        {
+            Character c = new Character('c');
+            Assert.Equal("ola", c.Match("cola").RemainingText());
+        }
+
+        [Fact]
+        public void CheckIfCharacterReturnsCorrectRemainingTextWhenSuccesIsFalse()
+        {
+            Character c = new Character('c');
+            Assert.Equal("parfum", c.Match("parfum").RemainingText());
+        }
     }
 }

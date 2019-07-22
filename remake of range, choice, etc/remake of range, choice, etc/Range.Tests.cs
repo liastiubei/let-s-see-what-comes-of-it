@@ -32,5 +32,12 @@ namespace RemakeOfRangeChoiceEtc
             Range range = new Range('a', 'g');
             Assert.False(range.Match("").Success());
         }
+
+        [Fact]
+        public void CheckIfRemainingTextIsCorrect()
+        {
+            Range range = new Range('a', 'g');
+            Assert.Equal("lfabet", range.Match("alfabet").RemainingText());
+        }
     }
 }

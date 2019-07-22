@@ -26,5 +26,21 @@ namespace RemakeOfRangeChoiceEtc
             var stuff = new Choice(choice, new Character('z'));
             Assert.True(stuff.Match("zilnic").Success());
         }
+
+        [Fact]
+        public void CheckIfChoiceHasCorrectRemainingTextIfSuccessIsTrue()
+        {
+            Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
+            var stuff = new Choice(choice, new Character('z'));
+            Assert.Equal("ilnic", stuff.Match("zilnic").RemainingText());
+        }
+
+        [Fact]
+        public void CheckIfChoiceHasCorrectRemainingTextIfSuccessIsFalse()
+        {
+            Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
+            var stuff = new Choice(choice, new Character('p'));
+            Assert.Equal("zilnic", stuff.Match("zilnic").RemainingText());
+        }
     }
 }
