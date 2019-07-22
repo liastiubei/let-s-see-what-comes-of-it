@@ -17,21 +17,8 @@ namespace RemakeOfRangeChoiceEtc
 
         public IMatch Match(string text)
         {
-            if (!this.element.Match(text).Success())
-            {
-                return new Match(true, text);
-            }
-
-            while (this.element.Match(text).Success())
-            {
-                text = this.element.Match(text).RemainingText();
-                if (this.separator.Match(text).Success())
-                {
-                    text = this.separator.Match(text).RemainingText();
-                }
-            }
-
-            return new Match(true, text);
+            Sequence seq = new Sequence(this.element, new Many(new Sequence(this.separator, this.element)), new Optional(this.separator));
+            return new Match(true, seq.Match(text).RemainingText());
         }
     }
 }

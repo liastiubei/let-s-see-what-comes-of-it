@@ -20,12 +20,9 @@ namespace RemakeOfRangeChoiceEtc
                 return new Match(false, text);
             }
 
-            for (int i = 0; i < accepted.Length; i++)
+            if (this.accepted.Contains(text[0]))
             {
-                if (text[0] == this.accepted[i])
-                {
-                    return new Match(true, text.Substring(1));
-                }
+                return new Match(true, text.Substring(1));
             }
 
             return new Match(false, text);

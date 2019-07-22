@@ -20,12 +20,9 @@ namespace RemakeOfRangeChoiceEtc
                 return new Match(false, text);
             }
 
-            for (int i = 0; i < this.prefix.Length; i++)
+            if (!text.StartsWith(this.prefix))
             {
-                if (text[i] != this.prefix[i])
-                {
-                   return new Match(false, text);
-                }
+                return new Match(false, text);
             }
 
             return new Match(true, text.Substring(this.prefix.Length));

@@ -16,12 +16,7 @@ namespace RemakeOfRangeChoiceEtc
         public IMatch Match(string text)
         {
             var optionalMatch = this.pattern.Match(text);
-            if (optionalMatch.Success())
-            {
-                return new Match(true, optionalMatch.RemainingText());
-            }
-
-            return new Match(true, text);
+            return new Match(true, optionalMatch.RemainingText());
         }
     }
 }

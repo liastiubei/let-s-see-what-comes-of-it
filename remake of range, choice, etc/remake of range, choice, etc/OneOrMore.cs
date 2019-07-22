@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RemakeOfRangeChoiceEtc
 {
-    class OneOrMore
+    class OneOrMore : IPattern
     {
         private readonly IPattern pattern;
 
@@ -15,18 +15,13 @@ namespace RemakeOfRangeChoiceEtc
 
         public IMatch Match(string text)
         {
-            var oneOrMoreMatches = this.pattern.Match(text);
-            if (!oneOrMoreMatches.Success())
+            Sequence seq = new Sequence(new Many(this.pattern));
+            if (!this.pattern.Match(text).Success())
             {
                 return new Match(false, text);
             }
 
-            while (oneOrMoreMatches.Success())
-            {
-                oneOrMoreMatches = this.pattern.Match(oneOrMoreMatches.RemainingText());
-            }
-
-            return new Match(true, oneOrMoreMatches.RemainingText());
+            return new Match(true, seq.Match(text).RemainingText());
         }
     }
 }
