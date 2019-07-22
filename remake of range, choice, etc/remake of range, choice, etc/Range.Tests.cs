@@ -34,10 +34,17 @@ namespace RemakeOfRangeChoiceEtc
         }
 
         [Fact]
-        public void CheckIfRemainingTextIsCorrect()
+        public void CheckIfRemainingTextIsCorrectWhenSuccessIsTrue()
         {
             Range range = new Range('a', 'g');
             Assert.Equal("lfabet", range.Match("alfabet").RemainingText());
+        }
+
+        [Fact]
+        public void CheckIfRemainingTextIsCorrectWhenSuccessIsFalse()
+        {
+            Range range = new Range('b', 'g');
+            Assert.Equal("alfabet", range.Match("alfabet").RemainingText());
         }
     }
 }
