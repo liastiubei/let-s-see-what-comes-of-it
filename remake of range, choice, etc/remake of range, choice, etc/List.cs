@@ -6,8 +6,8 @@ namespace RemakeOfRangeChoiceEtc
 {
     class List
     {
-        private readonly IPattern element;
         private readonly IPattern separator;
+        private IPattern element;
 
         public List(IPattern element, IPattern separator)
         {
@@ -17,8 +17,8 @@ namespace RemakeOfRangeChoiceEtc
 
         public IMatch Match(string text)
         {
-            Sequence seq = new Sequence(this.element, new Many(new Sequence(this.separator, this.element)), new Optional(this.separator));
-            return new Match(true, seq.Match(text).RemainingText());
+            this.element = new Sequence(this.element, new Many(new Sequence(this.separator, this.element)));
+            return new Match(true, this.element.Match(text).RemainingText());
         }
     }
 }

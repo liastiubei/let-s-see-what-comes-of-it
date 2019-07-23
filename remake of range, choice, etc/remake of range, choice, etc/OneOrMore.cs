@@ -6,7 +6,7 @@ namespace RemakeOfRangeChoiceEtc
 {
     class OneOrMore : IPattern
     {
-        private readonly IPattern pattern;
+        private IPattern pattern;
 
         public OneOrMore(IPattern pattern)
         {
@@ -15,13 +15,14 @@ namespace RemakeOfRangeChoiceEtc
 
         public IMatch Match(string text)
         {
-            Sequence seq = new Sequence(new Many(this.pattern));
             if (!this.pattern.Match(text).Success())
             {
                 return new Match(false, text);
             }
 
-            return new Match(true, seq.Match(text).RemainingText());
+            this.pattern = new Sequence(new Many(this.pattern));
+
+            return this.pattern.Match(text);
         }
     }
 }
