@@ -6,22 +6,15 @@ namespace RemakeOfRangeChoiceEtc
 {
     class OneOrMore : IPattern
     {
-        private IPattern pattern;
+        private readonly IPattern pattern;
 
         public OneOrMore(IPattern pattern)
         {
-            this.pattern = pattern;
+            this.pattern = new Sequence(pattern, new Many(pattern));
         }
 
         public IMatch Match(string text)
         {
-            if (!this.pattern.Match(text).Success())
-            {
-                return new Match(false, text);
-            }
-
-            this.pattern = new Sequence(new Many(this.pattern));
-
             return this.pattern.Match(text);
         }
     }
