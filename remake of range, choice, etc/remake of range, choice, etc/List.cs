@@ -6,19 +6,16 @@ namespace RemakeOfRangeChoiceEtc
 {
     class List
     {
-        private readonly IPattern separator;
-        private IPattern element;
+        private readonly IPattern elementAndSeparator;
 
         public List(IPattern element, IPattern separator)
         {
-            this.element = element;
-            this.separator = separator;
+            this.elementAndSeparator = new Sequence(element, new Many(new Sequence(separator, element)));
         }
 
         public IMatch Match(string text)
         {
-            this.element = new Sequence(this.element, new Many(new Sequence(this.separator, this.element)));
-            return new Match(true, this.element.Match(text).RemainingText());
+            return new Match(true, this.elementAndSeparator.Match(text).RemainingText());
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RemakeOfRangeChoiceEtc
 {
-    class Text
+    class Text : IPattern
     {
         private readonly string prefix;
 
