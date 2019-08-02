@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RemakeOfRangeChoiceEtc
 {
-    interface IMatch
+    public interface IMatch
     {
         bool Success();
 
