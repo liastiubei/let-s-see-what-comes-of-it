@@ -47,9 +47,8 @@ namespace RemakeOfRangeChoiceEtc
         public void CheckIfChoiceHasCorrectAddOption()
         {
             Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
-            Choice addedChoice = new Choice(new Character('a'), new Range('c', 'f'), new Character('p'));
             choice.Add(new Character('p'));
-            Assert.True(addedChoice.TwoEqualChoices(choice));
+            Assert.True(choice.Match("adp").Success());
         }
     }
 }

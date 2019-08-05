@@ -38,23 +38,5 @@ namespace RemakeOfRangeChoiceEtc
             rewrittenPattern[Pattern.Length] = newPattern;
             this.Pattern = rewrittenPattern;
         }
-
-        public bool TwoEqualChoices(Choice differentChoice)
-        {
-            if (this.Pattern.Length != differentChoice.Pattern.Length)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < differentChoice.Pattern.Length; i++)
-            {
-                if (this.Pattern[i] != differentChoice.Pattern[i])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
     }
 }
