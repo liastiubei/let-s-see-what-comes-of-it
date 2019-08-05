@@ -10,11 +10,20 @@ namespace RemakeOfRangeChoiceEtc
 
         public Value()
         {
-            this.pattern = new Choice(new JsonString(), new Number());
+            var manyForObject = new Many(new Sequence(new JsonString(), new Character(' '), new Character(':'), new Value(), new Character(','), new Character(' ')));
+            var optionalForObject = new Optional(new Sequence(new JsonString(), new Character(' '), new Character(':'), new Value()));
+            var obj = new Sequence(new Character('{'), new Character(' '), manyForObject, optionalForObject, new Character('}'));
+            var array = new Sequence(new Character('['), new Many(new Value()), new Character(']'));
+            this.pattern = new Choice(obj, array, new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"));
         }
 
         public IMatch Match(string text)
         {
+            if (this.pattern.Match(text).RemainingText() != "")
+            {
+                return new Match(false, text);
+            }
+
             return this.pattern.Match(text);
         }
     }
