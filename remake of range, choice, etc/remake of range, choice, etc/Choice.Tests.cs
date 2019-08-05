@@ -42,5 +42,14 @@ namespace RemakeOfRangeChoiceEtc
             var stuff = new Choice(choice, new Character('p'));
             Assert.Equal("zilnic", stuff.Match("zilnic").RemainingText());
         }
+
+        [Fact]
+        public void CheckIfChoiceHasCorrectAddOption()
+        {
+            Choice choice = new Choice(new Character('a'), new Range('c', 'f'));
+            Choice addedChoice = new Choice(new Character('a'), new Range('c', 'f'), new Character('p'));
+            choice.Add(new Character('p'));
+            Assert.True(addedChoice.TwoEqualChoices(choice));
+        }
     }
 }

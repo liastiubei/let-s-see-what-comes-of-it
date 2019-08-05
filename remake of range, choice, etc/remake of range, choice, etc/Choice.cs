@@ -26,5 +26,35 @@ namespace RemakeOfRangeChoiceEtc
 
             return new Match(false, line);
         }
+
+        public void Add(IPattern newPattern)
+        {
+            IPattern[] rewrittenPattern = new IPattern[Pattern.Length + 1];
+            for (int i = 0; i < Pattern.Length; i++)
+            {
+                rewrittenPattern[i] = Pattern[i];
+            }
+
+            rewrittenPattern[Pattern.Length] = newPattern;
+            this.Pattern = rewrittenPattern;
+        }
+
+        public bool TwoEqualChoices(Choice differentChoice)
+        {
+            if (this.Pattern.Length != differentChoice.Pattern.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < differentChoice.Pattern.Length; i++)
+            {
+                if (this.Pattern[i] != differentChoice.Pattern[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }
