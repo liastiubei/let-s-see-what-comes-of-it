@@ -10,11 +10,44 @@ namespace RemakeOfRangeChoiceEtc
 
         public Value()
         {
-            var manyForObject = new Many(new Sequence(new JsonString(), new Character(' '), new Character(':'), new Value(), new Character(','), new Character(' ')));
-            var optionalForObject = new Optional(new Sequence(new JsonString(), new Character(' '), new Character(':'), new Value()));
-            var obj = new Sequence(new Character('{'), new Character(' '), manyForObject, optionalForObject, new Character('}'));
-            var array = new Sequence(new Character('['), new Many(new Value()), new Character(']'));
-            this.pattern = new Choice(obj, array, new JsonString(), new Number(), new Text("true"), new Text("false"), new Text("null"));
+            var value = new Choice(
+                new JsonString(),
+                new Number(),
+                new Text("true"),
+                new Text("false"),
+                new Text("null"));
+            var ws = new Any(" \n\t");
+            this.pattern = value;
+            var manyForObject = new Many(
+                new Sequence(
+                    new JsonString(),
+                    ws,
+                    new Character(':'),
+                    new Value(),
+                    new Character(','),
+                    ws));
+            var optionalForObject = new Optional(
+                new Sequence(
+                    new JsonString(),
+                    ws,
+                    new Character(':'),
+                    new Value()));
+            var obj = new Sequence(
+                new Character('{'),
+                ws,
+                manyForObject,
+                optionalForObject,
+                new Character('}'));
+            var array = new Sequence(
+                new Character('['),
+                new Many(
+                    new Sequence(
+                        ws,
+                        new Value())),
+                new Character(']'));
+            value.Add(obj);
+            value.Add(array);
+            this.pattern = value;
         }
 
         public IMatch Match(string text)

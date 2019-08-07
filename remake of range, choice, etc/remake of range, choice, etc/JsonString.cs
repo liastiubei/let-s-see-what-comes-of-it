@@ -18,7 +18,7 @@ namespace RemakeOfRangeChoiceEtc
 
         public IMatch Match(string text)
         {
-            if (pattern.Match(text).RemainingText() != "")
+            if (this.pattern.Match(text).RemainingText() != "")
             {
                 return new Match(false, text);
             }
