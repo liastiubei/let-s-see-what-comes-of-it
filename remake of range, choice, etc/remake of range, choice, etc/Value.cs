@@ -16,34 +16,28 @@ namespace RemakeOfRangeChoiceEtc
                 new Text("true"),
                 new Text("false"),
                 new Text("null"));
-            var ws = new Any(" \n\t");
-            this.pattern = value;
-            var manyForObject = new Many(
+            var ws = new Any(" \n\t\r");
+            var listForObject = new List(
                 new Sequence(
                     new JsonString(),
                     ws,
                     new Character(':'),
-                    new Value(),
+                    ws,
+                    value,
+                    ws),
+                new Sequence(
                     new Character(','),
                     ws));
-            var optionalForObject = new Optional(
-                new Sequence(
-                    new JsonString(),
-                    ws,
-                    new Character(':'),
-                    new Value()));
             var obj = new Sequence(
                 new Character('{'),
                 ws,
-                manyForObject,
-                optionalForObject,
+                listForObject,
                 new Character('}'));
             var array = new Sequence(
                 new Character('['),
-                new Many(
-                    new Sequence(
+                new List(
                         ws,
-                        new Value())),
+                        value),
                 new Character(']'));
             value.Add(obj);
             value.Add(array);

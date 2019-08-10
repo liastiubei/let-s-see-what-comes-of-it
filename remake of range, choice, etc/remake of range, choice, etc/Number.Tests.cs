@@ -8,9 +8,9 @@ namespace RemakeOfRangeChoiceEtc
         readonly Number num = new Number();
 
         [Fact]
-        public void ChecksIfNumberHasTheCorrectCharacters1ShouldReturnTrue()
+        public void ChecksIfNumberHasTheCorrectCharacters1()
         {
-            Assert.Equal(true, num.Match("1234.7e-2").Success());
+            Assert.Equal("", num.Match("1234.7e-2").RemainingText());
         }
 
         [Fact]
@@ -20,57 +20,51 @@ namespace RemakeOfRangeChoiceEtc
         }
 
         [Fact]
-        public void ChecksIfTooManyDots1ShouldReturnFalse()
+        public void ChecksIfTooManyDots1()
         {
-            Assert.Equal(false, num.Match("123.4.5").Success());
+            Assert.Equal(".5", num.Match("123.4.5").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfTooManyDots2ShouldReturnFalse()
+        public void ChecksIfTooManyDots2()
         {
-            Assert.Equal(false, num.Match("123.45E23..3").Success());
+            Assert.Equal("..3", num.Match("123.45E23..3").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfTooManyDotsShouldReturnFalse()
+        public void ChecksIfCorrectPlacementOfMinus1()
         {
-            Assert.Equal(false, num.Match("123.4.5").Success());
+            Assert.Equal("", num.Match("-123.4").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectPlacementOfMinus1ShouldReturnTrue()
+        public void ChecksIfCorrectPlacementOfMinus2()
         {
-            Assert.Equal(true, num.Match("-123.4").Success());
+            Assert.Equal("", num.Match("-123.4e-45").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectPlacementOfMinus2ShouldReturnTrue()
+        public void ChecksIfCorrectPlacementOfMinus3()
         {
-            Assert.Equal(true, num.Match("-123.4e-45").Success());
+            Assert.Equal("-3.4", num.Match("12-3.4").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectPlacementOfMinus3ShouldReturnFalse()
+        public void ChecksIfCorrectPlacementOfMinus4()
         {
-            Assert.Equal(false, num.Match("12-3.4").Success());
+            Assert.Equal("-", num.Match("123.4e45-").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectPlacementOfMinus4ShouldReturnFalse()
+        public void ChecksIfCorrectNumberOfE()
         {
-            Assert.Equal(false, num.Match("123.4e45-").Success());
+            Assert.Equal("E", num.Match("123.4e45E").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectNumberOfEShouldReturnFalse()
+        public void ChecksIfCorrectBeginning1()
         {
-            Assert.Equal(false, num.Match("123.4e45E").Success());
-        }
-
-        [Fact]
-        public void ChecksIfCorrectBeginning1ShouldReturnFalse()
-        {
-            Assert.Equal(false, num.Match("0123").Success());
+            Assert.Equal("123", num.Match("0123").RemainingText());
         }
 
         [Fact]
@@ -92,45 +86,45 @@ namespace RemakeOfRangeChoiceEtc
         }
 
         [Fact]
-        public void ChecksIfCorrectBeginning5ShouldReturnFalse()
+        public void ChecksIfCorrectBeginning5()
         {
-            Assert.Equal(false, num.Match("-2.01+23").Success());
+            Assert.Equal("+23", num.Match("-2.01+23").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectEnding1ShouldReturnFalse()
+        public void ChecksIfCorrectEnding1()
         {
-            Assert.Equal(false, num.Match("123.5e9-7").Success());
+            Assert.Equal("-7", num.Match("123.5e9-7").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectEnding2ShouldReturnFalse()
+        public void ChecksIfCorrectEnding2()
         {
-            Assert.Equal(false, num.Match("123.5e.97").Success());
+            Assert.Equal("e.97", num.Match("123.5e.97").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectEnding3ShouldReturnFalse()
+        public void ChecksIfCorrectEnding3()
         {
-            Assert.Equal(false, num.Match("123.5e++47").Success());
+            Assert.Equal("e++47", num.Match("123.5e++47").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectEnding4ShouldReturnFalse()
+        public void ChecksIfCorrectEnding4()
         {
-            Assert.Equal(false, num.Match("123.5E").Success());
+            Assert.Equal("E", num.Match("123.5E").RemainingText());
         }
 
         [Fact]
-        public void ChecksIfCorrectPerTotal1ShouldReturnTrue()
+        public void ChecksIfCorrectPerTotal1()
         {
-            Assert.Equal(true, num.Match("0.123").Success());
+            Assert.Equal("", num.Match("0.123").RemainingText());
         }
 
         [Fact]
         public void ChecksIfCorrectPerTotal2ShouldReturnTrue()
         {
-            Assert.Equal(true, num.Match("-45.9E12398.6").Success());
+            Assert.Equal("", num.Match("-45.9E12398.6").RemainingText());
         }
     }
 }

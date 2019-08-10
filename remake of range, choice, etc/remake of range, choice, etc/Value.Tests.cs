@@ -26,9 +26,9 @@ namespace RemakeOfRangeChoiceEtc
         }
 
         [Fact]
-        public void CheckIfValueMatchesCorrectlyNumberShouldReturnTrue()
+        public void CheckIfValueMatchesCorrectlyNumber()
         {
-            Assert.Equal(true, value.Match("-123.4e-45").Success());
+            Assert.Equal("", value.Match("-123.4e-45").RemainingText());
         }
     }
 }

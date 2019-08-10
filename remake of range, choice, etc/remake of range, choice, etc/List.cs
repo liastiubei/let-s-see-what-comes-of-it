@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RemakeOfRangeChoiceEtc
 {
-    class List
+    class List : IPattern
     {
         private readonly IPattern elementAndSeparator;
 
