@@ -10,7 +10,7 @@ namespace RemakeOfRangeChoiceEtc
         [Fact]
         public void CheckIfQuotationMarksArePresentInTheBeginningAndEndShouldReturnTrue()
         {
-            Assert.Equal(true, checkString.Match("\"text\"").Success());
+            Assert.Equal("", checkString.Match("\"text\"").RemainingText());
         }
 
         [Fact]
