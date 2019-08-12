@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace RemakeOfRangeChoiceEtc
+namespace Json
 {
     public class JsonStringTests
     {
@@ -11,12 +11,6 @@ namespace RemakeOfRangeChoiceEtc
         public void CheckIfQuotationMarksArePresentInTheBeginningAndEndShouldReturnTrue()
         {
             Assert.Equal("", checkString.Match("\"text\"").RemainingText());
-        }
-
-        [Fact]
-        public void CheckIfQuotationMarksAreUsedCorrectlyForTheRestOfTheStringShouldReturnFalse()
-        {
-            Assert.Equal(false, checkString.Match("\"t\"ext\"").Success());
         }
 
         [Fact]

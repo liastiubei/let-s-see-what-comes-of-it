@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RemakeOfRangeChoiceEtc
+namespace Json
 {
-    interface IPattern
+    public interface IPattern
     {
         IMatch Match(string text);
     }

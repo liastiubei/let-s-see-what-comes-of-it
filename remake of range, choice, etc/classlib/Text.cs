@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RemakeOfRangeChoiceEtc
+namespace Json
 {
-    class Text : IPattern
+    public class Text : IPattern
     {
         private readonly string prefix;
 

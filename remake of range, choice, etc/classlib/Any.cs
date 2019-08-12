@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RemakeOfRangeChoiceEtc
+namespace Json
 {
-    class Any : IPattern
+    public class Any : IPattern
     {
         private readonly string accepted;
 

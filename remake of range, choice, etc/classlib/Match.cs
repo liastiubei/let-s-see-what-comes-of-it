@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RemakeOfRangeChoiceEtc
+namespace Json
 {
-    class Match : IMatch
+    public class Match : IMatch
     {
         readonly bool itMatches;
         private readonly string remainedText;

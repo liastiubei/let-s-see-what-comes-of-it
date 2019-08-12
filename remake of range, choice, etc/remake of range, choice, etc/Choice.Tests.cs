@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace RemakeOfRangeChoiceEtc
+namespace Json
 {
     public class ChoiceTests
     {

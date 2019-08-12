@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RemakeOfRangeChoiceEtc
+namespace Json
 {
-    class JsonString : IPattern
+    public class JsonString : IPattern
     {
         private readonly IPattern pattern;
 
@@ -20,11 +20,6 @@ namespace RemakeOfRangeChoiceEtc
 
         public IMatch Match(string text)
         {
-            if (pattern.Match(text).RemainingText().Length > 0 && (!" \n\t\r".Contains(pattern.Match(text).RemainingText()[0])))
-            {
-                return new Match(false, text);
-            }
-
             return pattern.Match(text);
         }
     }
