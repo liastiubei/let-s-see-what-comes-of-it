@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "JsonValidation": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\liutz\\Desktop\\file.txt\""
+    }
+  }
+}
