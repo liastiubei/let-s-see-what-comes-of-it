@@ -37,7 +37,8 @@ namespace Json
                 new List(
                     new Sequence(
                         ws,
-                        value),
+                        value, 
+                        ws),
                     new Character(',')),
                 ws,
                 new Character(']'));
