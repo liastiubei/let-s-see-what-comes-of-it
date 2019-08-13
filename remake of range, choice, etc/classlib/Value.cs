@@ -16,11 +16,10 @@ namespace Json
                 new Text("true"),
                 new Text("false"),
                 new Text("null"));
-            var ws = new Any(" \n\t\r");
+            var ws = new Many(new Any(" \n\t\r"));
             var listForObject = new List(
                 new Sequence(
                     new JsonString(),
-                    ws,
                     new Character(':'),
                     ws,
                     value,
@@ -36,8 +35,11 @@ namespace Json
             var array = new Sequence(
                 new Character('['),
                 new List(
+                    new Sequence(
                         ws,
                         value),
+                    new Character(',')),
+                ws,
                 new Character(']'));
             value.Add(obj);
             value.Add(array);

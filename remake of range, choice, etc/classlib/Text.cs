@@ -15,6 +15,7 @@ namespace Json
 
         public IMatch Match(string text)
         {
+            bool a = string.IsNullOrEmpty(text) || text.Length < this.prefix.Length || !text.StartsWith(this.prefix);
             return string.IsNullOrEmpty(text) || text.Length < this.prefix.Length || !text.StartsWith(this.prefix)
                 ? new Match(false, text)
                 : new Match(true, text.Substring(this.prefix.Length));

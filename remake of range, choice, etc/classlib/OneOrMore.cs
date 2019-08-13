@@ -15,6 +15,7 @@ namespace Json
 
         public IMatch Match(string text)
         {
+            bool a = pattern.Match(text).Success();
             return this.pattern.Match(text);
         }
     }

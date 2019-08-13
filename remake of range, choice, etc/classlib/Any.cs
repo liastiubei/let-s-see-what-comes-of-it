@@ -15,6 +15,7 @@ namespace Json
 
         public IMatch Match(string text)
         {
+            bool a = (!string.IsNullOrEmpty(text) && this.accepted.Contains(text[0]));
             return !string.IsNullOrEmpty(text) && this.accepted.Contains(text[0])
                 ? new Match(true, text.Substring(1))
                 : new Match(false, text);
