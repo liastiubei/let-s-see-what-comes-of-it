@@ -20,7 +20,7 @@ namespace DataStructuresTests
             array.Add(1);
             array.Add(2);
             array.Add(3);
-            Assert.Equal(3, array.Count());
+            Assert.Equal(3, array.Count);
         }
 
         [Fact]

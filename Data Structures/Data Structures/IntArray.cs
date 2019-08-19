@@ -13,24 +13,27 @@ namespace Data_Structures
             this.count = 0;
         }
 
-        public void Add(int element)
+        public int this[int index]
         {
-            if(count < array.Length)
-            {
-                this.array[count] = element;
-                count++;
-            }
-            else
-            {
-                Array.Resize(ref this.array, this.array.Length * 2);
-                this.array[count] = element;
-                count++;
-            }
+            get => this.array[index];
+            set => this.array[index] = value;
         }
 
-        public int Count()
+        public void Add(int element)
         {
-            return count;
+            if(count == array.Length)
+            {
+                Array.Resize(ref this.array, this.array.Length * 2);
+            }
+
+            this.array[count] = element;
+            this.count++;            
+        }
+
+        public int Count
+        {
+            get => this.count;
+            private set => this.count = value;
         }
 
         public int Element(int index)
@@ -75,6 +78,7 @@ namespace Data_Structures
 
             ShiftRight(index);
             this.array[index] = element;
+            this.count++;
         }
 
         public void Clear()
@@ -96,6 +100,7 @@ namespace Data_Structures
 
             ShiftLeft(index);
             Array.Resize(ref this.array, this.array.Length - 1);
+            this.count--;
         }
 
         private void ShiftLeft(int index)
