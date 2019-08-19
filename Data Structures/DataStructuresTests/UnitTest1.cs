@@ -5,102 +5,126 @@ namespace DataStructuresTests
 {
     public class UnitTest1
     {
+        Data_Structures.IntArray array = new Data_Structures.IntArray();
+        
         [Fact]
         public void CheckIfAddWorksCorrectly()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
-            int[] changedArray = { 1, 2, 3, 4, 5, 6, 7 };
-            array.Add(7);
-            Assert.Equal(changedArray, array.ShowArray());
+            array.Add(1);
+            Assert.Equal(0, array.IndexOf(1));
         }
-
+        
         [Fact]
         public void CheckIfCountReturnsTheCorrectAnswer()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
-            Assert.Equal(6, array.Count());
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            Assert.Equal(3, array.Count());
         }
 
         [Fact]
         public void CheckIfElementWorksCorrectly()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(4);
+            array.Add(5);
+            array.Add(6);
             Assert.Equal(5, array.Element(4));
         }
 
         [Fact]
         public void CheckIfSetElementWorksCorrectly()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
-            newArray[3] = 3;
-            array.SetElement(3, 3);
-            Assert.Equal(newArray, array.ShowArray());
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.SetElement(1, 4);
+            Assert.Equal(4, array.Element(1));
         }
 
         [Fact]
-        public void CheckIfSetContainsWorksCorrectly1ShouldReturnTrue()
+        public void CheckIfContainsWorksCorrectly1ShouldReturnTrue()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
-            Assert.Equal(true, array.Contains(5));
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            Assert.Equal(true, array.Contains(2));
         }
 
         [Fact]
-        public void CheckIfSetContainsWorksCorrectly2ShouldReturnFalse()
+        public void CheckIfContainsWorksCorrectly2ShouldReturnFalse()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
             Assert.Equal(false, array.Contains(9));
         }
 
         [Fact]
-        public void CheckIfSetIndexOfsWorksCorrectly1ShouldReturnNumber()
+        public void CheckIfIndexOfsWorksCorrectly1ShouldReturnNumber()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
-            Assert.Equal(4, array.IndexOf(5));
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            Assert.Equal(1, array.IndexOf(2));
         }
 
         [Fact]
-        public void CheckIfSetIndexOfsWorksCorrectly2ShouldReturnMinus1()
+        public void CheckIfIndexOfsWorksCorrectly2ShouldReturnMinus1()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
             Assert.Equal(-1, array.IndexOf(10));
         }
 
         [Fact]
         public void CheckIfSetClearWorksCorrectly()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
             array.Clear();
-            int[] clearArray = {0, 0, 0, 0, 0, 0};
-            Assert.Equal(clearArray, array.ShowArray());
+            bool check = true;
+            for(int i = 0; i < 6; i++)
+            {
+                if(array.Element(i) != 0)
+                {
+                    check = false;
+                    break;
+                }
+            }
+
+            Assert.True(check);
         }
 
         [Fact]
-        public void CheckIfSetRemoveWorksCorrectly()
+        public void CheckIfRemoveWorksCorrectly()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(4);
+            array.Add(5);
+            array.Add(6);
             array.Remove(4);
-            int[] removedArray = { 1, 2, 3, 5, 6};
-            Assert.Equal(removedArray, array.ShowArray());
+            Assert.True(array.Element(3)==5);
         }
 
         [Fact]
         public void CheckIfSetRemoveAtWorksCorrectly()
         {
-            int[] newArray = { 1, 2, 3, 4, 5, 6 };
-            Data_Structures.IntArray array = new Data_Structures.IntArray(newArray);
+            array.Add(1);
+            array.Add(2);
+            array.Add(3);
+            array.Add(4);
+            array.Add(5);
+            array.Add(6);
             array.RemoveAt(4);
-            int[] removedArray = { 1, 2, 3, 4, 6 };
-            Assert.Equal(removedArray, array.ShowArray());
+            Assert.True(array.Element(4) == 6);
         }
     }
 }

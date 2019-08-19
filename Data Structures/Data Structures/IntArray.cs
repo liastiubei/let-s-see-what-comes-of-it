@@ -5,26 +5,32 @@ namespace Data_Structures
     public class IntArray
     {
         private int[] array;
+        private int count;
 
-        public IntArray(int[] array)
+        public IntArray()
         {
-            this.array = array;
-        }
-
-        public int[] ShowArray()
-        {
-            return this.array;
+            this.array = new int[8];
+            this.count = 0;
         }
 
         public void Add(int element)
         {
-            Array.Resize(ref this.array, this.array.Length + 1);
-            this.array[this.array.Length - 1] = element;
+            if(count < array.Length)
+            {
+                this.array[count] = element;
+                count++;
+            }
+            else
+            {
+                Array.Resize(ref this.array, this.array.Length * 2);
+                this.array[count] = element;
+                count++;
+            }
         }
 
         public int Count()
         {
-            return this.array.Length;
+            return count;
         }
 
         public int Element(int index)
@@ -37,22 +43,9 @@ namespace Data_Structures
             this.array[index] = element;
         }
 
-        public bool Contains(int element)
-        {
-            for (int i = 0; i < this.array.Length; i++)
-            {
-                if(this.array[i] == element)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public int IndexOf(int element)
         {
-            for (int i = 0; i < this.array.Length; i++)
+            for (int i = 0; i < this.count; i++)
             {
                 if (this.array[i] == element)
                 {
@@ -63,13 +56,24 @@ namespace Data_Structures
             return -1;
         }
 
+        public bool Contains(int element)
+        {
+            if(this.IndexOf(element) != -1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        
         public void Insert(int index, int element)
         {
-            Array.Resize(ref this.array, this.array.Length + 1);
-            for(int i = this.array.Length - 1; i > index; i--)
+            if (count > this.array.Length)
             {
-                this.array[i] = this.array[i - 1];
+                Array.Resize(ref this.array, this.array.Length * 2);
             }
+
+            ShiftRight(index);
             this.array[index] = element;
         }
 
@@ -80,48 +84,34 @@ namespace Data_Structures
 
         public void Remove(int element)
         {
-            int i;
-            for(i=0;i<this.array.Length;i++)
-            {
-                if(element == array[i])
-                {
-                    break;
-                }
-            }
-
-            if(i == this.array.Length)
-            {
-                return;
-            }
-
-            if(i == this.array.Length - 1)
-            {
-                Array.Resize(ref this.array, this.array.Length - 1);
-                return;
-            }
-
-            while(i < this.array.Length - 1)
-            {
-                this.array[i] = this.array[i + 1];
-                i++;
-            }
-
-            Array.Resize(ref this.array, this.array.Length - 1);
+            RemoveAt(IndexOf(element));
         }
 
         public void RemoveAt(int index)
         {
-            if(index > this.array.Length - 1)
+            if (index > this.count - 1)
             {
                 return;
             }
 
-            for(int i = index; i < this.array.Length - 1; i++)
+            ShiftLeft(index);
+            Array.Resize(ref this.array, this.array.Length - 1);
+        }
+
+        private void ShiftLeft(int index)
+        {
+            for (int i = index; i < this.count; i++)
             {
                 this.array[i] = this.array[i + 1];
             }
+        }
 
-            Array.Resize(ref this.array, this.array.Length - 1);
+        private void ShiftRight(int index)
+        {
+            for (int i = this.count - 1; i > index; i--)
+            {
+                this.array[i] = this.array[i - 1];
+            }
         }
     }
 }
