@@ -36,7 +36,7 @@ namespace Data_Structures
             return this.array[index];
         }
 
-        public void SetElement(int index, int element)
+        public virtual void SetElement(int index, int element)
         {
             this.array[index] = element;
         }
@@ -64,7 +64,7 @@ namespace Data_Structures
             return false;
         }
         
-        public void Insert(int index, int element)
+        public virtual void Insert(int index, int element)
         {
             if (Count > this.array.Length)
             {

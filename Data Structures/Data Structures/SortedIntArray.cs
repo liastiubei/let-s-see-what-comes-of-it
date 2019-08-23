@@ -39,55 +39,51 @@ namespace Data_Structures
             Count++;
         }
         
-        private void ShiftRight(int index)
+        public override void SetElement(int index, int element)
         {
-            base.ShiftRight(index);
-        }
+            if (element < array[index - 1])
+            {
+                for (int i = index-1; i >= 0; i--)
+                {
+                    if (element > array[i])
+                    {
+                        for (int j = i+1; j < index; j++)
+                        {
+                            this.array[j+1] = this.array[j];
+                        }
 
-        public int Element(int index)
+                        array[i+1] = element;
+                        break;
+                    }
+                }
+            }
+
+            else if (element > array[index + 1])
+            {
+                for (int i = index + 1; i < Count; i++)
+                {
+                    if (element < array[i])
+                    {
+                        for (int j = index; j < i-1; j++)
+                        {
+                            this.array[j] = this.array[j + 1];
+                        }
+
+                        array[i-1] = element;
+                        break;
+                    }
+                }
+            }
+
+            else array[index] = element;
+        }
+        
+        public override void Insert(int index, int element)
         {
-            return base.Element(index);
+            if(array[index]>element && array[index-1]<element)
+            {
+                this.Add(element);
+            }
         }
-
-        public void SetElement(int index, int element)
-        {
-            base.SetElement(index, element);
-        }
-
-        public int IndexOf(int element)
-        {
-            return base.IndexOf(element);
-        }
-
-        public bool Contains(int element)
-        {
-            return base.Contains(element);
-        }
-
-        public void Insert(int index, int element)
-        {
-            base.Insert(index, element);
-        }
-
-        public void Clear()
-        {
-            base.Clear();
-        }
-
-        public void Remove(int element)
-        {
-            base.Remove(element);
-        }
-
-        public void RemoveAt(int index)
-        {
-            base.RemoveAt(index);
-        }
-
-        public void ShiftLeft(int index)
-        {
-            base.ShiftLeft(index);
-        }
-
     }
 }
