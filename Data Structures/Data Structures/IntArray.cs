@@ -4,13 +4,12 @@ namespace Data_Structures
 {
     public class IntArray
     {
-        private int[] array;
-        private int count;
+        protected int[] array;
 
         public IntArray()
         {
             this.array = new int[8];
-            this.count = 0;
+            Count = 0;
         }
 
         public int this[int index]
@@ -19,22 +18,18 @@ namespace Data_Structures
             set => this.array[index] = value;
         }
 
-        public void Add(int element)
+        public virtual void Add(int element)
         {
-            if(count == array.Length)
+            if(Count == array.Length)
             {
                 Array.Resize(ref this.array, this.array.Length * 2);
             }
 
-            this.array[count] = element;
-            this.count++;            
+            this.array[Count] = element;
+            Count++;            
         }
 
-        public int Count
-        {
-            get => this.count;
-            private set => this.count = value;
-        }
+        public int Count { get; protected set; }
 
         public int Element(int index)
         {
@@ -48,7 +43,7 @@ namespace Data_Structures
 
         public int IndexOf(int element)
         {
-            for (int i = 0; i < this.count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (this.array[i] == element)
                 {
@@ -71,14 +66,14 @@ namespace Data_Structures
         
         public void Insert(int index, int element)
         {
-            if (count > this.array.Length)
+            if (Count > this.array.Length)
             {
                 Array.Resize(ref this.array, this.array.Length * 2);
             }
 
             ShiftRight(index);
             this.array[index] = element;
-            this.count++;
+            Count++;
         }
 
         public void Clear()
@@ -93,27 +88,27 @@ namespace Data_Structures
 
         public void RemoveAt(int index)
         {
-            if (index > this.count - 1)
+            if (index > Count - 1)
             {
                 return;
             }
 
             ShiftLeft(index);
             Array.Resize(ref this.array, this.array.Length - 1);
-            this.count--;
+            Count--;
         }
 
-        private void ShiftLeft(int index)
+        public void ShiftLeft(int index)
         {
-            for (int i = index; i < this.count; i++)
+            for (int i = index; i < Count; i++)
             {
                 this.array[i] = this.array[i + 1];
             }
         }
 
-        private void ShiftRight(int index)
+        public void ShiftRight(int index)
         {
-            for (int i = this.count - 1; i > index; i--)
+            for (int i = Count; i > index; i--)
             {
                 this.array[i] = this.array[i - 1];
             }
