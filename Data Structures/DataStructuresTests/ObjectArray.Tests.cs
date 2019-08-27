@@ -5,33 +5,40 @@ namespace DataStructuresTests
 {
     public class ObjectArrayTests
     {
-        Data_Structures.ObjectArray array = new Data_Structures.ObjectArray();
-
         [Fact]
         public void CheckIfAddWorksCorrectly1()
         {
+            var newArray = new object[1]
+            {
+                "hat"
+            };
+            var array = new Data_Structures.ObjectArray(newArray);
             array.Add(1);
-            array.Add("hercules");
-            array.Add('a');
-            Assert.Equal(array.Element(0), 1);
+            Assert.Equal(array[1], 1);
         }
 
         [Fact]
         public void CheckIfAddWorksCorrectly2()
         {
-            array.Add(1);
+            var newArray = new object[1]
+            {
+                "hat"
+            };
+            var array = new Data_Structures.ObjectArray(newArray);
             array.Add("hercules");
-            array.Add('a');
-            Assert.Equal(array.Element(1), "hercules");
+            Assert.Equal(array[1], "hercules");
         }
 
         [Fact]
         public void CheckIfAddWorksCorrectly3()
         {
-            array.Add(1);
-            array.Add("hercules");
+            var newArray = new object[1]
+            {
+                "hat"
+            };
+            var array = new Data_Structures.ObjectArray(newArray);
             array.Add('a');
-            Assert.Equal(array.Element(2), 'a');
+            Assert.Equal(array[1], 'a');
         }
     }
 }

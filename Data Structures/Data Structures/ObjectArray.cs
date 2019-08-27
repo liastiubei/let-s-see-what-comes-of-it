@@ -1,17 +1,33 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Data_Structures
 {
-    public class ObjectArray
+    public class ObjectArray : IEnumerable
     {
         object[] array;
 
-        public ObjectArray()
+        public ObjectArray(object[] newArray)
         {
-            this.array = new object[8];
-            Count = 0;
+            this.array = new object[(newArray.Length / 8 + 1) * 8];
+            for(int i = 0; i < newArray.Length; i++)
+            {
+                this.array[i] = newArray[i];
+            }
+
+            Count = newArray.Length;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)GetEnumerator();
+        }
+
+        public ObjectEnum GetEnumerator()
+        {
+            return new ObjectEnum(array);
         }
 
         public object this[int index]
