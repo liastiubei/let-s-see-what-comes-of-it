@@ -22,14 +22,21 @@ namespace Data_Structures
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)GetEnumerator();
+            int count = 0;
+            foreach (var obj in array)
+            {
+                if (count < Count)
+                {
+                    count += 1;
+                    yield return obj;
+                }
+                if (Count == count)
+                {
+                    yield break;
+                }
+            }
         }
-
-        public ObjectEnum GetEnumerator()
-        {
-            return new ObjectEnum(array);
-        }
-
+        
         public object this[int index]
         {
             get => this.array[index];
