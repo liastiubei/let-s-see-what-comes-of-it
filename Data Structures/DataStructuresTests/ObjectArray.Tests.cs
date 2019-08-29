@@ -17,7 +17,7 @@ namespace DataStructuresTests
             bool k = true;
             for(int i = 0; i < array.Count; i++)
             {
-                if(!Object.Equals(objArray[i], objArray[i]))
+                if(!Object.Equals(array[i], objArray[i]))
                 {
                     k = false;
                     break;
