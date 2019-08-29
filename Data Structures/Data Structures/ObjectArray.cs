@@ -9,31 +9,17 @@ namespace Data_Structures
     {
         object[] array;
 
-        public ObjectArray(object[] newArray)
+        public ObjectArray()
         {
-            this.array = new object[(newArray.Length / 8 + 1) * 8];
-            for(int i = 0; i < newArray.Length; i++)
-            {
-                this.array[i] = newArray[i];
-            }
-
-            Count = newArray.Length;
+            this.array = new object[8];
+            Count = 0;
         }
-
-        IEnumerator IEnumerable.GetEnumerator()
+        
+        public IEnumerator GetEnumerator()
         {
-            int count = 0;
-            foreach (var obj in array)
+            for(int i = 0; i < array.Length; i++)
             {
-                if (count < Count)
-                {
-                    count += 1;
-                    yield return obj;
-                }
-                if (Count == count)
-                {
-                    yield break;
-                }
+                yield return array[i];
             }
         }
         
@@ -45,13 +31,17 @@ namespace Data_Structures
 
         public void Add(object element)
         {
+            Resize();
+            this.array[Count] = element;
+            Count++;
+        }
+
+        public void Resize()
+        {
             if (Count == array.Length)
             {
                 Array.Resize(ref this.array, this.array.Length * 2);
             }
-
-            this.array[Count] = element;
-            Count++;
         }
 
         public int Count { get; protected set; }
@@ -81,21 +71,14 @@ namespace Data_Structures
 
         public bool Contains(int element)
         {
-            if (this.IndexOf(element) != -1)
-            {
-                return true;
-            }
-
-            return false;
+            return this.IndexOf(element) != -1
+                 ? true
+                 : false;
         }
 
         public void Insert(int index, object element)
         {
-            if (Count > this.array.Length)
-            {
-                Array.Resize(ref this.array, this.array.Length * 2);
-            }
-
+            Resize();
             ShiftRight(index);
             this.array[index] = element;
             Count++;
