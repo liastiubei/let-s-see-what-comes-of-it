@@ -71,9 +71,7 @@ namespace Data_Structures
 
         public bool Contains(int element)
         {
-            return this.IndexOf(element) != -1
-                 ? true
-                 : false;
+            return (this.IndexOf(element) != -1);
         }
 
         public void Insert(int index, object element)

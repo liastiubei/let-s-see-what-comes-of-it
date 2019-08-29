@@ -14,17 +14,14 @@ namespace DataStructuresTests
                 "hat"
             };
             Data_Structures.ObjectArray array = new Data_Structures.ObjectArray { "hat", 1, "hercules", 'a' };
-            int i = 0;
             bool k = true;
-            foreach(var obj in array)
+            for(int i = 0; i < array.Count; i++)
             {
-                if(!Object.Equals(objArray[i], obj))
+                if(!Object.Equals(objArray[i], objArray[i]))
                 {
                     k = false;
                     break;
                 }
-
-                i++;
             }
             Assert.True(k);
         }
