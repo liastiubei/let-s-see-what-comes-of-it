@@ -8,22 +8,29 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfIEnumWorksCorrectly1()
         {
-            object[] objArray = {"hat", 1, "hercules", 'a' };
-            var newArray = new object[1]
-            {
-                "hat"
-            };
             Data_Structures.ObjectArray array = new Data_Structures.ObjectArray { "hat", 1, "hercules", 'a' };
-            bool k = true;
-            for(int i = 0; i < array.Count; i++)
-            {
-                if(!Object.Equals(array[i], objArray[i]))
-                {
-                    k = false;
-                    break;
-                }
-            }
-            Assert.True(k);
+            Assert.Same("hat", array[0]);
+        }
+
+        [Fact]
+        public void CheckIfIEnumWorksCorrectly2()
+        {
+            Data_Structures.ObjectArray array = new Data_Structures.ObjectArray { "hat", 1, "hercules", 'a' };
+            Assert.Equal(1, array[1]);
+        }
+
+        [Fact]
+        public void CheckIfIEnumWorksCorrectly3()
+        {
+            Data_Structures.ObjectArray array = new Data_Structures.ObjectArray { "hat", 1, "hercules", 'a' };
+            Assert.Same("hercules", array[2]);
+        }
+
+        [Fact]
+        public void CheckIfIEnumWorksCorrectly4()
+        {
+            Data_Structures.ObjectArray array = new Data_Structures.ObjectArray { "hat", 1, "hercules", 'a' };
+            Assert.Equal('a', array[3]);
         }
     }
 }
