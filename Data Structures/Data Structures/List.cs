@@ -5,31 +5,31 @@ using System.Text;
 
 namespace Data_Structures
 {
-    public class ObjectArray : IEnumerable
+    public class List<T> : IEnumerable<T>
     {
-        object[] array;
+        T[] array;
 
-        public ObjectArray()
+        public List()
         {
-            this.array = new object[8];
+            this.array = new T[8];
             Count = 0;
         }
-        
-        public IEnumerator GetEnumerator()
+
+        public IEnumerator<T> GetEnumerator()
         {
-            for(int i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 yield return array[i];
             }
         }
-        
-        public object this[int index]
+
+        public T this[int index]
         {
             get => this.array[index];
             set => this.array[index] = value;
         }
 
-        public void Add(object element)
+        public void Add(T element)
         {
             Resize();
             this.array[Count] = element;
@@ -51,16 +51,16 @@ namespace Data_Structures
             return this.array[index];
         }
 
-        public void SetElement(int index, object element)
+        public void SetElement(int index, T element)
         {
             this.array[index] = element;
         }
 
-        public int IndexOf(object element)
+        public int IndexOf(T element)
         {
             for (int i = 0; i < Count; i++)
             {
-                if (this.array[i] == element)
+                if (this.array[i].Equals(element))
                 {
                     return i;
                 }
@@ -69,12 +69,12 @@ namespace Data_Structures
             return -1;
         }
 
-        public bool Contains(object element)
+        public bool Contains(T element)
         {
             return (this.IndexOf(element) != -1);
         }
 
-        public void Insert(int index, object element)
+        public void Insert(int index, T element)
         {
             Resize();
             ShiftRight(index);
@@ -87,7 +87,7 @@ namespace Data_Structures
             Array.Clear(this.array, 0, this.array.Length);
         }
 
-        public void Remove(object element)
+        public void Remove(T element)
         {
             RemoveAt(IndexOf(element));
         }
@@ -118,6 +118,11 @@ namespace Data_Structures
             {
                 this.array[i] = this.array[i - 1];
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<T>)array).GetEnumerator();
         }
     }
 }
