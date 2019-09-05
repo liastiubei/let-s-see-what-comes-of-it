@@ -7,7 +7,7 @@ namespace Data_Structures
 {
     public class List<T> : IEnumerable<T>
     {
-        T[] array;
+        protected T[] array;
 
         public List()
         {
@@ -29,7 +29,7 @@ namespace Data_Structures
             set => this.array[index] = value;
         }
 
-        public void Add(T element)
+        public virtual void Add(T element)
         {
             Resize();
             this.array[Count] = element;
@@ -51,7 +51,7 @@ namespace Data_Structures
             return this.array[index];
         }
 
-        public void SetElement(int index, T element)
+        public virtual void SetElement(int index, T element)
         {
             this.array[index] = element;
         }
@@ -74,7 +74,7 @@ namespace Data_Structures
             return (this.IndexOf(element) != -1);
         }
 
-        public void Insert(int index, T element)
+        public virtual void Insert(int index, T element)
         {
             Resize();
             ShiftRight(index);
