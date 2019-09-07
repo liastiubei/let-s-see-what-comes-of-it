@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data_Structures
 {
-    public class List<T> : IEnumerable<T>
+    public class List<T> : IList<T>
     {
         protected T[] array;
 
@@ -45,6 +45,8 @@ namespace Data_Structures
         }
 
         public int Count { get; protected set; }
+
+        bool ICollection<T>.IsReadOnly => ((IList<T>)array).IsReadOnly;
 
         public object Element(int index)
         {
@@ -87,9 +89,10 @@ namespace Data_Structures
             Array.Clear(this.array, 0, this.array.Length);
         }
 
-        public void Remove(T element)
+        public bool Remove(T element)
         {
             RemoveAt(IndexOf(element));
+            return true;
         }
 
         public void RemoveAt(int index)
@@ -123,6 +126,12 @@ namespace Data_Structures
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable<T>)array).GetEnumerator();
+        }
+
+        public void CopyTo(T[] otherArray, int arrayIndex)
+        {
+            Array.Resize(ref otherArray, otherArray.Length + 1);
+            otherArray[otherArray.Length - 1] = this.array[arrayIndex];
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data_Structures
 {
-    public class SortedList<T> : List<T>, IEnumerable<T> where T : IComparable<T>
+    public class SortedList<T> : List<T> where T : IComparable<T>
     {
         public SortedList()
         {
