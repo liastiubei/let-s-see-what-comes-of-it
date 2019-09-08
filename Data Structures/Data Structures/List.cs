@@ -17,7 +17,7 @@ namespace Data_Structures
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < Count; i++)
             {
                 yield return array[i];
             }
@@ -47,16 +47,6 @@ namespace Data_Structures
         public int Count { get; protected set; }
 
         bool ICollection<T>.IsReadOnly => ((IList<T>)array).IsReadOnly;
-
-        public object Element(int index)
-        {
-            return this.array[index];
-        }
-
-        public virtual void SetElement(int index, T element)
-        {
-            this.array[index] = element;
-        }
 
         public int IndexOf(T element)
         {

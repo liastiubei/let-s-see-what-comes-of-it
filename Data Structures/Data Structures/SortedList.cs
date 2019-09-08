@@ -36,16 +36,17 @@ namespace Data_Structures
             Count++;
         }
 
-        public override void SetElement(int index, T element)
+        public void SetElement(int index, T element)
         {
-            ShiftLeft(index);
-            Count--;
-            Add(element);
+            if (array[index + 1].CompareTo(element) >= 0 && array[index - 1].CompareTo(element) <= 0)
+            {
+                this.array[index] = element;
+            }
         }
 
         public override void Insert(int index, T element)
         {
-            if (array[index].CompareTo(element) == 1 && array[index - 1].CompareTo(element) == -1)
+            if (array[index].CompareTo(element) >= 0 && array[index - 1].CompareTo(element) <= 0)
             {
                 this.Add(element);
             }
