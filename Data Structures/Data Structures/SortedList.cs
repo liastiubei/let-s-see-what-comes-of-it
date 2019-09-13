@@ -13,6 +13,33 @@ namespace Data_Structures
             Count = 0;
         }
 
+        public override T this[int index]
+        {
+            get => this.array[index];
+            set
+            {
+                if (index == 0)
+                {
+                    if (this.array[index + 1].CompareTo(value) >= 0)
+                    {
+                        this.array[index] = value;
+                    }
+                }
+
+                else if (index == Count - 1)
+                {
+                    if (this.array[index - 1].CompareTo(value) <= 0)
+                    {
+                        this.array[index] = value;
+                    }
+                }
+                else if (this.array[index - 1].CompareTo(value) <= 0)
+                {
+                    this.array[index] = value;
+                }
+            }
+        }
+
         public override void Add(T element)
         {
             Resize();
@@ -36,16 +63,27 @@ namespace Data_Structures
             Count++;
         }
 
-        public void SetElement(int index, T element)
-        {
-            if (array[index + 1].CompareTo(element) >= 0 && array[index - 1].CompareTo(element) <= 0)
-            {
-                this.array[index] = element;
-            }
-        }
-
         public override void Insert(int index, T element)
         {
+            if(index == 0)
+            {
+                if(array[index].CompareTo(element) >=0)
+                {
+                    this.Add(element);
+                }
+
+                return;
+            }
+
+            if(index == Count)
+            {
+                if (array[index - 1].CompareTo(element) <= 0)
+                {
+                    this.Add(element);
+                }
+
+                return;
+            }
             if (array[index].CompareTo(element) >= 0 && array[index - 1].CompareTo(element) <= 0)
             {
                 this.Add(element);

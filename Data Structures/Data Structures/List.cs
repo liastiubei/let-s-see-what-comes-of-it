@@ -23,7 +23,7 @@ namespace Data_Structures
             }
         }
 
-        public T this[int index]
+        public virtual T this[int index]
         {
             get => this.array[index];
             set => this.array[index] = value;
