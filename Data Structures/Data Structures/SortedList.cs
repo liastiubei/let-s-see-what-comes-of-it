@@ -18,22 +18,8 @@ namespace Data_Structures
             get => this.array[index];
             set
             {
-                if (index == 0)
-                {
-                    if (this.array[index + 1].CompareTo(value) >= 0)
-                    {
-                        this.array[index] = value;
-                    }
-                }
-
-                else if (index == Count - 1)
-                {
-                    if (this.array[index - 1].CompareTo(value) <= 0)
-                    {
-                        this.array[index] = value;
-                    }
-                }
-                else if (this.array[index - 1].CompareTo(value) <= 0)
+                if((index == 0 || this.array[index - 1].CompareTo(value) <= 0) && 
+                    (index == Count - 1 || this.array[index + 1].CompareTo(value) >= 0))
                 {
                     this.array[index] = value;
                 }
@@ -65,26 +51,8 @@ namespace Data_Structures
 
         public override void Insert(int index, T element)
         {
-            if(index == 0)
-            {
-                if(array[index].CompareTo(element) >=0)
-                {
-                    this.Add(element);
-                }
-
-                return;
-            }
-
-            if(index == Count)
-            {
-                if (array[index - 1].CompareTo(element) <= 0)
-                {
-                    this.Add(element);
-                }
-
-                return;
-            }
-            if (array[index].CompareTo(element) >= 0 && array[index - 1].CompareTo(element) <= 0)
+            if ((index == 0 || this.array[index - 1].CompareTo(element) <= 0) &&
+                    (index == Count || this.array[index + 1].CompareTo(element) >= 0))
             {
                 this.Add(element);
             }
