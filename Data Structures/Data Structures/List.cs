@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Data_Structures
 {
     public class List<T> : IList<T>
     {
-        protected T[] array;
+        readonly protected T[] array;
 
         public List()
         {
@@ -31,9 +32,16 @@ namespace Data_Structures
 
         public virtual void Add(T element)
         {
-            Resize();
-            this.array[Count] = element;
-            Count++;
+            try
+            {
+                Resize();
+                this.array[Count] = element;
+                Count++;
+            }
+            catch
+            {
+                throw new NotSupportedException("The array is readonly");
+            }
         }
 
         public void Resize()

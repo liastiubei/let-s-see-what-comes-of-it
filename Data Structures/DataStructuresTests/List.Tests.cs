@@ -19,6 +19,5 @@ namespace DataStructuresTests
             array.Add(4);
             Assert.Equal(4, array[4]);
         }
-
     }
 }
