@@ -76,5 +76,14 @@ namespace DataStructuresTests
             array.isReadOnly = true;
             Assert.Throws<NotSupportedException>(() => array.RemoveAt(2));
         }
+
+        [Fact]
+        public void CheckIfCopyToReadonlyExceptionWorks()
+        {
+            var array = new Data_Structures.List<int> { 0, 1, 2, 3 };
+            array.isReadOnly = true;
+            var copyArray = new int[3] { 5, 2, 1 };
+            Assert.Throws<NotSupportedException>(() => array.CopyTo(copyArray, 2));
+        }
     }
 }
