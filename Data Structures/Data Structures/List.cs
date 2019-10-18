@@ -2,17 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace Data_Structures
 {
     public class List<T> : IList<T>
     {
-        readonly protected T[] array;
+        protected T[] array;
+        public bool isReadOnly;
 
         public List()
         {
             this.array = new T[8];
+            isReadOnly = false;
             Count = 0;
         }
 
@@ -32,23 +33,23 @@ namespace Data_Structures
 
         public virtual void Add(T element)
         {
-            try
+            if (isReadOnly)
+            {
+                throw new NotSupportedException("The array is readonly");
+            }
+            else
             {
                 Resize();
                 this.array[Count] = element;
                 Count++;
             }
-            catch
-            {
-                throw new NotSupportedException("The array is readonly");
-            }
         }
-
+        
         public void Resize()
         {
             if (Count == array.Length)
             {
-                Array.Resize(ref this.array, this.array.Length * 2);
+                Array.Resize(ref array, array.Length * 2);
             }
         }
 
@@ -76,33 +77,69 @@ namespace Data_Structures
 
         public virtual void Insert(int index, T element)
         {
-            Resize();
-            ShiftRight(index);
-            this.array[index] = element;
-            Count++;
+            if (index < 0 || index > Count)
+            {
+                throw new ArgumentOutOfRangeException("Index is out of range");
+            }
+
+            else if(isReadOnly)
+            {
+                throw new NotSupportedException("The array is readonly");
+            }
+
+            else
+            {
+                Resize();
+                ShiftRight(index);
+                this.array[index] = element;
+                Count++;
+            }
         }
 
         public void Clear()
         {
-            Array.Clear(this.array, 0, this.array.Length);
-        }
+            if (isReadOnly)
+            {
+                throw new NotSupportedException("The array is readonly");
+            }
 
+            else
+            {
+                Array.Clear(this.array, 0, this.array.Length);
+            }
+        }
         public bool Remove(T element)
         {
-            RemoveAt(IndexOf(element));
-            return true;
+            if (isReadOnly)
+            {
+                throw new NotSupportedException("The array is readonly");
+            }
+
+            else
+            {
+                RemoveAt(IndexOf(element));
+                return true;
+            }
         }
 
         public void RemoveAt(int index)
         {
-            if (index > Count - 1)
+            if (isReadOnly)
             {
-                return;
+                throw new NotSupportedException("The array is readonly");
             }
 
-            ShiftLeft(index);
-            Array.Resize(ref this.array, this.array.Length - 1);
-            Count--;
+            else if (index < 0 || index > Count)
+            {
+                throw new ArgumentOutOfRangeException("Index is out of bounds");
+            }
+
+            else
+            {
+                ShiftLeft(index);
+                Array.Resize(ref this.array, this.array.Length - 1);
+                Count--;
+            }
         }
 
         public void ShiftLeft(int index)
@@ -128,8 +165,21 @@ namespace Data_Structures
 
         public void CopyTo(T[] otherArray, int arrayIndex)
         {
-            Array.Resize(ref otherArray, otherArray.Length + 1);
-            otherArray[otherArray.Length - 1] = this.array[arrayIndex];
+            if(array == null)
+            {
+                throw new ArgumentNullException("The array is null");
+            }
+
+            else if(arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("ArrayIndex is less than zero");
+            }
+
+            else
+            {
+                Array.Resize(ref otherArray, otherArray.Length + 1);
+                otherArray[otherArray.Length - 1] = this.array[arrayIndex];
+            }
         }
     }
 }
