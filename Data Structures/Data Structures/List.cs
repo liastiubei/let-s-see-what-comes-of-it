@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Data_Structures
 {
     public class List<T> : IList<T>
     {
         protected T[] array;
-        public bool isReadOnly;
+        private bool isReadOnly;
 
         public List()
         {
@@ -17,6 +16,15 @@ namespace Data_Structures
             Count = 0;
         }
 
+        public void MakeReadOnly()
+        {
+            if(isReadOnly)
+            {
+                return;
+            }
+
+            isReadOnly = true;
+        }
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < Count; i++)
@@ -33,7 +41,7 @@ namespace Data_Structures
 
         public virtual void Add(T element)
         {
-            if (isReadOnly)
+            if (IsReadOnly)
             {
                 throw new NotSupportedException("The array is readonly");
             }
@@ -55,7 +63,7 @@ namespace Data_Structures
 
         public int Count { get; protected set; }
 
-        bool ICollection<T>.IsReadOnly => ((IList<T>)array).IsReadOnly;
+        public bool IsReadOnly => isReadOnly;
 
         public int IndexOf(T element)
         {
@@ -82,7 +90,7 @@ namespace Data_Structures
                 throw new ArgumentOutOfRangeException("Index is out of range");
             }
 
-            else if(isReadOnly)
+            else if(IsReadOnly)
             {
                 throw new NotSupportedException("The array is readonly");
             }
@@ -98,7 +106,7 @@ namespace Data_Structures
 
         public void Clear()
         {
-            if (isReadOnly)
+            if (IsReadOnly)
             {
                 throw new NotSupportedException("The array is readonly");
             }
@@ -110,7 +118,7 @@ namespace Data_Structures
         }
         public bool Remove(T element)
         {
-            if (isReadOnly)
+            if (IsReadOnly)
             {
                 throw new NotSupportedException("The array is readonly");
             }
@@ -124,7 +132,7 @@ namespace Data_Structures
 
         public void RemoveAt(int index)
         {
-            if (isReadOnly)
+            if (IsReadOnly)
             {
                 throw new NotSupportedException("The array is readonly");
             }

@@ -27,7 +27,7 @@ namespace DataStructuresTests
         public void CheckIfAddExceptionWorks()
         {
             var array = new Data_Structures.List<int> {0, 1, 2, 3};
-            array.isReadOnly = true;
+            array.MakeReadOnly();
             Assert.Throws<NotSupportedException>(() => array.Add(4));
         }
 
@@ -49,7 +49,7 @@ namespace DataStructuresTests
         public void CheckIfInsertReadonlyExceptionWorks()
         {
             var array = new Data_Structures.List<int> { 0, 1, 2, 3 };
-            array.isReadOnly = true;
+            array.MakeReadOnly();
             Assert.Throws<NotSupportedException>(() => array.Insert(2, 4));
         }
 
@@ -57,7 +57,7 @@ namespace DataStructuresTests
         public void CheckIfClearReadonlyExceptionWorks()
         {
             var array = new Data_Structures.List<int> { 0, 1, 2, 3 };
-            array.isReadOnly = true;
+            array.MakeReadOnly();
             Assert.Throws<NotSupportedException>(() => array.Clear());
         }
 
@@ -65,7 +65,7 @@ namespace DataStructuresTests
         public void CheckIfRemoveReadonlyExceptionWorks()
         {
             var array = new Data_Structures.List<int> { 0, 1, 2, 3 };
-            array.isReadOnly = true;
+            array.MakeReadOnly();
             Assert.Throws<NotSupportedException>(() => array.Remove(2));
         }
 
@@ -73,7 +73,7 @@ namespace DataStructuresTests
         public void CheckIfRemoveAtReadonlyExceptionWorks()
         {
             var array = new Data_Structures.List<int> { 0, 1, 2, 3 };
-            array.isReadOnly = true;
+            array.MakeReadOnly();
             Assert.Throws<NotSupportedException>(() => array.RemoveAt(2));
         }
 
