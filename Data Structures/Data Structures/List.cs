@@ -168,7 +168,7 @@ namespace Data_Structures
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<T>)array).GetEnumerator();
+            return ((IEnumerable<T>)this).GetEnumerator();
         }
 
         public void CopyTo(T[] otherArray, int arrayIndex)
@@ -185,8 +185,15 @@ namespace Data_Structures
 
             else
             {
-                Array.Resize(ref otherArray, otherArray.Length + 1);
-                otherArray[otherArray.Length - 1] = this.array[arrayIndex];
+                if(otherArray.Length < arrayIndex + Count)
+                {
+                    Array.Resize(ref otherArray, arrayIndex + Count);
+                }
+                int k = 0;
+                for (int i = arrayIndex; i < arrayIndex + Count; i++)
+                {
+                    otherArray[i] = array[k++];
+                }
             }
         }
     }
