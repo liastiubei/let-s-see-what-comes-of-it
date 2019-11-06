@@ -22,21 +22,6 @@ namespace Data_Structures
             Count = 0;
         }
         
-        public void InsertAfterValue(T afterValue, T addedValue)
-        {
-            DoubleLink<T> searchLink = this.Find(afterValue);
-
-            if(searchLink != first)
-            {
-                DoubleLink<T> link = new DoubleLink<T>(addedValue);
-                link.NextLink = searchLink.NextLink;
-                searchLink.NextLink.PreviousLink = link;
-                link.PreviousLink = searchLink;
-                searchLink.NextLink = link;
-                Count++;
-            }
-        }
-
         public DoubleLink<T> Find(T findValue)
         {
             bool checkIfFound = false;
@@ -52,28 +37,50 @@ namespace Data_Structures
                 searchLink = searchLink.NextLink;
             }
             
+            
             if(checkIfFound)
             {
                 return searchLink;
             }
 
-            return first;
+            return null;
+        }
+
+        private void AddBasic(DoubleLink<T> neededLink, DoubleLink<T> link)
+        {
+            link.NextLink = neededLink;
+            link.PreviousLink = neededLink.PreviousLink;
+            neededLink.PreviousLink.NextLink = link;
+            neededLink.PreviousLink = link;
+            Count++;
         }
 
         public void Add(T item)
         {
             DoubleLink<T> link = new DoubleLink<T>(item);
-
             if (first.NextLink == first)
             {
                 first.NextLink = link;
             }
+            AddBasic(first, link);
+        }
 
-            link.NextLink = first;
-            link.PreviousLink = first.PreviousLink;
-            first.PreviousLink.NextLink = link;
-            first.PreviousLink = link;
-            Count++;
+        public void AddBefore(DoubleLink<T> beforeLink, T item)
+        {
+            DoubleLink<T> link = new DoubleLink<T>(item);
+            AddBasic(beforeLink, link);
+        }
+
+        public void AddAfter(DoubleLink<T> afterLink, T item)
+        {
+            DoubleLink<T> link = new DoubleLink<T>(item);
+            AddBasic(afterLink.NextLink, link);
+        }
+
+        public void AddFirst(T item)
+        {
+            DoubleLink<T> link = new DoubleLink<T>(item);
+            AddBasic(first.NextLink, link);
         }
 
         public void Clear()
@@ -86,12 +93,9 @@ namespace Data_Structures
 
         public bool Contains(T item)
         {
-            if(this.Find(item) != first)
-            {
-                return true;
-            }
-
-            return false;
+            return this.Find(item) != null
+                ? true
+                : false;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
