@@ -58,10 +58,6 @@ namespace Data_Structures
         public void Add(T item)
         {
             DoubleLink<T> link = new DoubleLink<T>(item);
-            if (first.NextLink == first)
-            {
-                first.NextLink = link;
-            }
             AddBasic(first, link);
         }
 
