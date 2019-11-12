@@ -9,6 +9,7 @@ namespace Data_Structures
         public T value { get; set; }
         public DoubleLink<T> PreviousLink { get; set; }
         public DoubleLink<T> NextLink { get; set; }
+        public DoubleLinkedList<T> MyList;
         
         public DoubleLink(T value)
         {
