@@ -5,18 +5,18 @@ namespace DataStructuresTests
 {
     public class UnitTest1
     {
-        Data_Structures.IntArray array = new Data_Structures.IntArray();
-        
         [Fact]
         public void CheckIfAddWorksCorrectly()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             Assert.Equal(0, array.IndexOf(1));
         }
-        
+
         [Fact]
         public void CheckIfCountReturnsTheCorrectAnswer()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
@@ -26,6 +26,7 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfElementWorksCorrectly()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
@@ -38,6 +39,7 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfSetElementWorksCorrectly()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
@@ -48,6 +50,7 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfContainsWorksCorrectly1ShouldReturnTrue()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
@@ -57,6 +60,7 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfContainsWorksCorrectly2ShouldReturnFalse()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
@@ -66,6 +70,7 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfIndexOfsWorksCorrectly1ShouldReturnNumber()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
@@ -75,6 +80,7 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfIndexOfsWorksCorrectly2ShouldReturnMinus1()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
@@ -84,14 +90,15 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfSetClearWorksCorrectly()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
             array.Clear();
             bool check = true;
-            for(int i = 0; i < 6; i++)
+            for (int i = 0; i < 6; i++)
             {
-                if(array.Element(i) != 0)
+                if (array.Element(i) != 0)
                 {
                     check = false;
                     break;
@@ -104,6 +111,7 @@ namespace DataStructuresTests
         [Fact]
         public void CheckIfRemoveWorksCorrectly()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);
@@ -111,12 +119,13 @@ namespace DataStructuresTests
             array.Add(5);
             array.Add(6);
             array.Remove(4);
-            Assert.True(array.Element(3)==5);
+            Assert.True(array.Element(3) == 5);
         }
 
         [Fact]
         public void CheckIfSetRemoveAtWorksCorrectly()
         {
+            DataStructures.IntArray array = new DataStructures.IntArray();
             array.Add(1);
             array.Add(2);
             array.Add(3);

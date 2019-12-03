@@ -3,26 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data_Structures
+namespace DataStructures
 {
-    public class ObjectArray : IEnumerable
+    public class ObjectArrayCollection : IEnumerable
     {
         object[] array;
 
-        public ObjectArray()
+        public ObjectArrayCollection()
         {
             this.array = new object[8];
             Count = 0;
         }
-        
+
         public IEnumerator GetEnumerator()
         {
-            for(int i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
                 yield return array[i];
             }
         }
-        
+
         public object this[int index]
         {
             get => this.array[index];
@@ -37,11 +37,13 @@ namespace Data_Structures
         }
 
         public void Resize()
-        {
-            if (Count == array.Length)
             {
-                Array.Resize(ref this.array, this.array.Length * 2);
+            if (Count != array.Length)
+            {
+                return;
             }
+
+            Array.Resize(ref this.array, this.array.Length * 2);
         }
 
         public int Count { get; protected set; }
@@ -71,7 +73,7 @@ namespace Data_Structures
 
         public bool Contains(object element)
         {
-            return (this.IndexOf(element) != -1);
+            return this.IndexOf(element) != -1;
         }
 
         public void Insert(int index, object element)

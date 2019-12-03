@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data_Structures
+namespace DataStructures
 {
-    public class DoubleLinkedList<T> : ICollection<T>
+    public class DoubleLinkedListCollection<T> : ICollection<T>
     {
         protected DoubleLink<T> first;
         private bool isReadOnly;
 
-        public int Count {get; protected set; }
+        public int Count { get; protected set; }
 
         public bool IsReadOnly { get => isReadOnly; }
 
-        public DoubleLinkedList()
+        public DoubleLinkedListCollection()
         {
             first = new DoubleLink<T>(default(T));
             first.MyList = this;
@@ -23,26 +23,21 @@ namespace Data_Structures
             isReadOnly = false;
             Count = 0;
         }
-        
+
         public DoubleLink<T> Find(T findValue)
         {
             bool checkIfFound = false;
             DoubleLink<T> searchLink;
             for (searchLink = first.NextLink; searchLink != first; searchLink = searchLink.NextLink)
             {
-                if (searchLink.value.Equals(findValue))
+                if (searchLink.Value.Equals(findValue))
                 {
                     checkIfFound = true;
                     break;
                 }
             }
-            
-            if(checkIfFound)
-            {
-                return searchLink;
-            }
 
-            return null;
+            return checkIfFound ? searchLink : null;
         }
 
         public DoubleLink<T> FindLast(T findValue)
@@ -51,19 +46,14 @@ namespace Data_Structures
             DoubleLink<T> searchLink;
             for (searchLink = first.PreviousLink; searchLink != first; searchLink = searchLink.PreviousLink)
             {
-                if (searchLink.value.Equals(findValue))
+                if (searchLink.Value.Equals(findValue))
                 {
                     checkIfFound = true;
                     break;
                 }
             }
 
-            if (checkIfFound)
-            {
-                return searchLink;
-            }
-
-            return null;
+            return checkIfFound ? searchLink : null;
         }
 
         public void AddBefore(DoubleLink<T> neededLink, T item)
@@ -73,12 +63,12 @@ namespace Data_Structures
                 throw new NotSupportedException("The array is readonly");
             }
 
-            if(neededLink == null)
+            if (neededLink == null)
             {
                 throw new ArgumentNullException("The node is null");
             }
 
-            if(neededLink.MyList != this)
+            if (neededLink.MyList != this)
             {
                 throw new InvalidOperationException("The node is not in the current list");
             }
@@ -119,7 +109,7 @@ namespace Data_Structures
                 link.MyList = null;
             }
 
-            first.value = default(T);
+            first.Value = default(T);
             first.NextLink = first;
             first.PreviousLink = first;
             Count = 0;
@@ -132,17 +122,17 @@ namespace Data_Structures
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if(array == null)
+            if (array == null)
             {
                 throw new ArgumentNullException("Array is null");
             }
-            
-            if(arrayIndex < 0)
+
+            if (arrayIndex < 0)
             {
                 throw new ArgumentOutOfRangeException("Index is less than zero");
             }
 
-            if(Count > array.Length - arrayIndex)
+            if (Count > array.Length - arrayIndex)
             {
                 throw new ArgumentException("The number of elements in the list is greater than the available space from index to the end of the array");
             }
@@ -150,13 +140,13 @@ namespace Data_Structures
             DoubleLink<T> link = first.NextLink;
             for (int i = arrayIndex; i < arrayIndex + Count; i++)
             {
-                array[i] = link.value;
+                array[i] = link.Value;
                 link = link.NextLink;
             }
         }
 
         public bool Remove(T item)
-        {            
+        {
             return Remove(Find(item));
         }
 
@@ -200,13 +190,13 @@ namespace Data_Structures
         {
             return obj == this;
         }
-        
+
         public IEnumerator<T> GetEnumerator()
         {
             DoubleLink<T> link = first.NextLink;
             while (link != first)
             {
-                yield return link.value;
+                yield return link.Value;
                 link = link.NextLink;
             }
         }

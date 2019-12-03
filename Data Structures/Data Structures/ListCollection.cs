@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Data_Structures
+namespace DataStructures
 {
-    public class List<T> : IList<T>
+    public class ListCollection<T> : IList<T>
     {
         protected T[] array;
         private bool isReadOnly;
 
-        public List()
+        public ListCollection()
         {
             this.array = new T[8];
             isReadOnly = false;
@@ -18,13 +18,14 @@ namespace Data_Structures
 
         public void MakeReadOnly()
         {
-            if(isReadOnly)
+            if (isReadOnly)
             {
                 return;
             }
 
             isReadOnly = true;
         }
+
         public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < Count; i++)
@@ -39,37 +40,37 @@ namespace Data_Structures
             set => this.array[index] = value;
         }
 
-        public virtual void Add(T element)
+        public virtual void Add(T item)
         {
             if (IsReadOnly)
             {
                 throw new NotSupportedException("The array is readonly");
             }
-            else
-            {
-                Resize();
-                this.array[Count] = element;
-                Count++;
-            }
+
+            Resize();
+            this.array[Count] = item;
+            Count++;
         }
-        
+
         public void Resize()
-        {
-            if (Count == array.Length)
             {
-                Array.Resize(ref array, array.Length * 2);
+            if (Count != array.Length)
+            {
+                return;
             }
+
+            Array.Resize(ref array, array.Length * 2);
         }
 
         public int Count { get; protected set; }
 
         public bool IsReadOnly => isReadOnly;
 
-        public int IndexOf(T element)
+        public int IndexOf(T item)
         {
             for (int i = 0; i < Count; i++)
             {
-                if (this.array[i].Equals(element))
+                if (this.array[i].Equals(item))
                 {
                     return i;
                 }
@@ -78,30 +79,27 @@ namespace Data_Structures
             return -1;
         }
 
-        public bool Contains(T element)
+        public bool Contains(T item)
         {
-            return (this.IndexOf(element) != -1);
+            return this.IndexOf(item) != -1;
         }
 
-        public virtual void Insert(int index, T element)
+        public virtual void Insert(int index, T item)
         {
             if (index < 0 || index > Count)
             {
                 throw new ArgumentOutOfRangeException("Index is out of range");
             }
 
-            else if(IsReadOnly)
+            if (IsReadOnly)
             {
                 throw new NotSupportedException("The array is readonly");
             }
 
-            else
-            {
-                Resize();
-                ShiftRight(index);
-                this.array[index] = element;
-                Count++;
-            }
+            Resize();
+            ShiftRight(index);
+            this.array[index] = item;
+            Count++;
         }
 
         public void Clear()
@@ -111,23 +109,18 @@ namespace Data_Structures
                 throw new NotSupportedException("The array is readonly");
             }
 
-            else
-            {
-                Array.Clear(this.array, 0, this.array.Length);
-            }
+            Array.Clear(this.array, 0, this.array.Length);
         }
-        public bool Remove(T element)
+
+        public bool Remove(T item)
         {
             if (IsReadOnly)
             {
                 throw new NotSupportedException("The array is readonly");
             }
 
-            else
-            {
-                RemoveAt(IndexOf(element));
-                return true;
-            }
+            RemoveAt(IndexOf(item));
+            return true;
         }
 
         public void RemoveAt(int index)
@@ -137,17 +130,14 @@ namespace Data_Structures
                 throw new NotSupportedException("The array is readonly");
             }
 
-            else if (index < 0 || index > Count)
+            if (index < 0 || index > Count)
             {
                 throw new ArgumentOutOfRangeException("Index is out of bounds");
             }
 
-            else
-            {
-                ShiftLeft(index);
-                Array.Resize(ref this.array, this.array.Length - 1);
-                Count--;
-            }
+            ShiftLeft(index);
+            Array.Resize(ref this.array, this.array.Length - 1);
+            Count--;
         }
 
         public void ShiftLeft(int index)
@@ -173,27 +163,25 @@ namespace Data_Structures
 
         public void CopyTo(T[] otherArray, int arrayIndex)
         {
-            if(array == null)
+            if (array == null)
             {
                 throw new ArgumentNullException("The array is null");
             }
 
-            else if(arrayIndex < 0)
+            if (arrayIndex < 0)
             {
                 throw new ArgumentOutOfRangeException("ArrayIndex is less than zero");
             }
 
-            else
+            if (otherArray.Length < arrayIndex + Count)
             {
-                if(otherArray.Length < arrayIndex + Count)
-                {
-                    Array.Resize(ref otherArray, arrayIndex + Count);
-                }
-                int k = 0;
-                for (int i = arrayIndex; i < arrayIndex + Count; i++)
-                {
-                    otherArray[i] = array[k++];
-                }
+                Array.Resize(ref otherArray, arrayIndex + Count);
+            }
+
+            int k = 0;
+            for (int i = arrayIndex; i < arrayIndex + Count; i++)
+            {
+                otherArray[i] = array[k++];
             }
         }
     }

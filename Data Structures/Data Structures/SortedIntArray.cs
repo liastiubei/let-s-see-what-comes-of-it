@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data_Structures
+namespace DataStructures
 {
     public class SortedIntArray : IntArray
     {
@@ -20,9 +20,9 @@ namespace Data_Structures
             }
 
             bool check = false;
-            for(int i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
-                if(this.array[i] > element)
+                if (this.array[i] > element)
                 {
                     ShiftRight(i);
                     this.array[i] = element;
@@ -31,59 +31,62 @@ namespace Data_Structures
                 }
             }
 
-            if(!check)
+            if (!check)
             {
                 this.array[Count] = element;
             }
 
             Count++;
         }
-        
+
         public override void SetElement(int index, int element)
         {
             if (element < array[index - 1])
             {
-                for (int i = index-1; i >= 0; i--)
+                for (int i = index - 1; i >= 0; i--)
                 {
                     if (element > array[i])
                     {
-                        for (int j = i+1; j < index; j++)
+                        for (int j = i + 1; j < index; j++)
                         {
-                            this.array[j+1] = this.array[j];
+                            this.array[j + 1] = this.array[j];
                         }
 
-                        array[i+1] = element;
+                        array[i + 1] = element;
                         break;
                     }
                 }
             }
-
             else if (element > array[index + 1])
             {
                 for (int i = index + 1; i < Count; i++)
                 {
                     if (element < array[i])
                     {
-                        for (int j = index; j < i-1; j++)
+                        for (int j = index; j < i - 1; j++)
                         {
                             this.array[j] = this.array[j + 1];
                         }
 
-                        array[i-1] = element;
+                        array[i - 1] = element;
                         break;
                     }
                 }
             }
-
-            else array[index] = element;
+            else
+            {
+                array[index] = element;
+            }
         }
-        
+
         public override void Insert(int index, int element)
         {
-            if(array[index]>element && array[index-1]<element)
+            if (array[index] <= element || array[index - 1] >= element)
             {
-                this.Add(element);
+                return;
             }
+
+            this.Add(element);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Data_Structures
+namespace DataStructures
 {
     public class IntArray
     {
@@ -20,13 +20,13 @@ namespace Data_Structures
 
         public virtual void Add(int element)
         {
-            if(Count == array.Length)
+            if (Count == array.Length)
             {
                 Array.Resize(ref this.array, this.array.Length * 2);
             }
 
             this.array[Count] = element;
-            Count++;            
+            Count++;
         }
 
         public int Count { get; protected set; }
@@ -56,14 +56,9 @@ namespace Data_Structures
 
         public bool Contains(int element)
         {
-            if(this.IndexOf(element) != -1)
-            {
-                return true;
-            }
-
-            return false;
+            return this.IndexOf(element) != -1;
         }
-        
+
         public virtual void Insert(int index, int element)
         {
             if (Count > this.array.Length)

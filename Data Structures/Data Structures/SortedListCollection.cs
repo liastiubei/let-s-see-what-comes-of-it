@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data_Structures
+namespace DataStructures
 {
-    public class SortedList<T> : List<T> where T : IComparable<T>
+    public class SortedListCollection<T> : ListCollection<T>
+        where T : IComparable<T>
     {
-        public SortedList()
+        public SortedListCollection()
         {
             this.array = new T[8];
             Count = 0;
@@ -17,12 +18,14 @@ namespace Data_Structures
         {
             get => this.array[index];
             set
-            {
-                if((index == 0 || this.array[index - 1].CompareTo(value) <= 0) && 
-                    (index == Count - 1 || this.array[index + 1].CompareTo(value) >= 0))
                 {
-                    this.array[index] = value;
+                if ((index != 0 && array[index - 1].CompareTo(value) > 0) ||
+                    (index != Count - 1 && this.array[index + 1].CompareTo(value) < 0))
+                {
+                    return;
                 }
+
+                this.array[index] = value;
             }
         }
 
@@ -50,12 +53,14 @@ namespace Data_Structures
         }
 
         public override void Insert(int index, T element)
-        {
-            if ((index == 0 || this.array[index - 1].CompareTo(element) <= 0) &&
-                    (index == Count || this.array[index + 1].CompareTo(element) >= 0))
             {
-                this.Add(element);
+            if ((index != 0 && this.array[index - 1].CompareTo(element) > 0) ||
+                    (index != Count && this.array[index + 1].CompareTo(element) < 0))
+            {
+                return;
             }
+
+            this.Add(element);
         }
     }
 }
