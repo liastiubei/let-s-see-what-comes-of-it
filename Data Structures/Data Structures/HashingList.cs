@@ -8,9 +8,8 @@ namespace DataStructures
     public class HashingListDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         private int[] buckets;
-        private KeyValuePair<TKey, TValue>[] elements;
-        int[] next;
-        private DoubleLink<int> freeSpaces;
+        private Element<TKey, TValue>[] elements;
+        private int freeSpaces;
 
         public HashingListDictionary(int dictionaryCapacity)
         {
@@ -20,17 +19,9 @@ namespace DataStructures
                 buckets[i] = -1;
             }
 
-            next = new int[1000];
-            for (int i = 0; i < next.Length; i++)
-            {
-                next[i] = -1;
-            }
-
-            elements = new KeyValuePair<TKey, TValue>[1000];
+            elements = new Element<TKey, TValue>[1000];
             IsReadOnly = false;
-            freeSpaces = new DoubleLink<int>(-1);
-            freeSpaces.NextLink = freeSpaces;
-            freeSpaces.PreviousLink = freeSpaces;
+            freeSpaces = -1;
         }
 
         public HashingListDictionary(int dictionaryCapacity, int valueArrayCapacity)
@@ -41,17 +32,9 @@ namespace DataStructures
                 buckets[i] = -1;
             }
 
-            next = new int[1000];
-            for (int i = 0; i < next.Length; i++)
-            {
-                next[i] = -1;
-            }
-
-            elements = new KeyValuePair<TKey, TValue>[valueArrayCapacity];
+            elements = new Element<TKey, TValue>[valueArrayCapacity];
             IsReadOnly = false;
-            freeSpaces = new DoubleLink<int>(-1);
-            freeSpaces.NextLink = freeSpaces;
-            freeSpaces.PreviousLink = freeSpaces;
+            freeSpaces = -1;
         }
 
         public TValue this[TKey key]
@@ -73,7 +56,8 @@ namespace DataStructures
                     throw new NotSupportedException("The Dictionary is read-only");
                 }
 
-                elements[Find(key)] = new KeyValuePair<TKey, TValue>(key, value);
+                int element = Find(key);
+                elements[element] = new Element<TKey, TValue>(key, value, elements[element].Next);
             }
         }
 
@@ -85,7 +69,7 @@ namespace DataStructures
                 int j = 0;
                 for (int i = 0; i < Count; i++)
                 {
-                    while (elements[j].Equals(default))
+                    while (elements[j].Key.Equals(default))
                     {
                         j++;
                     }
@@ -106,7 +90,7 @@ namespace DataStructures
                 int j = 0;
                 for (int i = 0; i < Count; i++)
                 {
-                    while (elements[j].Equals(default))
+                    while (elements[j].Value.Equals(default) && elements[j].Key.Equals(default))
                     {
                         j++;
                     }
@@ -149,19 +133,18 @@ namespace DataStructures
 
             int actualKey = GetHashedKey(key);
 
-            if (freeSpaces.NextLink == freeSpaces)
+            if (freeSpaces == -1)
             {
-                elements[Count] = new KeyValuePair<TKey, TValue>(key, value);
-                next[Count] = buckets[actualKey];
+                elements[Count] = new Element<TKey, TValue>(key, value, buckets[actualKey]);
                 buckets[actualKey] = Count;
                 Count++;
             }
             else
             {
-                elements[freeSpaces.NextLink.Value] = new KeyValuePair<TKey, TValue>(key, value);
-                next[freeSpaces.NextLink.Value] = buckets[actualKey];
-                buckets[actualKey] = freeSpaces.NextLink.Value;
-                freeSpaces.NextLink = freeSpaces.NextLink.NextLink;
+                int momentaryFreeSpace = elements[freeSpaces].Next;
+                elements[freeSpaces] = new Element<TKey, TValue>(key, value, buckets[actualKey]);
+                buckets[actualKey] = freeSpaces;
+                freeSpaces = momentaryFreeSpace;
                 Count++;
             }
         }
@@ -185,15 +168,10 @@ namespace DataStructures
 
             for (int i = 0; i < elements.Length; i++)
             {
-                elements[i] = default;
+                elements[i] = new Element<TKey, TValue>();
             }
 
-            for (int i = 0; i < next.Length; i++)
-            {
-                next[i] = -1;
-            }
-
-            freeSpaces.NextLink = freeSpaces;
+            freeSpaces = -1;
             Count = 0;
         }
 
@@ -252,8 +230,16 @@ namespace DataStructures
         {
             for (int i = 0; i < Count; i++)
             {
-                yield return elements[i];
+                if (!elements[i].IsDeleted)
+                {
+                    yield return new KeyValuePair<TKey, TValue>(elements[i].Key, elements[i].Value);
+                }
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<KeyValuePair<TKey, TValue>>)this).GetEnumerator();
         }
 
         public bool Remove(TKey key)
@@ -280,12 +266,56 @@ namespace DataStructures
             }
 
             int bucket = GetHashedKey(key);
-            elements[find] = default;
-            buckets[bucket] = next[find];
-            next[find] = -1;
-            freeSpaces.NextLink = new DoubleLink<int>(find);
-            Count--;
-            return false;
+            if (FindPrevious(elements[find]) == -1)
+            {
+                buckets[bucket] = elements[find].Next;
+            }
+            else
+            {
+                elements[FindPrevious(elements[find])].Next = elements[find].Next;
+            }
+
+            if (freeSpaces == -1)
+            {
+                freeSpaces = find;
+                elements[find].Next = -1;
+            }
+            else
+            {
+                int next = freeSpaces;
+                while (elements[next].Next != -1)
+                {
+                    next = elements[next].Next;
+                }
+
+                elements[next].Next = find;
+                elements[find].Next = -1;
+            }
+
+            elements[find].Delete();
+            return true;
+        }
+
+        public int FindPrevious(Element<TKey, TValue> nextElement)
+        {
+            int hash = GetHashedKey(nextElement.Key);
+            if (elements[buckets[hash]] == nextElement)
+            {
+                return -1;
+            }
+
+            int next = buckets[hash];
+            while (next != -1)
+            {
+                if (elements[elements[next].Next] == nextElement)
+                {
+                    return next;
+                }
+
+                next = elements[next].Next;
+            }
+
+            return -2;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
@@ -299,11 +329,6 @@ namespace DataStructures
             return true;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable<KeyValuePair<TKey, TValue>>)this).GetEnumerator();
-        }
-
         public void MakeReadOnly()
         {
             IsReadOnly = true;
@@ -313,10 +338,6 @@ namespace DataStructures
         {
             int actualKey = GetHashedKey(key);
             int nextValue = buckets[actualKey];
-            if (nextValue == -1)
-            {
-                return -1;
-            }
 
             while (nextValue != -1)
             {
@@ -325,7 +346,7 @@ namespace DataStructures
                     return nextValue;
                 }
 
-                nextValue = next[nextValue];
+                nextValue = elements[nextValue].Next;
             }
 
             return -1;
@@ -343,7 +364,7 @@ namespace DataStructures
 
         public int ShowNext(int actualKey)
         {
-            return next[actualKey];
+            return elements[actualKey].Next;
         }
 
         public void MakeFixedSize()
