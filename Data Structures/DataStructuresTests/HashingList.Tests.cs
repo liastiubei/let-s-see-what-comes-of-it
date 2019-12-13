@@ -13,7 +13,7 @@ namespace DataStructuresTests
             var hashList = new DataStructures.HashingListDictionary<int, string>(10);
             hashList.Add(1, "Ana");
             hashList.Add(3, "Andrei");
-            Assert.Equal("Ana", hashList.ShowValue(hashList.Find(1)));
+            Assert.Equal("Ana", hashList[1]);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace DataStructuresTests
             var hashList = new DataStructures.HashingListDictionary<int, string>(10);
             hashList.Add(1, "Ana");
             hashList.Add(11, "Andrei");
-            Assert.Equal("Andrei", hashList.ShowValue(hashList.Find(11)));
+            Assert.Equal("Andrei", hashList[11]);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace DataStructuresTests
             hashList.Add(13, "Andreas");
             hashList.Remove(11);
             hashList.Add(11, "Paul");
-            Assert.Equal(0, hashList.ShowNext(hashList.Find(11)));
+            Assert.NotEqual("Andrei", hashList[hashList.Find(11).actual]);
         }
 
         [Fact]
@@ -176,9 +176,7 @@ namespace DataStructuresTests
             hashList.Add("4", "Ana");
             hashList.Add("5", "Ana");
             hashList.Add("6", "Ana");
-            hashList.Add("7", "Ana");
-            hashList.Add("8", "Ana");
-            KeyValuePair<string, string>[] array = new KeyValuePair<string, string>[5];
+            KeyValuePair<string, string>[] array = new KeyValuePair<string, string>[2];
             Assert.Throws<ArgumentException>(() => hashList.CopyTo(array, 0));
         }
 

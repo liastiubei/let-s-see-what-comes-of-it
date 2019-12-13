@@ -14,25 +14,8 @@ namespace DataStructures
         public HashingListDictionary(int dictionaryCapacity)
         {
             buckets = new int[dictionaryCapacity];
-            for (int i = 0; i < buckets.Length; i++)
-            {
-                buckets[i] = -1;
-            }
-
-            elements = new Element<TKey, TValue>[1000];
-            IsReadOnly = false;
-            freeSpaces = -1;
-        }
-
-        public HashingListDictionary(int dictionaryCapacity, int valueArrayCapacity)
-        {
-            buckets = new int[dictionaryCapacity];
-            for (int i = 0; i < buckets.Length; i++)
-            {
-                buckets[i] = -1;
-            }
-
-            elements = new Element<TKey, TValue>[valueArrayCapacity];
+            Array.Fill(buckets, -1);
+            elements = new Element<TKey, TValue>[dictionaryCapacity * 5];
             IsReadOnly = false;
             freeSpaces = -1;
         }
@@ -46,7 +29,7 @@ namespace DataStructures
                     throw new ArgumentNullException("The key is null");
                 }
 
-                return elements[Find(key)].Value;
+                return elements[Find(key).actual].Value;
             }
 
             set
@@ -56,7 +39,7 @@ namespace DataStructures
                     throw new NotSupportedException("The Dictionary is read-only");
                 }
 
-                int element = Find(key);
+                int element = Find(key).actual;
                 elements[element] = new Element<TKey, TValue>(key, value, elements[element].Next);
             }
         }
@@ -67,14 +50,9 @@ namespace DataStructures
             {
                 TKey[] array = new TKey[Count];
                 int j = 0;
-                for (int i = 0; i < Count; i++)
+                foreach (var kvp in this)
                 {
-                    while (elements[j].Key.Equals(default))
-                    {
-                        j++;
-                    }
-
-                    array[i] = elements[j].Key;
+                    array[j] = kvp.Key;
                     j++;
                 }
 
@@ -88,14 +66,9 @@ namespace DataStructures
             {
                 TValue[] array = new TValue[Count];
                 int j = 0;
-                for (int i = 0; i < Count; i++)
+                foreach (var kvp in this)
                 {
-                    while (elements[j].Value.Equals(default) && elements[j].Key.Equals(default))
-                    {
-                        j++;
-                    }
-
-                    array[i] = elements[j].Value;
+                    array[j] = kvp.Value;
                     j++;
                 }
 
@@ -116,7 +89,7 @@ namespace DataStructures
                 throw new ArgumentNullException("Key is null");
             }
 
-            if (Find(key) != -1)
+            if (Find(key).actual != -1)
             {
                 throw new ArgumentException("The key already exists in the dictionary");
             }
@@ -182,7 +155,7 @@ namespace DataStructures
                 throw new ArgumentNullException("Key is null");
             }
 
-            int find = Find(item.Key);
+            int find = Find(item.Key).actual;
             return find != -1 && elements[find].Value.Equals(item.Value);
         }
 
@@ -193,7 +166,7 @@ namespace DataStructures
                 throw new ArgumentNullException("Key is null");
             }
 
-            return Find(key) != -1;
+            return Find(key).actual != -1;
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -213,33 +186,35 @@ namespace DataStructures
                 throw new ArgumentException("The number of elements in the list is greater than the available space from index to the end of the array");
             }
 
-            int j = 0;
-            for (int i = arrayIndex; i < arrayIndex + Count; i++)
+            int j = Count - 1;
+            foreach (var kvp in this)
             {
-                while (elements[j].Equals(default))
-                {
-                    j++;
-                }
-
-                array[i] = new KeyValuePair<TKey, TValue>(elements[j].Key, elements[j].Value);
-                j++;
+                array[j] = kvp;
+                j--;
             }
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            for (int i = 0; i < Count; i++)
+            foreach (var bucket in buckets)
             {
-                if (!elements[i].IsDeleted)
+                if (bucket != -1)
                 {
-                    yield return new KeyValuePair<TKey, TValue>(elements[i].Key, elements[i].Value);
+                    int next = bucket;
+                    {
+                        while (next != -1)
+                        {
+                            yield return new KeyValuePair<TKey, TValue>(elements[next].Key, elements[next].Value);
+                            next = elements[next].Next;
+                        }
+                    }
                 }
             }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<KeyValuePair<TKey, TValue>>)this).GetEnumerator();
+            return GetEnumerator();
         }
 
         public bool Remove(TKey key)
@@ -259,63 +234,26 @@ namespace DataStructures
                 throw new NotSupportedException("The dictionary is readonly");
             }
 
-            int find = Find(key);
+            int find = Find(key).actual;
+            int findPrevious = Find(key).previous;
             if (find == -1)
             {
                 return true;
             }
 
             int bucket = GetHashedKey(key);
-            if (FindPrevious(elements[find]) == -1)
+            if (findPrevious == -1)
             {
                 buckets[bucket] = elements[find].Next;
             }
             else
             {
-                elements[FindPrevious(elements[find])].Next = elements[find].Next;
+                elements[findPrevious].Next = elements[find].Next;
             }
 
-            if (freeSpaces == -1)
-            {
-                freeSpaces = find;
-                elements[find].Next = -1;
-            }
-            else
-            {
-                int next = freeSpaces;
-                while (elements[next].Next != -1)
-                {
-                    next = elements[next].Next;
-                }
-
-                elements[next].Next = find;
-                elements[find].Next = -1;
-            }
-
-            elements[find].Delete();
+            elements[find].Next = freeSpaces;
+            freeSpaces = find;
             return true;
-        }
-
-        public int FindPrevious(Element<TKey, TValue> nextElement)
-        {
-            int hash = GetHashedKey(nextElement.Key);
-            if (elements[buckets[hash]] == nextElement)
-            {
-                return -1;
-            }
-
-            int next = buckets[hash];
-            while (next != -1)
-            {
-                if (elements[elements[next].Next] == nextElement)
-                {
-                    return next;
-                }
-
-                next = elements[next].Next;
-            }
-
-            return -2;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
@@ -325,7 +263,7 @@ namespace DataStructures
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            value = elements[Find(key)].Value;
+            value = elements[Find(key).actual].Value;
             return true;
         }
 
@@ -334,37 +272,31 @@ namespace DataStructures
             IsReadOnly = true;
         }
 
-        public int Find(TKey key)
+        public (int previous, int actual) Find(TKey key)
         {
             int actualKey = GetHashedKey(key);
             int nextValue = buckets[actualKey];
-
-            while (nextValue != -1)
+            if (nextValue == -1)
             {
-                if (elements[nextValue].Key.Equals(key))
-                {
-                    return nextValue;
-                }
-
-                nextValue = elements[nextValue].Next;
+                return (-1, -1);
             }
 
-            return -1;
-        }
+            if (elements[nextValue].Key.Equals(key))
+            {
+                return (-1, nextValue);
+            }
 
-        public TValue ShowValue(int actualKey)
-        {
-            return elements[actualKey].Value;
-        }
+            while (elements[nextValue].Next != -1)
+            {
+                if (elements[elements[nextValue].Next].Key.Equals(key))
+                {
+                    return (nextValue, elements[nextValue].Next);
+                }
 
-        public TKey ShowKey(int actualKey)
-        {
-            return elements[actualKey].Key;
-        }
+                nextValue = elements[elements[nextValue].Next].Next;
+            }
 
-        public int ShowNext(int actualKey)
-        {
-            return elements[actualKey].Next;
+            return (-1, -1);
         }
 
         public void MakeFixedSize()

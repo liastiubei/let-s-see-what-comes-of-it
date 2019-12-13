@@ -38,3 +38,6 @@ dotnet_diagnostic.S3776.severity = none
 
 # S134: Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
 dotnet_diagnostic.S134.severity = none
+
+# S3626: Jump statements should not be redundant
+dotnet_diagnostic.S3626.severity = none
