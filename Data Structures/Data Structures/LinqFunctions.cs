@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DataStructures
@@ -30,6 +31,27 @@ namespace DataStructures
             }
 
             return false;
+        }
+
+        public static TSource First<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            if (Count<TSource>(source) == 0)
+            {
+                throw new InvalidOperationException("The enumeration has no elements");
+            }
+
+            return predicate(source.First()) ? source.First() : default;
+        }
+
+        public static int Count<TSource>(this IEnumerable<TSource> source)
+        {
+            int num = 0;
+            foreach (var obj in source)
+            {
+                num++;
+            }
+
+            return num;
         }
     }
 }

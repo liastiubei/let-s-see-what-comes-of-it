@@ -54,5 +54,29 @@ namespace DataStructuresTests
             Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
             Assert.False(DataStructures.LinqFunctions.Any<string>(array, isUpperCase));
         }
+
+        [Fact]
+        public void CheckIfFirstWorksCorrectly1()
+        {
+            DataStructures.ListCollection<string> array = new DataStructures.ListCollection<string>();
+            array.Add("Ana");
+            array.Add("paul");
+            array.Add("zero");
+            array.Add("penelope");
+            Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
+            Assert.True(DataStructures.LinqFunctions.First<string>(array, isUpperCase) == "Ana");
+        }
+
+        [Fact]
+        public void CheckIfFirstWorksCorrectly2()
+        {
+            DataStructures.ListCollection<string> array = new DataStructures.ListCollection<string>();
+            array.Add("ana");
+            array.Add("paul");
+            array.Add("zero");
+            array.Add("penelope");
+            Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
+            Assert.True(DataStructures.LinqFunctions.First<string>(array, isUpperCase) == null);
+        }
     }
 }
