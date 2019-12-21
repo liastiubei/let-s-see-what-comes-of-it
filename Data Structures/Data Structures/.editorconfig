@@ -41,3 +41,9 @@ dotnet_diagnostic.S134.severity = none
 
 # S3626: Jump statements should not be redundant
 dotnet_diagnostic.S3626.severity = none
+
+# RCS1208: Reduce if nesting.
+dotnet_diagnostic.RCS1208.severity = none
+
+# SA1204: Static elements should appear before instance elements
+dotnet_diagnostic.SA1204.severity = none

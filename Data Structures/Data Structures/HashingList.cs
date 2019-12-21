@@ -52,8 +52,7 @@ namespace DataStructures
                 int j = 0;
                 foreach (var kvp in this)
                 {
-                    array[j] = kvp.Key;
-                    j++;
+                    array[j++] = kvp.Key;
                 }
 
                 return array;
@@ -68,8 +67,7 @@ namespace DataStructures
                 int j = 0;
                 foreach (var kvp in this)
                 {
-                    array[j] = kvp.Value;
-                    j++;
+                    array[j++] = kvp.Value;
                 }
 
                 return array;
@@ -189,8 +187,7 @@ namespace DataStructures
             int j = Count - 1;
             foreach (var kvp in this)
             {
-                array[j] = kvp;
-                j--;
+                array[j--] = kvp;
             }
         }
 
@@ -263,8 +260,15 @@ namespace DataStructures
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            value = elements[Find(key).actual].Value;
-            return true;
+            int theKey = Find(key).actual;
+            if (theKey != -1)
+            {
+                value = elements[theKey].Value;
+                return true;
+            }
+
+            value = default;
+            return false;
         }
 
         public void MakeReadOnly()
