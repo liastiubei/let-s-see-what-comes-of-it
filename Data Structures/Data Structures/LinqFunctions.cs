@@ -18,5 +18,18 @@ namespace DataStructures
 
             return true;
         }
+
+        public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            foreach (var obj in source)
+            {
+                if (predicate(obj))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
