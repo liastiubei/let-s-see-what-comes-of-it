@@ -106,6 +106,25 @@ namespace DataStructures
             return output;
         }
 
+        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            if (source == null || predicate == null)
+            {
+                throw new ArgumentNullException("The Source or the Predicate is null");
+            }
+
+            List<TSource> returnList = new List<TSource>();
+            foreach (var obj in source)
+            {
+                if (predicate(obj))
+                {
+                    returnList.Add(obj);
+                }
+            }
+
+            return returnList;
+        }
+
         public static int CountWithSelector<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
         {
             int num = 0;

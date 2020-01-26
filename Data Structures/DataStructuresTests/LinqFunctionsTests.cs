@@ -254,5 +254,42 @@ namespace DataStructuresTests
 
             Assert.True(DataStructures.LinqFunctions.All(DataStructures.LinqFunctions.SelectMany<List<string>, List<string>>(array, makeUpperCaseFirstAndAll), isFirstUpperCase));
         }
+
+        [Fact]
+        public void CheckIfWhereWorksCorrectly1()
+        {
+            DataStructures.ListCollection<string> array = new DataStructures.ListCollection<string>();
+            array.Add("ana");
+            array.Add("Paul");
+            array.Add("zero");
+            array.Add("penelope");
+            Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
+            List<string> list = new List<string>();
+            list.Add("Paul");
+            Assert.Equal(DataStructures.LinqFunctions.Where<string>(array, isUpperCase), list);
+        }
+
+        [Fact]
+        public void CheckIfWhereWorksCorrectly2()
+        {
+            DataStructures.ListCollection<string> array = new DataStructures.ListCollection<string>();
+            array.Add("ana");
+            array.Add("paul");
+            array.Add("zero");
+            array.Add("penelope");
+            Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
+            List<string> list = new List<string>();
+            Assert.Equal(DataStructures.LinqFunctions.Where<string>(array, isUpperCase), list);
+        }
+
+        [Fact]
+        public void CheckIfWhereArgumentsWorksCorrectly()
+        {
+            DataStructures.ListCollection<string> array = null;
+            Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
+            List<string> list = new List<string>();
+            list.Add("Paul");
+            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.Where<string>(array, isUpperCase));
+        }
     }
 }
