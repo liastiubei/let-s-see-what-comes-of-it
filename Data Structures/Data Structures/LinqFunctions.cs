@@ -50,11 +50,6 @@ namespace DataStructures
                 throw new ArgumentNullException("Source or Predicate is null");
             }
 
-            if (SimpleCount<TSource>(source) == 0)
-            {
-                throw new InvalidOperationException("The enumeration has no elements");
-            }
-
             foreach (var obj in source)
             {
                 if (predicate(obj))
@@ -63,7 +58,7 @@ namespace DataStructures
                 }
             }
 
-            return default;
+            throw new InvalidOperationException("The enumeration has no elements");
         }
 
         public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
@@ -102,16 +97,13 @@ namespace DataStructures
                 throw new ArgumentNullException("The Source or the Predicate is null");
             }
 
-            List<TSource> returnList = new List<TSource>();
             foreach (var obj in source)
             {
                 if (predicate(obj))
                 {
-                    returnList.Add(obj);
+                    yield return obj;
                 }
             }
-
-            return returnList;
         }
 
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)

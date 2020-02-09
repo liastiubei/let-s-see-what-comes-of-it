@@ -284,7 +284,18 @@ namespace DataStructuresTests
         }
 
         [Fact]
-        public void CheckIfWhereArgumentsWorksCorrectly()
+        public void CheckIfWhereArgumentsWorksCorrectly1()
+        {
+            DataStructures.ListCollection<string> array = null;
+            Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
+            List<string> list = new List<string>();
+            list.Add("Paul");
+            Func<string, bool> isFirstUpperCase = x => (x[0] >= 65 && x[0] <= 90);
+            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.All<string>(DataStructures.LinqFunctions.Where<string>(array, isUpperCase), isFirstUpperCase));
+        }
+
+        [Fact]
+        public void CheckIfWhereArgumentsWorksCorrectly2()
         {
             DataStructures.ListCollection<string> array = null;
             Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
