@@ -211,7 +211,8 @@ namespace DataStructuresTests
                 return true;
             };
 
-            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.SelectMany<List<string>, List<string>>(array, makeUpperCaseFirstAndAll));
+            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.All(
+                DataStructures.LinqFunctions.SelectMany<List<string>, List<string>>(array, makeUpperCaseFirstAndAll), isFirstUpperCase));
         }
 
         [Fact]
