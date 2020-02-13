@@ -2,3 +2,9 @@
 
 # S1854: Dead stores should be removed
 dotnet_diagnostic.S1854.severity = none
+
+# SA1201: Elements should appear in the correct order
+dotnet_diagnostic.SA1201.severity = none
+
+# IDE0061: Use block body for local functions
+csharp_style_expression_bodied_local_functions = false:none

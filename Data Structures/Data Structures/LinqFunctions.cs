@@ -106,6 +106,60 @@ namespace DataStructures
             }
         }
 
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TElement> elementSelector)
+        {
+            if (source == null || keySelector == null || elementSelector == null)
+            {
+                throw new ArgumentNullException("Source or selector null");
+            }
+
+            List<TKey> keys = new List<TKey>();
+            Dictionary<TKey, TElement> dictionary = new Dictionary<TKey, TElement>();
+            foreach (var obj in source)
+            {
+                TKey key = keySelector(obj);
+                if (key == null)
+                {
+                    throw new ArgumentNullException("Selector produces null key");
+                }
+
+                if (keys.Contains(key))
+                {
+                    throw new ArgumentException("keyselector produces duplicate keys");
+                }
+
+                dictionary.Add(keySelector(obj), elementSelector(obj));
+                keys.Add(key);
+            }
+
+            return dictionary;
+        }
+
+        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TSecond, TResult> resultSelector)
+        {
+            if (first == null || second == null)
+            {
+                throw new ArgumentNullException("First or Second is null");
+            }
+
+            List<TResult> zip = new List<TResult>();
+
+            var firstEnum = first.GetEnumerator();
+            var secondEnum = second.GetEnumerator();
+            while (firstEnum.MoveNext() && secondEnum.MoveNext())
+            {
+                zip.Add(resultSelector(firstEnum.Current, secondEnum.Current));
+            }
+
+            return zip;
+        }
+
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)
         {
             int num = 0;

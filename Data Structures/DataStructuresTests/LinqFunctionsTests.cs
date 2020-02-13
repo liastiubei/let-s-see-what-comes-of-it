@@ -294,14 +294,55 @@ namespace DataStructuresTests
             Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.All<string>(DataStructures.LinqFunctions.Where<string>(array, isUpperCase), isFirstUpperCase));
         }
 
-        [Fact]
-        public void CheckIfWhereArgumentsWorksCorrectly2()
+        class Package
         {
-            DataStructures.ListCollection<string> array = null;
-            Func<string, bool> isUpperCase = x => x[0] >= 65 && x[0] <= 90;
-            List<string> list = new List<string>();
-            list.Add("Paul");
-            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.Where<string>(array, isUpperCase));
+            public string Company { get; set; }
+
+            public long TrackingNumber { get; set; }
+        }
+
+        [Fact]
+        public void CheckIfToDictionaryWorksCorrectly1()
+        {
+            List<Package> packages = new List<Package>
+            {
+                new Package { Company = "Coho Vineyard", TrackingNumber = 89453312L },
+                new Package { Company = "Lucerne Publishing", TrackingNumber = 89112755L },
+                new Package { Company = "Wingtip Toys", TrackingNumber = 299456122L },
+                new Package { Company = "Adventure Works", TrackingNumber = 4665518773L }
+            };
+            Func<Package, long> key = x => x.TrackingNumber;
+            Func<Package, string> name = x => x.Company;
+            Assert.True(DataStructures.LinqFunctions.ToDictionary<Package, long, string>(packages, key, name)[89453312L] == "Coho Vineyard");
+        }
+
+        [Fact]
+        public void CheckIfToDictionaryArgumentsWorksCorrectly1()
+        {
+            List<Package> packages = null;
+            Func<Package, long> key = x => x.TrackingNumber;
+            Func<Package, string> name = x => x.Company;
+            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.ToDictionary<Package, long, string>(packages, key, name)[89453312L] == "Coho Vineyard");
+        }
+
+        [Fact]
+        public void CheckIfZipWorksCorrectly()
+        {
+            int[] first = { 1, 2, 3, 4 };
+            int[] second = { 1, 2, 3, 4 };
+            Func<int, int, int> combine = (x, y) => x + y;
+            List<int> zip = new List<int>() { 2, 4, 6, 8 };
+            Assert.Equal(DataStructures.LinqFunctions.Zip<int, int, int>(first, second, combine), zip);
+        }
+
+        [Fact]
+        public void CheckIfZipArgumentsWorksCorrectly()
+        {
+            int[] first = null;
+            int[] second = { 1, 2, 3, 4 };
+            Func<int, int, int> combine = (x, y) => x + y;
+            List<int> zip = new List<int>() { 2, 4, 6, 8 };
+            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.Zip<int, int, int>(first, second, combine));
         }
     }
 }
