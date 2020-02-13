@@ -116,7 +116,6 @@ namespace DataStructures
                 throw new ArgumentNullException("Source or selector null");
             }
 
-            List<TKey> keys = new List<TKey>();
             Dictionary<TKey, TElement> dictionary = new Dictionary<TKey, TElement>();
             foreach (var obj in source)
             {
@@ -126,13 +125,7 @@ namespace DataStructures
                     throw new ArgumentNullException("Selector produces null key");
                 }
 
-                if (keys.Contains(key))
-                {
-                    throw new ArgumentException("keyselector produces duplicate keys");
-                }
-
                 dictionary.Add(keySelector(obj), elementSelector(obj));
-                keys.Add(key);
             }
 
             return dictionary;
@@ -148,16 +141,12 @@ namespace DataStructures
                 throw new ArgumentNullException("First or Second is null");
             }
 
-            List<TResult> zip = new List<TResult>();
-
             var firstEnum = first.GetEnumerator();
             var secondEnum = second.GetEnumerator();
             while (firstEnum.MoveNext() && secondEnum.MoveNext())
             {
-                zip.Add(resultSelector(firstEnum.Current, secondEnum.Current));
+                yield return resultSelector(firstEnum.Current, secondEnum.Current);
             }
-
-            return zip;
         }
 
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)

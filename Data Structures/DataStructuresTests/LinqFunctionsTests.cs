@@ -341,8 +341,8 @@ namespace DataStructuresTests
             int[] first = null;
             int[] second = { 1, 2, 3, 4 };
             Func<int, int, int> combine = (x, y) => x + y;
-            List<int> zip = new List<int>() { 2, 4, 6, 8 };
-            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.Zip<int, int, int>(first, second, combine));
+            Func<int, bool> isEvenNumber = x => x % 2 == 0;
+            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.All<int>(DataStructures.LinqFunctions.Zip<int, int, int>(first, second, combine), isEvenNumber));
         }
     }
 }
