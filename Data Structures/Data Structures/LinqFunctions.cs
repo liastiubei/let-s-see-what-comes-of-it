@@ -131,6 +131,24 @@ namespace DataStructures
             return dictionary;
         }
 
+        public static TAccumulate Aggregate<TSource, TAccumulate>(
+            this IEnumerable<TSource> source,
+            TAccumulate seed,
+            Func<TAccumulate, TSource, TAccumulate> func)
+        {
+            if (source == null || func == null)
+            {
+                throw new ArgumentNullException("Source or function null");
+            }
+
+            foreach (var obj in source)
+            {
+                seed = func(seed, obj);
+            }
+
+            return seed;
+        }
+
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(
             this IEnumerable<TFirst> first,
             IEnumerable<TSecond> second,

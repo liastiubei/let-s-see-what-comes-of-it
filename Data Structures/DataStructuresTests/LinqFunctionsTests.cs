@@ -344,5 +344,39 @@ namespace DataStructuresTests
             Func<int, bool> isEvenNumber = x => x % 2 == 0;
             Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.All<int>(DataStructures.LinqFunctions.Zip<int, int, int>(first, second, combine), isEvenNumber));
         }
+
+        [Fact]
+        public void CheckIfAggregateWorksCorrectly()
+        {
+            int[] source = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            Func<int, int, int> howManyEvenNumbers = (seed, obj) =>
+            {
+                if (obj % 2 == 0)
+                {
+                    seed++;
+                }
+
+                return seed;
+            };
+
+            Assert.Equal(5, DataStructures.LinqFunctions.Aggregate<int, int>(source, 0, howManyEvenNumbers));
+        }
+
+        [Fact]
+        public void CheckIfAggregateArgumentWorksCorrectly()
+        {
+            int[] source = null;
+            Func<int, int, int> howManyEvenNumbers = (seed, obj) =>
+            {
+                if (obj % 2 == 0)
+                {
+                    seed++;
+                }
+
+                return seed;
+            };
+
+            Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.Aggregate<int, int>(source, 0, howManyEvenNumbers));
+        }
     }
 }
