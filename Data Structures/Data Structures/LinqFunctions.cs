@@ -167,6 +167,34 @@ namespace DataStructures
             }
         }
 
+        public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(
+            this IEnumerable<TOuter> outer,
+            IEnumerable<TInner> inner,
+            Func<TOuter, TKey> outerKeySelector,
+            Func<TInner, TKey> innerKeySelector,
+            Func<TOuter, TInner, TResult> resultSelector)
+        {
+            if (outer == null || inner == null || outerKeySelector == null || innerKeySelector == null || resultSelector == null)
+            {
+                throw new ArgumentNullException("Outer, Inner, OuterKeySelector, InnerKeySelector or RezultSelector is null");
+            }
+
+            var outerEnum = outer.GetEnumerator();
+            var innerEnum = inner.GetEnumerator();
+            while (outerEnum.MoveNext())
+            {
+                while (innerEnum.MoveNext())
+                {
+                    if (outerKeySelector(outerEnum.Current).Equals(innerKeySelector(innerEnum.Current)))
+                    {
+                        yield return resultSelector(outerEnum.Current, innerEnum.Current);
+                    }
+                }
+
+                innerEnum = inner.GetEnumerator();
+            }
+        }
+
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)
         {
             int num = 0;

@@ -47,3 +47,6 @@ dotnet_diagnostic.RCS1208.severity = none
 
 # SA1204: Static elements should appear before instance elements
 dotnet_diagnostic.SA1204.severity = none
+
+# S1067: Expressions should not be too complex
+dotnet_diagnostic.S1067.severity = none

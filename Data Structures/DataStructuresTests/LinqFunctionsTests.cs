@@ -378,5 +378,66 @@ namespace DataStructuresTests
 
             Assert.Throws<ArgumentNullException>(() => DataStructures.LinqFunctions.Aggregate<int, int>(source, 0, howManyEvenNumbers));
         }
+
+        class Person
+        {
+            public string Name { get; set; }
+        }
+
+        class Pet
+        {
+            public string Name { get; set; }
+
+            public Person Owner { get; set; }
+        }
+
+        [Fact]
+        public void CheckIfJoinWorksCorrectly()
+        {
+            Person magnus = new Person { Name = "Magnus" };
+            Person terry = new Person { Name = "Terry" };
+            Person charlotte = new Person { Name = "Charlotte" };
+
+            Pet barley = new Pet { Name = "Barley", Owner = terry };
+            Pet boots = new Pet { Name = "Boots", Owner = terry };
+            Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+            Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+
+            List<Person> people = new List<Person> { magnus, terry, charlotte };
+            List<Pet> pets = new List<Pet> { barley, boots, whiskers, daisy };
+
+            Func<Person, Person> outerKey = x => x;
+            Func<Pet, Person> innerKey = x => x.Owner;
+            Func<Person, Pet, object> resultSelector = (pers, pet) => (pers.Name, pet.Name);
+
+            List<object> join = new List<object>() { ("Magnus", "Daisy"), ("Terry", "Barley"), ("Terry", "Boots"), ("Charlotte", "Whiskers") };
+
+            Assert.Equal(DataStructures.LinqFunctions.Join<Person, Pet, Person, object>(people, pets, outerKey, innerKey, resultSelector), join);
+        }
+
+        [Fact]
+        public void CheckIfJoinArgumentsWorksCorrectly()
+        {
+            Person magnus = new Person { Name = "Magnus" };
+            Person terry = new Person { Name = "Terry" };
+            Person charlotte = new Person { Name = "Charlotte" };
+
+            Pet barley = new Pet { Name = "Barley", Owner = terry };
+            Pet boots = new Pet { Name = "Boots", Owner = terry };
+            Pet whiskers = new Pet { Name = "Whiskers", Owner = charlotte };
+            Pet daisy = new Pet { Name = "Daisy", Owner = magnus };
+
+            List<Person> people = null;
+            List<Pet> pets = new List<Pet> { barley, boots, whiskers, daisy };
+
+            Func<Person, Person> outerKey = x => x;
+            Func<Pet, Person> innerKey = x => x.Owner;
+            Func<Person, Pet, object> resultSelector = (pers, pet) => (pers.Name, pet.Name);
+
+            Func<object, bool> isString = x => Equals(x, x.ToString());
+
+            Assert.Throws<ArgumentNullException>(() =>
+            DataStructures.LinqFunctions.All<object>(DataStructures.LinqFunctions.Join<Person, Pet, Person, object>(people, pets, outerKey, innerKey, resultSelector), isString));
+        }
     }
 }
