@@ -237,6 +237,30 @@ namespace DataStructures
             }
         }
 
+        public static IEnumerable<TSource> Union<TSource>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            IEqualityComparer<TSource> comparer)
+        {
+            if (first == null || second == null)
+            {
+                throw new ArgumentNullException("First or Second is null");
+            }
+
+            var final = new List<TSource>();
+            foreach (var obj in first)
+            {
+                final.Add(obj);
+            }
+
+            foreach (var obj in second)
+            {
+                final.Add(obj);
+            }
+
+            return final.Distinct<TSource>(comparer);
+        }
+
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)
         {
             int num = 0;
