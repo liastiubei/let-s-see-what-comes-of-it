@@ -140,6 +140,14 @@ namespace DataStructures
             Count--;
         }
 
+        public void AddList(IEnumerable<T> list)
+        {
+            foreach (var obj in list)
+            {
+                this.Add(obj);
+            }
+        }
+
         public void ShiftLeft(int index)
         {
             for (int i = index; i < Count; i++)

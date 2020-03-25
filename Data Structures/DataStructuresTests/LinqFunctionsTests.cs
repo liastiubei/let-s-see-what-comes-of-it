@@ -439,5 +439,40 @@ namespace DataStructuresTests
             Assert.Throws<ArgumentNullException>(() =>
             DataStructures.LinqFunctions.All<object>(DataStructures.LinqFunctions.Join<Person, Pet, Person, object>(people, pets, outerKey, innerKey, resultSelector), isString));
         }
+
+        class IntEqualityComparer : IEqualityComparer<int>
+        {
+            public bool Equals(int num1, int num2)
+            {
+                return num1 == num2;
+            }
+
+            public int GetHashCode(int number)
+            {
+                return number.GetHashCode();
+            }
+        }
+
+        [Fact]
+        public void CheckIfDistinctWorksCorrectly()
+        {
+            int[] source = { 11, 12, 53, 12, 15, 15, 36, 87, 78, 90, 11 };
+            int[] result = { 53, 12, 15, 36, 87, 78, 90, 11 };
+            IntEqualityComparer equal = new IntEqualityComparer();
+            Assert.Equal(result, DataStructures.LinqFunctions.Distinct<int>(source, equal));
+        }
+
+        [Fact]
+        public void CheckIfDistinctArgumentWorksCorrectly()
+        {
+            int[] source = null;
+            int[] result = { 53, 12, 15, 36, 87, 78, 90, 11 };
+            IntEqualityComparer equal = new IntEqualityComparer();
+
+            Func<int, bool> isString = x => Equals(x, x.ToString());
+
+            Assert.Throws<ArgumentNullException>(() =>
+             DataStructures.LinqFunctions.All<int>(DataStructures.LinqFunctions.Distinct<int>(source, equal), isString));
+        }
     }
 }

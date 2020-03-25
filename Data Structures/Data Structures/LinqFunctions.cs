@@ -195,6 +195,48 @@ namespace DataStructures
             }
         }
 
+        public static IEnumerable<TSource> Distinct<TSource>(
+            this IEnumerable<TSource> source,
+            IEqualityComparer<TSource> comparer)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("Source is null");
+            }
+
+            var firstEnum = source.GetEnumerator();
+            var secondEnum = source.GetEnumerator();
+            secondEnum.MoveNext();
+            int i = 1;
+            while (firstEnum.MoveNext())
+            {
+                int j = 1;
+                var x = secondEnum;
+                bool c = false;
+                while (x.MoveNext())
+                {
+                    if (j < i)
+                    {
+                        j++;
+                    }
+                    else if (comparer.Equals(x.Current, firstEnum.Current))
+                    {
+                        c = true;
+                        break;
+                    }
+                }
+
+                if (!c)
+                {
+                    yield return firstEnum.Current;
+                }
+
+                secondEnum.Reset();
+                secondEnum.MoveNext();
+                i++;
+            }
+        }
+
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)
         {
             int num = 0;
