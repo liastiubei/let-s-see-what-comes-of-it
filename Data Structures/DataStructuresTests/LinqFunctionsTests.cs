@@ -457,7 +457,7 @@ namespace DataStructuresTests
         public void CheckIfDistinctWorksCorrectly()
         {
             int[] source = { 11, 12, 53, 12, 15, 15, 36, 87, 78, 90, 11 };
-            int[] result = { 53, 12, 15, 36, 87, 78, 90, 11 };
+            int[] result = { 11, 12, 53, 15, 36, 87, 78, 90 };
             IntEqualityComparer equal = new IntEqualityComparer();
             Assert.Equal(result, DataStructures.LinqFunctions.Distinct<int>(source, equal));
         }
@@ -480,7 +480,7 @@ namespace DataStructuresTests
         {
             int[] first = { 2, 4, 6, 8, 10, 12 };
             int[] second = { 3, 6, 9, 12, 15 };
-            int[] final = { 2, 4, 8, 10, 3, 6, 9, 12, 15 };
+            int[] final = { 2, 4, 6, 8, 10, 12, 3, 9, 15 };
             IntEqualityComparer equal = new IntEqualityComparer();
             Assert.Equal(final, DataStructures.LinqFunctions.Union<int>(first, second, equal));
         }

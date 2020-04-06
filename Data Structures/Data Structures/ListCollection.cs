@@ -79,6 +79,19 @@ namespace DataStructures
             return -1;
         }
 
+        public int IndexOfWithComparer(T item, IEqualityComparer<T> comparer)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if (comparer.Equals(item, this.array[i]))
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
         public bool Contains(T item)
         {
             return this.IndexOf(item) != -1;

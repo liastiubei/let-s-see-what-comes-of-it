@@ -204,37 +204,13 @@ namespace DataStructures
                 throw new ArgumentNullException("Source is null");
             }
 
-            var firstEnum = source.GetEnumerator();
-            var secondEnum = source.GetEnumerator();
-            secondEnum.MoveNext();
-            int i = 1;
-            while (firstEnum.MoveNext())
+            HashSet<TSource> list = new HashSet<TSource>();
+            foreach (var obj in source)
             {
-                int j = 1;
-                var x = secondEnum;
-                bool c = false;
-                while (x.MoveNext())
-                {
-                    if (j < i)
-                    {
-                        j++;
-                    }
-                    else if (comparer.Equals(x.Current, firstEnum.Current))
-                    {
-                        c = true;
-                        break;
-                    }
-                }
-
-                if (!c)
-                {
-                    yield return firstEnum.Current;
-                }
-
-                secondEnum.Reset();
-                secondEnum.MoveNext();
-                i++;
+                list.Add(obj);
             }
+
+            return list;
         }
 
         public static IEnumerable<TSource> Union<TSource>(
