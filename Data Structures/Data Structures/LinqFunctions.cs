@@ -213,6 +213,28 @@ namespace DataStructures
             return list;
         }
 
+        public static IEnumerable<TSource> Intersect<TSource>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            IEqualityComparer<TSource> comparer)
+        {
+            if (first == null || second == null)
+            {
+                throw new ArgumentNullException("First or Second is null");
+            }
+
+            HashSet<TSource> list = new HashSet<TSource>();
+            foreach (var obj in second)
+            {
+                if (first.Contains(obj))
+                {
+                    list.Add(obj);
+                }
+            }
+
+            return list;
+        }
+
         public static IEnumerable<TSource> Union<TSource>(
             this IEnumerable<TSource> first,
             IEnumerable<TSource> second,
