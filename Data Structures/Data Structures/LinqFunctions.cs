@@ -259,6 +259,28 @@ namespace DataStructures
             return final.Distinct<TSource>(comparer);
         }
 
+        public static IEnumerable<TSource> Except<TSource>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            IEqualityComparer<TSource> comparer)
+        {
+            if (first == null || second == null)
+            {
+                throw new ArgumentNullException("First or Second is null");
+            }
+
+            HashSet<TSource> list = new HashSet<TSource>();
+            foreach (var obj in first)
+            {
+                if (!second.Contains(obj))
+                {
+                    list.Add(obj);
+                }
+            }
+
+            return list;
+        }
+
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)
         {
             int num = 0;

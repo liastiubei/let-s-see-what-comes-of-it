@@ -514,5 +514,25 @@ namespace DataStructuresTests
             IntEqualityComparer equal = new IntEqualityComparer();
             Assert.Throws<ArgumentNullException>(() => final.Equals(DataStructures.LinqFunctions.Union<int>(first, second, equal)));
         }
+
+        [Fact]
+        public void CheckIfExceptWorksCorrectly()
+        {
+            int[] first = { 2, 4, 6, 8, 10, 12 };
+            int[] second = { 3, 6, 9, 12, 12, 15 };
+            int[] final = { 2, 4, 8, 10 };
+            IntEqualityComparer equal = new IntEqualityComparer();
+            Assert.Equal(final, DataStructures.LinqFunctions.Except<int>(first, second, equal));
+        }
+
+        [Fact]
+        public void CheckIfExceptArgumentWorksCorrectly()
+        {
+            int[] first = null;
+            int[] second = { 3, 6, 9, 12, 12, 15 };
+            int[] final = { 2, 4, 8, 10 };
+            IntEqualityComparer equal = new IntEqualityComparer();
+            Assert.Throws<ArgumentNullException>(() => final.Equals(DataStructures.LinqFunctions.Except<int>(first, second, equal)));
+        }
     }
 }
