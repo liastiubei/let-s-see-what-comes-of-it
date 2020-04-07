@@ -255,14 +255,9 @@ namespace DataStructures
                 throw new ArgumentNullException("First or Second is null");
             }
 
-            HashSet<TSource> list = new HashSet<TSource>();
-            foreach (var obj in first)
-            {
-                if (!second.Contains(obj))
-                {
-                    list.Add(obj);
-                }
-            }
+            HashSet<TSource> list = new HashSet<TSource>(first, comparer);
+            Predicate<TSource> isContainedBySecond = x => second.Contains(x, comparer);
+            list.RemoveWhere(isContainedBySecond);
 
             return list;
         }
