@@ -204,13 +204,7 @@ namespace DataStructures
                 throw new ArgumentNullException("Source is null");
             }
 
-            HashSet<TSource> list = new HashSet<TSource>(comparer);
-            foreach (var obj in source)
-            {
-                list.Add(obj);
-            }
-
-            return list;
+            return new HashSet<TSource>(source, comparer);
         }
 
         public static IEnumerable<TSource> Intersect<TSource>(
