@@ -204,7 +204,7 @@ namespace DataStructures
                 throw new ArgumentNullException("Source is null");
             }
 
-            HashSet<TSource> list = new HashSet<TSource>();
+            HashSet<TSource> list = new HashSet<TSource>(comparer);
             foreach (var obj in source)
             {
                 list.Add(obj);
@@ -223,16 +223,8 @@ namespace DataStructures
                 throw new ArgumentNullException("First or Second is null");
             }
 
-            HashSet<TSource> list = new HashSet<TSource>();
-            foreach (var obj in second)
-            {
-                if (first.Contains(obj))
-                {
-                    list.Add(obj);
-                }
-            }
-
-            return list;
+            Func<TSource, bool> isContainedBySecond = x => second.Contains(x, comparer);
+            return Where<TSource>(first, isContainedBySecond);
         }
 
         public static IEnumerable<TSource> Union<TSource>(
