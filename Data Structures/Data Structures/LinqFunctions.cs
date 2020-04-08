@@ -217,9 +217,8 @@ namespace DataStructures
                 throw new ArgumentNullException("First or Second is null");
             }
 
-            Predicate<TSource> isContainedBySecond = x => !second.Contains(x, comparer);
             HashSet<TSource> list = new HashSet<TSource>(first, comparer);
-            list.RemoveWhere(isContainedBySecond);
+            list.IntersectWith(second);
 
             return list;
         }
