@@ -217,8 +217,11 @@ namespace DataStructures
                 throw new ArgumentNullException("First or Second is null");
             }
 
-            Func<TSource, bool> isContainedBySecond = x => second.Contains(x, comparer);
-            return Where<TSource>(first, isContainedBySecond);
+            Predicate<TSource> isContainedBySecond = x => !second.Contains(x, comparer);
+            HashSet<TSource> list = new HashSet<TSource>(first, comparer);
+            list.RemoveWhere(isContainedBySecond);
+
+            return list;
         }
 
         public static IEnumerable<TSource> Union<TSource>(
@@ -231,18 +234,13 @@ namespace DataStructures
                 throw new ArgumentNullException("First or Second is null");
             }
 
-            var final = new List<TSource>();
-            foreach (var obj in first)
-            {
-                final.Add(obj);
-            }
-
+            var final = new HashSet<TSource>(first, comparer);
             foreach (var obj in second)
             {
                 final.Add(obj);
             }
 
-            return final.Distinct<TSource>(comparer);
+            return final;
         }
 
         public static IEnumerable<TSource> Except<TSource>(
