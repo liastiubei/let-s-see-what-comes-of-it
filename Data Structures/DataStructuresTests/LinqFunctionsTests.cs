@@ -534,5 +534,52 @@ namespace DataStructuresTests
             IntEqualityComparer equal = new IntEqualityComparer();
             Assert.Throws<ArgumentNullException>(() => final.Equals(DataStructures.LinqFunctions.Except<int>(first, second, equal)));
         }
+
+        class PersonEqualityComparer : IEqualityComparer<Person>
+        {
+            public bool Equals(Person name1, Person name2)
+            {
+                return name1 == name2;
+            }
+
+            public int GetHashCode(Person name)
+            {
+                return name.GetHashCode();
+            }
+        }
+
+        [Fact]
+        public void CheckIfGroupByWorksCorrectly()
+        {
+            Person magnus = new Person { Name = "Magnus" };
+            Person terry = new Person { Name = "Terry" };
+            Person charlotte = new Person { Name = "Charlotte" };
+            List<Pet> pets = new List<Pet>
+            {
+                new Pet { Name = "Barley", Owner = magnus },
+                new Pet { Name = "Maddison", Owner = terry },
+                new Pet { Name = "Pudding", Owner = charlotte },
+                new Pet { Name = "Apple", Owner = magnus },
+                new Pet { Name = "Ketchup", Owner = terry },
+                new Pet { Name = "Rufus", Owner = charlotte },
+                new Pet { Name = "Donut", Owner = magnus },
+                new Pet { Name = "Roger", Owner = terry },
+                new Pet { Name = "Kitten", Owner = charlotte }
+            };
+            Func<Pet, Person> ownerSelector = x => x.Owner;
+            Func<Pet, string> nameSelector = x => x.Name;
+            Func<Person, IEnumerable<string>, DataStructures.Grouping<Person, string>> resultSelector = (x, y) => new DataStructures.Grouping<Person, string>(x, y);
+            DataStructures.ListCollection<DataStructures.Grouping<Person, string>> finalGroups = new DataStructures.ListCollection<DataStructures.Grouping<Person, string>>
+            {
+                new DataStructures.Grouping<Person, string>(magnus, new DataStructures.ListCollection<string> { "Barley", "Apple", "Donut" }),
+                new DataStructures.Grouping<Person, string>(terry, new DataStructures.ListCollection<string> { "Maddison", "Ketchup", "Roger" }),
+                new DataStructures.Grouping<Person, string>(charlotte, new DataStructures.ListCollection<string> { "Pudding", "Rufus", "Kitten" })
+            };
+
+            PersonEqualityComparer comparer = new PersonEqualityComparer();
+            Assert.Equal(
+                finalGroups,
+                DataStructures.LinqFunctions.GroupBy<Pet, Person, string, DataStructures.Grouping<Person, string>>(pets, ownerSelector, nameSelector, resultSelector, comparer));
+        }
     }
 }

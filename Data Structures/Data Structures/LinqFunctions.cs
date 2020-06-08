@@ -259,6 +259,35 @@ namespace DataStructures
             return list;
         }
 
+        public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TElement> elementSelector,
+            Func<TKey, IEnumerable<TElement>, TResult> resultSelector,
+            IEqualityComparer<TKey> comparer)
+        {
+            ListCollection<TKey> keys = new ListCollection<TKey>();
+            ListCollection<ListCollection<TElement>> values = new ListCollection<ListCollection<TElement>>();
+            foreach (var obj in source)
+            {
+                if (keys.IndexOf(keySelector(obj)) == -1)
+                {
+                    keys.Add(keySelector(obj));
+                    values.Add(new ListCollection<TElement>());
+                }
+
+                values[keys.IndexOfWithComparer(keySelector(obj), comparer)].Add(elementSelector(obj));
+            }
+
+            ListCollection<TResult> result = new ListCollection<TResult>();
+            for (int i = 0; i < keys.Count; i++)
+            {
+                result.Add(resultSelector(keys[i], values[i]));
+            }
+
+            return result;
+        }
+
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)
         {
             int num = 0;

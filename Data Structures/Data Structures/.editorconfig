@@ -53,3 +53,6 @@ dotnet_diagnostic.S1067.severity = none
 
 # CA1801: Parameter comparer of method Distinct is never used. Remove the parameter or use it in the method body.
 dotnet_diagnostic.CA1801.severity = none
+
+# CA1710: Identifiers should have correct suffix
+dotnet_diagnostic.CA1710.severity = none
