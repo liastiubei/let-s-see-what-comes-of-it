@@ -266,26 +266,22 @@ namespace DataStructures
             Func<TKey, IEnumerable<TElement>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
-            ListCollection<TKey> keys = new ListCollection<TKey>();
-            ListCollection<ListCollection<TElement>> values = new ListCollection<ListCollection<TElement>>();
+            Dictionary<TKey, List<TElement>> dictionary = new Dictionary<TKey, List<TElement>>(comparer);
             foreach (var obj in source)
             {
-                if (keys.IndexOf(keySelector(obj)) == -1)
+                if (dictionary.ContainsKey(keySelector(obj)))
                 {
-                    keys.Add(keySelector(obj));
-                    values.Add(new ListCollection<TElement>());
+                    dictionary[keySelector(obj)].Add(elementSelector(obj));
+                    continue;
                 }
 
-                values[keys.IndexOfWithComparer(keySelector(obj), comparer)].Add(elementSelector(obj));
+                dictionary.Add(keySelector(obj), new List<TElement> { elementSelector(obj) });
             }
 
-            ListCollection<TResult> result = new ListCollection<TResult>();
-            for (int i = 0; i < keys.Count; i++)
+            foreach (var obj in dictionary)
             {
-                result.Add(resultSelector(keys[i], values[i]));
+                yield return resultSelector(obj.Key, obj.Value);
             }
-
-            return result;
         }
 
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)
