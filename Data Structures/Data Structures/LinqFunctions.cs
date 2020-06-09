@@ -284,6 +284,20 @@ namespace DataStructures
             }
         }
 
+        public static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            IComparer<TKey> comparer)
+        {
+            OrderedEnumerable<TSource> list = new OrderedEnumerable<TSource>();
+            foreach (var obj in source)
+            {
+                list.Add(obj);
+            }
+
+            return list.CreateOrderedEnumerable<TKey>(keySelector, comparer, false);
+        }
+
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)
         {
             int num = 0;
