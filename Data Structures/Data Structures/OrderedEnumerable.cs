@@ -8,95 +8,86 @@ namespace DataStructures
 {
     public class OrderedEnumerable<T> : IOrderedEnumerable<T>
     {
-        protected T[] array;
-        private bool isReadOnly;
-
-        public int Count { get; protected set; }
-
-        public bool IsReadOnly => isReadOnly;
+        protected List<T> list;
 
         public OrderedEnumerable()
         {
-            this.array = new T[8];
-            isReadOnly = false;
-            Count = 0;
+            this.list = new List<T>();
         }
 
         public virtual void Add(T item)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException("The array is readonly");
-            }
-
-            Resize();
-            this.array[Count] = item;
-            Count++;
-        }
-
-        public void Resize()
-        {
-            if (Count != array.Length)
-            {
-                return;
-            }
-
-            Array.Resize(ref array, array.Length * 2);
-        }
-
-        public void ResizeToCount()
-        {
-            Array.Resize(ref array, Count);
+            list.Add(item);
         }
 
         public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
         {
-            SortedDictionary<TKey, List<T>> list = new SortedDictionary<TKey, List<T>>(comparer);
-            for (int i = 0; i < Count; i++)
+            SortedDictionary<TKey, List<T>> sortedlist = new SortedDictionary<TKey, List<T>>(comparer);
+            for (int i = 0; i < list.Count; i++)
             {
-                if (list.ContainsKey(keySelector(array[i])))
+                if (sortedlist.ContainsKey(keySelector(list[i])))
                 {
-                    list[keySelector(array[i])].Add(array[i]);
+                    sortedlist[keySelector(list[i])].Add(list[i]);
                 }
                 else
                 {
-                    list.Add(keySelector(array[i]), new List<T> { array[i] });
+                    sortedlist.Add(keySelector(list[i]), new List<T> { list[i] });
                 }
             }
 
             if (descending)
             {
-                int i = Count - 1;
-                foreach (var obj in list)
+                int i = list.Count - 1;
+                foreach (var obj in sortedlist)
                 {
                     foreach (var value in obj.Value)
                     {
-                        array[i--] = value;
+                        list[i--] = value;
                     }
                 }
             }
             else
             {
                 int i = 0;
-                foreach (var obj in list)
+                foreach (var obj in sortedlist)
                 {
                     foreach (var value in obj.Value)
                     {
-                        array[i++] = value;
+                        list[i++] = value;
                     }
                 }
             }
 
-            ResizeToCount();
             return this;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                yield return array[i];
+                yield return list[i];
             }
+        }
+
+        public bool EqualityBetweenThisAPureIOrderedEnumerable(IOrderedEnumerable<T> another)
+        {
+            int i = 0;
+            foreach (var obj in another)
+            {
+                if (i == list.Count)
+                {
+                    return false;
+                }
+
+                if (!list[i].Equals(obj))
+                {
+                    return false;
+                }
+
+                i++;
+            }
+
+            return i == list.Count;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

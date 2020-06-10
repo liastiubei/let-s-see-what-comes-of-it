@@ -582,68 +582,42 @@ namespace DataStructuresTests
                 DataStructures.LinqFunctions.GroupBy<Pet, Person, string, DataStructures.Grouping<Person, string>>(pets, ownerSelector, nameSelector, resultSelector, comparer));
         }
 
-        class PersonNameComparer : IComparer<Person>
+        class CharComparer : IComparer<char>
         {
-            public int Compare(Person x, Person y)
+            public int Compare(char x, char y)
             {
-                int i;
-                for (i = 0; i < x.Name.Length && i < y.Name.Length; i++)
+                if (x < y)
                 {
-                    if (x.Name[i] < y.Name[i])
-                    {
-                        return -1;
-                    }
-
-                    if (y.Name[i] < x.Name[i])
-                    {
-                        return 1;
-                    }
+                    return -1;
                 }
 
-                if (y.Name.Length == x.Name.Length)
-                {
-                    return 0;
-                }
-
-                if (y.Name.Length > x.Name.Length)
+                if (x > y)
                 {
                     return 1;
                 }
 
-                return -1;
+                return 0;
             }
         }
 
         [Fact]
         public void CheckIfOrderByWorksCorrectly()
         {
-            List<Pet> pets = new List<Pet>
+            List<string> names = new List<string>
             {
-                new Pet { Name = "Barley", Owner = new Person { Name = "X" } },
-                new Pet { Name = "Maddison", Owner = new Person { Name = "F" } },
-                new Pet { Name = "Pudding", Owner = new Person { Name = "A" } },
-                new Pet { Name = "Apple", Owner = new Person { Name = "C" } },
-                new Pet { Name = "Ketchup", Owner = new Person { Name = "M" } },
-                new Pet { Name = "Rufus", Owner = new Person { Name = "X" } },
-                new Pet { Name = "Donut", Owner = new Person { Name = "N" } },
-                new Pet { Name = "Roger", Owner = new Person { Name = "Z" } },
-                new Pet { Name = "Kitten", Owner = new Person { Name = "P" } }
+                "Ana", "Vlad", "Dorina", "Croc", "Hook", "Andrei"
             };
-            Func<Pet, Person> ownerSelector = x => x.Owner;
-            DataStructures.OrderedEnumerable<Pet> orderedPets = new DataStructures.OrderedEnumerable<Pet>();
-            orderedPets.Add(new Pet { Name = "Pudding", Owner = new Person { Name = "A" } });
-            orderedPets.Add(new Pet { Name = "Apple", Owner = new Person { Name = "C" } });
-            orderedPets.Add(new Pet { Name = "Maddison", Owner = new Person { Name = "F" } });
-            orderedPets.Add(new Pet { Name = "Ketchup", Owner = new Person { Name = "M" } });
-            orderedPets.Add(new Pet { Name = "Donut", Owner = new Person { Name = "N" } });
-            orderedPets.Add(new Pet { Name = "Kitten", Owner = new Person { Name = "P" } });
-            orderedPets.Add(new Pet { Name = "Barley", Owner = new Person { Name = "X" } });
-            orderedPets.Add(new Pet { Name = "Rufus", Owner = new Person { Name = "X" } });
-            orderedPets.Add(new Pet { Name = "Roger", Owner = new Person { Name = "Z" } });
-            orderedPets.ResizeToCount();
-            PersonNameComparer comparer = new PersonNameComparer();
-            var finalOrdered = DataStructures.LinqFunctions.OrderBy<Pet, Person>(pets, ownerSelector, comparer);
-            Assert.Equal(orderedPets, finalOrdered);
+            Func<string, char> firstLetterSelector = x => x[0];
+            DataStructures.OrderedEnumerable<string> orderedNames = new DataStructures.OrderedEnumerable<string>();
+            orderedNames.Add("Ana");
+            orderedNames.Add("Andrei");
+            orderedNames.Add("Croc");
+            orderedNames.Add("Dorina");
+            orderedNames.Add("Hook");
+            orderedNames.Add("Vlad");
+            CharComparer comparer = new CharComparer();
+            var finalOrdered = DataStructures.LinqFunctions.OrderBy<string, char>(names, firstLetterSelector, comparer);
+            Assert.True(orderedNames.EqualityBetweenThisAPureIOrderedEnumerable(finalOrdered));
         }
     }
 }
