@@ -582,16 +582,42 @@ namespace DataStructuresTests
                 DataStructures.LinqFunctions.GroupBy<Pet, Person, string, DataStructures.Grouping<Person, string>>(pets, ownerSelector, nameSelector, resultSelector, comparer));
         }
 
-        class CharComparer : IComparer<char>
+        [Fact]
+        public void CheckIfGroupByArgumentWorksCorrectly()
         {
-            public int Compare(char x, char y)
+            List<string> names = null;
+            Func<string, char> firstLetterSelector = x => x[0];
+            Func<string, string> valueSelector = x => x;
+            Func<char, IEnumerable<string>, DataStructures.Grouping<char, string>> resultSelector = (x, y) => new DataStructures.Grouping<char, string>(x, y);
+            CharEqualityComparer comparer = new CharEqualityComparer();
+            const int z = 0;
+            Assert.Throws<ArgumentNullException>(() => z.Equals(DataStructures.LinqFunctions.GroupBy(
+                names, firstLetterSelector, valueSelector, resultSelector, comparer)));
+        }
+
+        class CharEqualityComparer : IEqualityComparer<char>
+        {
+            public bool Equals(char x, char y)
             {
-                if (x < y)
+                return x == y;
+            }
+
+            public int GetHashCode(char x)
+            {
+                return x.GetHashCode();
+            }
+        }
+
+        class FirstLetterComparer : IComparer<string>
+        {
+            public int Compare(string x, string y)
+            {
+                if (x[0] < y[0])
                 {
                     return -1;
                 }
 
-                if (x > y)
+                if (x[0] > y[0])
                 {
                     return 1;
                 }
@@ -607,17 +633,92 @@ namespace DataStructuresTests
             {
                 "Ana", "Vlad", "Dorina", "Croc", "Hook", "Andrei"
             };
-            Func<string, char> firstLetterSelector = x => x[0];
-            DataStructures.OrderedEnumerable<string> orderedNames = new DataStructures.OrderedEnumerable<string>();
+            Func<string, string> keySelector = x => x;
+            List<string> orderedNames = new List<string>();
             orderedNames.Add("Ana");
             orderedNames.Add("Andrei");
             orderedNames.Add("Croc");
             orderedNames.Add("Dorina");
             orderedNames.Add("Hook");
             orderedNames.Add("Vlad");
-            CharComparer comparer = new CharComparer();
-            var finalOrdered = DataStructures.LinqFunctions.OrderBy<string, char>(names, firstLetterSelector, comparer);
-            Assert.True(orderedNames.EqualityBetweenThisAPureIOrderedEnumerable(finalOrdered));
+            FirstLetterComparer comparer = new FirstLetterComparer();
+            var final = DataStructures.LinqFunctions.OrderBy<string, string>(names, keySelector, comparer);
+            DataStructures.OrderedEnumerable<string> finalOrdered = new DataStructures.OrderedEnumerable<string>(final, comparer);
+            Assert.Equal(orderedNames, finalOrdered.UnorderedList());
+        }
+
+        [Fact]
+        public void CheckIfOrderByArgumentWorksCorrectly()
+        {
+            List<string> names = null;
+            Func<string, string> keySelector = x => x;
+            FirstLetterComparer comparer = new FirstLetterComparer();
+            List<string> orderedNames = new List<string>();
+            orderedNames.Add("Ana");
+            orderedNames.Add("Andrei");
+            orderedNames.Add("Croc");
+            orderedNames.Add("Dorina");
+            orderedNames.Add("Hook");
+            orderedNames.Add("Vlad");
+            Assert.Throws<ArgumentNullException>(() => names.Equals(DataStructures.LinqFunctions.OrderBy<string, string>(names, keySelector, comparer)));
+        }
+
+        class SecondLetterComparer : IComparer<string>
+        {
+            public int Compare(string x, string y)
+            {
+                if (x.Length < 2 || y.Length < 2)
+                {
+                    throw new ArgumentException("String too small");
+                }
+
+                if (x[1] < y[1])
+                {
+                    return -1;
+                }
+
+                if (x[1] > y[1])
+                {
+                    return 1;
+                }
+
+                return 0;
+            }
+        }
+
+        [Fact]
+        public void CheckIfThenByWorksCorrectly()
+        {
+            List<string> names = new List<string>
+            {
+                "Ana", "Vlad", "Dorina", "Croc", "Hook", "Alexandru"
+            };
+            Func<string, string> keySelector = x => x;
+            FirstLetterComparer comparer = new FirstLetterComparer();
+            var finalOrderedBy = DataStructures.LinqFunctions.OrderBy<string, string>(names, keySelector, comparer);
+            SecondLetterComparer secondComparer = new SecondLetterComparer();
+            var finalThenBy = DataStructures.LinqFunctions.ThenBy<string, string>(finalOrderedBy, keySelector, secondComparer);
+            List<string> orderedNames = new List<string>();
+            orderedNames.Add("Alexandru");
+            orderedNames.Add("Ana");
+            orderedNames.Add("Croc");
+            orderedNames.Add("Dorina");
+            orderedNames.Add("Hook");
+            orderedNames.Add("Vlad");
+            bool k = true;
+            int i = 0;
+            foreach (var obj in finalThenBy)
+            {
+                if (!orderedNames[i].Equals(obj))
+                {
+                    k = false;
+                    break;
+                }
+
+                i++;
+            }
+
+            Assert.True(k);
         }
     }
 }

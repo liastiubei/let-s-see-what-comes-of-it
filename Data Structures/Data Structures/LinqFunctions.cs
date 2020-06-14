@@ -266,6 +266,16 @@ namespace DataStructures
             Func<TKey, IEnumerable<TElement>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
+            if (source == null)
+            {
+                throw new ArgumentNullException("Source is null");
+            }
+
+            if (keySelector == null || elementSelector == null || resultSelector == null)
+            {
+                throw new ArgumentNullException("Selector is null");
+            }
+
             Dictionary<TKey, List<TElement>> dictionary = new Dictionary<TKey, List<TElement>>(comparer);
             foreach (var obj in source)
             {
@@ -278,10 +288,13 @@ namespace DataStructures
                 dictionary.Add(keySelector(obj), new List<TElement> { elementSelector(obj) });
             }
 
+            List<TResult> returnList = new List<TResult>();
             foreach (var obj in dictionary)
             {
-                yield return resultSelector(obj.Key, obj.Value);
+                returnList.Add(resultSelector(obj.Key, obj.Value));
             }
+
+            return returnList;
         }
 
         public static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(
@@ -289,13 +302,25 @@ namespace DataStructures
             Func<TSource, TKey> keySelector,
             IComparer<TKey> comparer)
         {
-            OrderedEnumerable<TSource> list = new OrderedEnumerable<TSource>();
-            foreach (var obj in source)
+            if (source == null || keySelector == null)
             {
-                list.Add(obj);
+                throw new ArgumentNullException("Source or Selector null");
             }
 
-            return list.CreateOrderedEnumerable<TKey>(keySelector, comparer, false);
+            return new OrderedEnumerable<TSource>(source, new KeyComparerUsingValue<TSource, TKey>(keySelector, comparer));
+        }
+
+        public static IOrderedEnumerable<TSource> ThenBy<TSource, TKey>(
+            this IOrderedEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            IComparer<TKey> comparer)
+        {
+            if (source == null || keySelector == null)
+            {
+                throw new ArgumentNullException("Source or Selector null");
+            }
+
+            return source.CreateOrderedEnumerable(keySelector, comparer, false);
         }
 
         public static int SimpleCount<TSource>(this IEnumerable<TSource> source)

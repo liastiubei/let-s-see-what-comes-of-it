@@ -2,92 +2,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DataStructures
 {
     public class OrderedEnumerable<T> : IOrderedEnumerable<T>
     {
-        protected List<T> list;
+        private readonly List<T> list;
+        private readonly IComparer<T> comparer;
 
-        public OrderedEnumerable()
+        public OrderedEnumerable(IEnumerable<T> newList, IComparer<T> comparer)
         {
-            this.list = new List<T>();
+            this.list = new List<T>(newList);
+            this.comparer = comparer;
         }
 
-        public virtual void Add(T item)
+        public IEnumerable<T> UnorderedList()
         {
-            list.Add(item);
+            return this.list;
         }
 
-        public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> comparer, bool descending)
+        public IOrderedEnumerable<T> CreateOrderedEnumerable<TKey>(Func<T, TKey> keySelector, IComparer<TKey> otherComparer, bool descending)
         {
-            SortedDictionary<TKey, List<T>> sortedlist = new SortedDictionary<TKey, List<T>>(comparer);
-            for (int i = 0; i < list.Count; i++)
+            if (keySelector == null)
             {
-                if (sortedlist.ContainsKey(keySelector(list[i])))
-                {
-                    sortedlist[keySelector(list[i])].Add(list[i]);
-                }
-                else
-                {
-                    sortedlist.Add(keySelector(list[i]), new List<T> { list[i] });
-                }
+                throw new ArgumentNullException("KeySelector is null");
             }
 
+            IComparer<T> newComparer = new KeyComparerUsingValue<T, TKey>(keySelector, otherComparer);
             if (descending)
             {
-                int i = list.Count - 1;
-                foreach (var obj in sortedlist)
-                {
-                    foreach (var value in obj.Value)
-                    {
-                        list[i--] = value;
-                    }
-                }
-            }
-            else
-            {
-                int i = 0;
-                foreach (var obj in sortedlist)
-                {
-                    foreach (var value in obj.Value)
-                    {
-                        list[i++] = value;
-                    }
-                }
+                newComparer = new BackwardsComparer<T>(newComparer);
             }
 
-            return this;
+            return new OrderedEnumerable<T>(list, new OrderComparer<T>(comparer, newComparer));
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < list.Count; i++)
+            var newList = list;
+            newList.Sort(comparer);
+            foreach (var obj in newList)
             {
-                yield return list[i];
+                yield return obj;
             }
-        }
-
-        public bool EqualityBetweenThisAPureIOrderedEnumerable(IOrderedEnumerable<T> another)
-        {
-            int i = 0;
-            foreach (var obj in another)
-            {
-                if (i == list.Count)
-                {
-                    return false;
-                }
-
-                if (!list[i].Equals(obj))
-                {
-                    return false;
-                }
-
-                i++;
-            }
-
-            return i == list.Count;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
