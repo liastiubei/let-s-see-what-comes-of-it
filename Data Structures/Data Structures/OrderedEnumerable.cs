@@ -39,7 +39,7 @@ namespace DataStructures
 
         public IEnumerator<T> GetEnumerator()
         {
-            var newList = list;
+            var newList = list.ToList();
             newList.Sort(comparer);
             foreach (var obj in newList)
             {
