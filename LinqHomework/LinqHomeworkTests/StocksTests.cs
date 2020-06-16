@@ -21,7 +21,7 @@ namespace LinqHomeworkTests
 
             stocks.StockNotification = GetNotified;
             stocks.Remove("Lightbulb", 5);
-            Assert.Equal("7 Lightbulb left", notificationList[0]);
+            Assert.Equal("7 Lightbulb left.", notificationList[0]);
         }
     }
 }
