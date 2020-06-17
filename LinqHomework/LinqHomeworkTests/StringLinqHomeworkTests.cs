@@ -20,5 +20,12 @@ namespace LinqHomeworkTests
             LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("abcdefghijklmnopqrstuvwxyz");
             Assert.Equal((21, 5), text.NumberOfConsonantsAndVowelsInAString());
         }
+
+        [Fact]
+        public void CheckIfFirstCharacterThatDoesntRepeatWorksCorrectly2()
+        {
+            LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("ana are banane cu capsuni roz");
+            Assert.Equal('b', text.FirstCharacterThatDoesntRepeat());
+        }
     }
 }

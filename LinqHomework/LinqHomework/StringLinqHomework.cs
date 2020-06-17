@@ -19,9 +19,14 @@ namespace LinqHomework
                                   'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'};
             Func<char, bool> isVowel = x => vowels.Contains(x);
             Func<char, bool> isConsonant = x => consonants.Contains(x);
-            var z = textArray.Where(isConsonant).ToList();
-            var y = textArray.Where(isVowel).ToList();
             return (textArray.Where(isConsonant).Count(), textArray.Where(isVowel).Count());
+        }
+
+        public char FirstCharacterThatDoesntRepeat()
+        {
+            char[] textArray = text.ToCharArray();
+            Func<char, bool> doesntRepeat = x => textArray.Count(y => y == x) == 1;
+            return textArray.First(doesntRepeat);
         }
     }
 }
