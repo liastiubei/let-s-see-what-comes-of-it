@@ -37,15 +37,19 @@ namespace LinqHomework
                 throw new ArgumentException("Not enough items to remove");
             }
             int oldQuantity = 0;
-            foreach (var obj in stock)
+            Func<Product, Product> changeQuantity = x =>
             {
-                if (obj.Name == name)
+                if (x.Name == name)
                 {
-                    oldQuantity = obj.Quantity;
-                    obj.Quantity -= quantity;
+                    oldQuantity = x.Quantity;
+                    return new Product(name, x.Price, x.Quantity - quantity);
                 }
-            }
 
+                return x;
+            };
+
+            stock = stock.Select(changeQuantity).ToList();
+            item = stock.First(x => x.Name == name);
             int numberOfItemsLeft = item.Quantity;
             int[] warnings = { 2, 5, 10 };
             if (warnings.Any(number => numberOfItemsLeft < number && oldQuantity >= number))
