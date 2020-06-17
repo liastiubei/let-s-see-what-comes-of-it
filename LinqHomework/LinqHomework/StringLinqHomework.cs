@@ -15,33 +15,18 @@ namespace LinqHomework
 
         public (int, int) NumberOfConsonantsAndVowelsInAString()
         {
-            var comparer = new LetterCaseInsensitiveEqualityComparer();
             string vowels = "aeiou";
-            Func<char, bool> isVowel = x => vowels.Contains(x, comparer);
+            Func<char, bool> isVowel = x => vowels.IndexOf(char.ToLower(x)) != -1;
             Func<char, bool> isConsonant = x =>
             {
-                return char.IsLetter(x) && !vowels.Contains(x, comparer);
+                return char.IsLetter(x) && vowels.IndexOf(char.ToLower(x)) == -1;
             };
             return (text.Where(isConsonant).Count(), text.Where(isVowel).Count());
         }
 
-        public char FirstCharacterThatDoesntRepeat()
+        public char? FirstCharacterThatDoesntRepeat()
         {
-            Func<char, bool> doesntRepeat = x => text.IndexOf(x) == text.LastIndexOf(x);
-            return text.First(doesntRepeat);
-        }
-
-        class LetterCaseInsensitiveEqualityComparer : IEqualityComparer<char>
-        {
-            public bool Equals(char x, char y)
-            {
-                return char.ToUpper(x) == char.ToUpper(y);
-            }
-
-            public int GetHashCode(char obj)
-            {
-                return obj.GetHashCode();
-            }
+            return text.GroupBy(x => x).FirstOrDefault(y => y.Count() == 1).Key;
         }
     }
 }
