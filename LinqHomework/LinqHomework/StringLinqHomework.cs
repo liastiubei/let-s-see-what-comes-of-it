@@ -26,7 +26,8 @@ namespace LinqHomework
 
         public char? FirstCharacterThatDoesntRepeat()
         {
-            return text.GroupBy(x => x).FirstOrDefault(y => y.Count() == 1).Key;
+            var x = text.GroupBy(y => y).FirstOrDefault(y => y.Count() == 1);
+            return x != default ? x.Key : default;
         }
     }
 }
