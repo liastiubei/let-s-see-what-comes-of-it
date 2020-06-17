@@ -22,7 +22,7 @@ namespace LinqHomeworkTests
         }
 
         [Fact]
-        public void CheckIfFirstCharacterThatDoesntRepeatWorksCorrectly2()
+        public void CheckIfFirstCharacterThatDoesntRepeatWorksCorrectly1()
         {
             LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("ana are banane cu capsuni roz");
             Assert.Equal('b', text.FirstCharacterThatDoesntRepeat());

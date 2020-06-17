@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LinqHomework
@@ -6,27 +7,41 @@ namespace LinqHomework
     public class StringLinqHomework
     {
         string text;
-        
+
         public StringLinqHomework(string text)
         {
             this.text = text;
         }
+
         public (int, int) NumberOfConsonantsAndVowelsInAString()
         {
-            char[] textArray = this.text.ToCharArray();
-            char[] vowels = { 'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u' };
-            char[] consonants = { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z',
-                                  'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'};
-            Func<char, bool> isVowel = x => vowels.Contains(x);
-            Func<char, bool> isConsonant = x => consonants.Contains(x);
-            return (textArray.Where(isConsonant).Count(), textArray.Where(isVowel).Count());
+            var comparer = new LetterCaseInsensitiveEqualityComparer();
+            string vowels = "aeiou";
+            Func<char, bool> isVowel = x => vowels.Contains(x, comparer);
+            Func<char, bool> isConsonant = x =>
+            {
+                return char.IsLetter(x) && !vowels.Contains(x, comparer);
+            };
+            return (text.Where(isConsonant).Count(), text.Where(isVowel).Count());
         }
 
         public char FirstCharacterThatDoesntRepeat()
         {
-            char[] textArray = text.ToCharArray();
-            Func<char, bool> doesntRepeat = x => textArray.Count(y => y == x) == 1;
-            return textArray.First(doesntRepeat);
+            Func<char, bool> doesntRepeat = x => text.IndexOf(x) == text.LastIndexOf(x);
+            return text.First(doesntRepeat);
+        }
+
+        class LetterCaseInsensitiveEqualityComparer : IEqualityComparer<char>
+        {
+            public bool Equals(char x, char y)
+            {
+                return char.ToUpper(x) == char.ToUpper(y);
+            }
+
+            public int GetHashCode(char obj)
+            {
+                return obj.GetHashCode();
+            }
         }
     }
 }
