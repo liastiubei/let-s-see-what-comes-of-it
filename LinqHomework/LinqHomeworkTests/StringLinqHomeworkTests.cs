@@ -41,5 +41,12 @@ namespace LinqHomeworkTests
             LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("-118932");
             Assert.Equal(-118932, text.ChangeFromStringToInt());
         }
+
+        [Fact]
+        public void CheckIfFindCharacterWhoAppearTheMostWorksCorrectly2()
+        {
+            LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("ana are banane cu capsuni roz");
+            Assert.Equal('a', text.FindCharacterWhoAppearTheMost());
+        }
     }
 }

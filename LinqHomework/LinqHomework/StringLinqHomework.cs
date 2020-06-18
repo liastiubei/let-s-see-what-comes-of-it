@@ -59,5 +59,10 @@ namespace LinqHomework
             return minus * text.Aggregate(0, Accumulate);
 
         }
+
+        public char FindCharacterWhoAppearTheMost()
+        {
+            return text.GroupBy(y => y).OrderBy(y => y.Count()).Last().Key;
+        }
     }
 }
