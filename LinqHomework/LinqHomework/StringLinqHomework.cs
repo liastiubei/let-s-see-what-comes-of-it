@@ -52,5 +52,15 @@ namespace LinqHomework
         {
             return text.GroupBy(y => y).OrderByDescending(y => y.Count()).First().Key;
         }
+
+        public IEnumerable<string> ResultingPalindromes()
+        {
+            return Enumerable
+                .Range(1, text.Length)
+                .SelectMany(length => Enumerable.Range(0, text.Length - length + 1)
+                                                .Select(x => text.Substring(x, length)))
+                                                .Where(x => x.SequenceEqual(x.Reverse()))
+                .ToArray();
+        }
     }
 }

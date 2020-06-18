@@ -48,5 +48,13 @@ namespace LinqHomeworkTests
             LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("ana are banane cu capsuni roz");
             Assert.Equal('a', text.FindCharacterWhoAppearTheMost());
         }
+
+        [Fact]
+        public void CheckIfResultingPalindromesWorksCorrectly()
+        {
+            LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("aabaac");
+            string[] result = { "a", "a", "b", "a", "a", "c", "aa", "aa", "aba", "aabaa" };
+            Assert.Equal(result, text.ResultingPalindromes());
+        }
     }
 }
