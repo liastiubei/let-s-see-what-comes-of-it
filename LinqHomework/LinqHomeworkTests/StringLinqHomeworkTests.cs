@@ -27,5 +27,19 @@ namespace LinqHomeworkTests
             LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("ana are banane cu capsuni roz");
             Assert.Equal('b', text.FirstCharacterThatDoesntRepeat());
         }
+
+        [Fact]
+        public void CheckIfChangeFromStringToIntWorksCorrectly1()
+        {
+            LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("118932");
+            Assert.Equal(118932, text.ChangeFromStringToInt());
+        }
+
+        [Fact]
+        public void CheckIfChangeFromStringToIntWorksCorrectly2()
+        {
+            LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("-118932");
+            Assert.Equal(-118932, text.ChangeFromStringToInt());
+        }
     }
 }
