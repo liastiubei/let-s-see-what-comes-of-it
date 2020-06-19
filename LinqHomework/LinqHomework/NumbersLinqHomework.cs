@@ -34,12 +34,7 @@ namespace LinqHomework
             int j = start;
             Func<int, int> ChangeIndex = x =>
             {
-                if (x == number)
-                {
-                    return -x;
-                }
-
-                return x;
+                return x == number ? -x : x;
             };
 
             for (int i = 0; i < start; i++)
