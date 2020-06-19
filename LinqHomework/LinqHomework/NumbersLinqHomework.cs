@@ -15,5 +15,39 @@ namespace LinqHomework
                    where sum <= k
                    select elements;
         }
+
+        public static int[][] AllCombinationsWithNAndSumOfK(int n, int k)
+        {
+            int[][] allCombinations = new int[Convert.ToInt32(Math.Pow(2, n))][];
+            allCombinations[0] = Enumerable.Range(1, n).ToArray();
+            allCombinations = AllCombinations(allCombinations, n, 1);
+            return allCombinations.Where(x => x.Sum() <= k).ToArray();
+        }
+
+        private static int[][] AllCombinations(int[][] source, int number, int start)
+        {
+            if (start == source.Length)
+            {
+                return source;
+            }
+
+            int j = start;
+            Func<int, int> ChangeIndex = x =>
+            {
+                if (x == number)
+                {
+                    return -x;
+                }
+
+                return x;
+            };
+
+            for (int i = 0; i < start; i++)
+            {
+                source[j++] = source[i].Select(ChangeIndex).ToArray();
+            }
+
+            return AllCombinations(source, number - 1, j);
+        }
     }
 }

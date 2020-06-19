@@ -20,5 +20,12 @@ namespace LinqHomeworkTests
             var x = LinqHomework.NumbersLinqHomework.AllSubsequencesWithSumEqualOrSmallerThanK(array, 7);
             Assert.Equal(result, x);
         }
+
+        [Fact]
+        public void CheckIfAllCombinationsWithNAndSumOfKWorksCorrectly()
+        {
+            int[][] array = { new int[] { 1, 2, -3 }, new int[] { 1, -2, -3 }, new int[] { -1, 2, -3 }, new int[] { -1, -2, 3 }, new int[] { -1, -2, -3 } };
+            Assert.Equal(array, LinqHomework.NumbersLinqHomework.AllCombinationsWithNAndSumOfK(3, 0));
+        }
     }
 }
