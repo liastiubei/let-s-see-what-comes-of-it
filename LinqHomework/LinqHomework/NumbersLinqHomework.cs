@@ -16,33 +16,27 @@ namespace LinqHomework
                    select elements;
         }
 
-        public static int[][] AllCombinationsWithNAndSumOfK(int n, int k)
+        public static List<List<int>> AllCombinationsWithNAndSumOfK(int n, int k)
         {
-            int[][] allCombinations = new int[Convert.ToInt32(Math.Pow(2, n))][];
-            allCombinations[0] = Enumerable.Range(1, n).ToArray();
-            allCombinations = AllCombinations(allCombinations, n, 1);
-            return allCombinations.Where(x => x.Sum() <= k).ToArray();
-        }
-
-        private static int[][] AllCombinations(int[][] source, int number, int start)
-        {
-            if (start == source.Length)
+            List<List<int>> combinations = new List<List<int>>();
+            combinations.Add(Enumerable.Range(1, n).ToList());
+            int index = n;
+            Func<List<int>, List<int>> ChangeIndex = x =>
             {
-                return source;
-            }
-
-            int j = start;
-            Func<int, int> ChangeIndex = x =>
-            {
-                return x == number ? -x : x;
+                return x.Select(y => y == index ? -y : y).ToList();
             };
 
-            for (int i = 0; i < start; i++)
+            for (int i = 1; i <= n; i++)
             {
-                source[j++] = source[i].Select(ChangeIndex).ToArray();
+                foreach (var obj in combinations.Select(ChangeIndex).ToList())
+                {
+                    combinations.Add(obj);
+                }
+
+                index--;
             }
 
-            return AllCombinations(source, number - 1, j);
+            return combinations.Where(x => x.Sum() <= k).ToList();
         }
     }
 }
