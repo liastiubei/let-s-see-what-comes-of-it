@@ -16,27 +16,36 @@ namespace LinqHomework
                    select elements;
         }
 
-        public static List<List<int>> AllCombinationsWithNAndSumOfK(int n, int k)
+        public static List<string> AllCombinationsWithNAndSumOfK(int n, int k)
         {
-            List<List<int>> combinations = new List<List<int>>();
-            combinations.Add(Enumerable.Range(1, n).ToList());
-            int index = n;
-            Func<List<int>, List<int>> ChangeIndex = x =>
+            List<string> combinations = new List<string>();
+            combinations.Add("");
+            Func<string, List<string>> newList = y =>
             {
-                return x.Select(y => y == index ? -y : y).ToList();
+                var list = new List<string>();
+                list.Add(y + "+");
+                list.Add(y + "-");
+                return list;
             };
 
-            for (int i = 1; i <= n; i++)
+            Func<int, List<string>> AddingToTheLists = x =>
             {
-                foreach (var obj in combinations.Select(ChangeIndex).ToList())
-                {
-                    combinations.Add(obj);
-                }
+                combinations = combinations.SelectMany(newList).ToList();
+                return combinations;
+            };
 
-                index--;
-            }
+            int i = 1;
+            Func<char, string, int> CharToInt = (x, g) =>
+            {
+                var y = x == '-' ? - i : i;
+                _ = i == 3 ? i = 1 : i++;
+                return y;
+            };
 
-            return combinations.Where(x => x.Sum() <= k).ToList();
+            var z = Enumerable.Range(1, n).SelectMany(AddingToTheLists).ToList();
+            var a = z.Where(x => x.Length == n && x.Sum(y => CharToInt(y, x)) <= k).ToList();
+            return a;
+            
         }
     }
 }
