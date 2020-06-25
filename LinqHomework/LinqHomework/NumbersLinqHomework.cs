@@ -42,10 +42,7 @@ namespace LinqHomework
                 return y;
             };
 
-            var z = Enumerable.Range(1, n).SelectMany(AddingToTheLists).ToList();
-            var a = z.Where(x => x.Length == n && x.Sum(y => CharToInt(y, x)) <= k).ToList();
-            return a;
-            
+            return Enumerable.Range(1, n).SelectMany(AddingToTheLists).Where(x => x.Length == n && x.Sum(y => CharToInt(y, x)) <= k).ToList();
         }
     }
 }
