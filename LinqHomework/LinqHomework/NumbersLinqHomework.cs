@@ -20,28 +20,7 @@ namespace LinqHomework
         {
             List<string> combinations = new List<string>();
             combinations.Add("");
-            Func<string, List<string>> newList = y =>
-            {
-                var list = new List<string>();
-                list.Add(y + "+");
-                list.Add(y + "-");
-                return list;
-            };
-
-            Func<List<string>, int, List<string>> AddingToTheLists = (list, x) =>
-            {
-                return list.SelectMany(newList).ToList();
-            };
-
-            int i = 1;
-            Func<char, string, int> CharToInt = (x, g) =>
-            {
-                var y = x == '-' ? - i : i;
-                _ = i == 3 ? i = 1 : i++;
-                return y;
-            };
-
-            return Enumerable.Range(1, n).Aggregate<int, List<string>>(combinations, AddingToTheLists).Where(x => x.Length == n && x.Sum(y => CharToInt(y, x)) <= k).ToList();
+            return Enumerable.Range(1, n).Aggregate<int, List<string>>(combinations, (list, x) => list.SelectMany(y => new[] { y + "+", y + "-" }).ToList()).Where(x => x.Length == n && x.Select((character, index) => character == '+' ? index + 1 : -index - 1).ToList().Sum() <= k).ToList();
         }
     }
 }
