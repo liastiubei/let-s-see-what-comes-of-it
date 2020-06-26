@@ -28,10 +28,9 @@ namespace LinqHomework
                 return list;
             };
 
-            Func<int, List<string>> AddingToTheLists = x =>
+            Func<List<string>, int, List<string>> AddingToTheLists = (list, x) =>
             {
-                combinations = combinations.SelectMany(newList).ToList();
-                return combinations;
+                return list.SelectMany(newList).ToList();
             };
 
             int i = 1;
@@ -42,7 +41,7 @@ namespace LinqHomework
                 return y;
             };
 
-            return Enumerable.Range(1, n).SelectMany(AddingToTheLists).Where(x => x.Length == n && x.Sum(y => CharToInt(y, x)) <= k).ToList();
+            return Enumerable.Range(1, n).Aggregate<int, List<string>>(combinations, AddingToTheLists).Where(x => x.Length == n && x.Sum(y => CharToInt(y, x)) <= k).ToList();
         }
     }
 }
