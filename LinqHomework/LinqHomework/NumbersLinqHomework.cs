@@ -18,9 +18,10 @@ namespace LinqHomework
 
         public static List<string> AllCombinationsWithNAndSumOfK(int n, int k)
         {
-            List<string> combinations = new List<string>();
-            combinations.Add("");
-            return Enumerable.Range(1, n).Aggregate<int, List<string>>(combinations, (list, x) => list.SelectMany(y => new[] { y + "+", y + "-" }).ToList()).Where(x => x.Length == n && x.Select((character, index) => character == '+' ? index + 1 : -index - 1).ToList().Sum() <= k).ToList();
+            IEnumerable<string> seed = new[] { "" };
+            return Enumerable.Range(1, n)
+                    .Aggregate<int, IEnumerable<string>>(seed, (list, x) => list.SelectMany(y => new[] { y + "+", y + "-" }).ToList())
+                    .Where(x => x.Length == n && x.Select((character, index) => character == '+' ? index + 1 : -index - 1).ToList().Sum() <= k).ToList();
         }
     }
 }
