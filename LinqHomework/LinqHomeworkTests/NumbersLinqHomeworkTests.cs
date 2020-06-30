@@ -28,5 +28,16 @@ namespace LinqHomeworkTests
             var combo = LinqHomework.NumbersLinqHomework.AllCombinationsWithNAndSumOfK(3, 0);
             Assert.Equal(array, combo);
         }
+
+        [Fact]
+        public void CheckIfAllTripletsThatFulfilla2b2c2EqualityWorksCorrectly()
+        {
+            int[] array = { 1, 2, 3, 4, 5 };
+            var combo = LinqHomework.NumbersLinqHomework.AllTripletsThatFulfilla2b2c2Equality(array);
+            List<int[]> final = new List<int[]>();
+            final.Add(new int[] { 3, 4, 5 });
+            final.Add(new int[] { 4, 3, 5 });
+            Assert.Equal(final, combo);
+        }
     }
 }
