@@ -55,22 +55,4 @@ namespace LinqHomework
             return obj.Id;
         }
     }
-
-    public class FeatureCollectionComparer : IEqualityComparer<ICollection<Feature>>
-    {
-        public bool Equals(ICollection<Feature> x, ICollection<Feature> y)
-        {
-            return x == y;
-        }
-
-        public int GetHashCode(ICollection<Feature> obj)
-        {
-            int hc = obj.Count;
-            foreach (var x in obj)
-            {
-                hc = unchecked(hc * 314159 + x.Id);
-            }
-            return hc;
-        }
-    }
 }

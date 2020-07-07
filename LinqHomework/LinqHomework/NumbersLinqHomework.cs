@@ -33,12 +33,8 @@ namespace LinqHomework
 
             public int GetHashCode(int[] obj)
             {
-                int hc = obj.Length;
-                for (int i = 0; i < obj.Length; ++i)
-                {
-                    hc = unchecked(hc * 314159 + obj[i]);
-                }
-                return hc; ;
+                var tuple = Tuple.Create(obj[0], obj[1], obj[2]);
+                return tuple.GetHashCode();
             }
         }
 
@@ -50,7 +46,9 @@ namespace LinqHomework
                                select new [] { i, j, p };
 
             TripletComparer comparer = new TripletComparer();
-            return combinations.SelectMany(x => new[] { new[] { x[0], x[1], x[2] }, new[] { x[0], x[2], x[1] }, new[] { x[2], x[1], x[0] } }).Distinct(comparer).Where(x => x.Length == x.Distinct().Count() && Math.Pow(x[0], 2) + Math.Pow(x[1], 2) == Math.Pow(x[2], 2)).ToList();
+            Func<int[], int[][]> ramificationForCombinations = x => new[] { new[] { x[0], x[1], x[2] }, new[] { x[0], x[2], x[1] }, new[] { x[2], x[1], x[0] } };
+
+            return combinations.SelectMany(ramificationForCombinations).Distinct(comparer).Where(x => Math.Pow(x[0], 2) + Math.Pow(x[1], 2) == Math.Pow(x[2], 2)).ToList();
         }
     }
 }
