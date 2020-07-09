@@ -24,6 +24,30 @@ namespace LinqHomework
 
             return products.Where(doesItHaveTheFeatures).ToList();
         }
+
+        public List<ProductWithFeatures> ProductsWithAllTheFeaturesFromTheList(ICollection<Feature> features)
+        {
+            Func<ProductWithFeatures, bool> doesItHaveAllTheFeatures = x =>
+            {
+                FeatureComparer comparer = new FeatureComparer();
+                bool b = features.Aggregate(0, (total, y) => x.Features.Contains(y, comparer) == true ? total + 1 : total) == features.Count;
+                return b;
+            };
+
+            return products.Where(doesItHaveAllTheFeatures).ToList();
+        }
+
+        public List<ProductWithFeatures> ProductsWithNoneOfTheFeaturesFromTheList(ICollection<Feature> features)
+        {
+            Func<ProductWithFeatures, bool> doesItHaveAllTheFeatures = x =>
+            {
+                FeatureComparer comparer = new FeatureComparer();
+                bool b = features.Aggregate(0, (total, y) => x.Features.Contains(y, comparer) == true ? total + 1 : total) == 0;
+                return b;
+            };
+
+            return products.Where(doesItHaveAllTheFeatures).ToList();
+        }
     }
 
     public class ProductWithFeatures
