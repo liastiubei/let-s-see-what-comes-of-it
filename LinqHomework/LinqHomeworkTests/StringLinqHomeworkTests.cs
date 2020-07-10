@@ -1,5 +1,5 @@
 ﻿using System;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 
@@ -55,6 +55,14 @@ namespace LinqHomeworkTests
             LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("aabaac");
             string[] result = { "a", "a", "b", "a", "a", "c", "aa", "aa", "aba", "aabaa" };
             Assert.Equal(result, text.ResultingPalindromes());
+        }
+
+        [Fact]
+        public void CheckIfTopOfMostUsedWords()
+        {
+            LinqHomework.StringLinqHomework text = new LinqHomework.StringLinqHomework("ana are mere pe care le are ana avute de ana dar neavute de altcineva care le are in afara de ana");
+            string[] result = { "ana", "are", "de", "care", "le" };
+            Assert.Equal(result.ToList(), text.TopOfMostUsedWords(5));
         }
     }
 }

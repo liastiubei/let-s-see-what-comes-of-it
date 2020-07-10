@@ -62,5 +62,12 @@ namespace LinqHomework
                                                 .Where(x => x.SequenceEqual(x.Reverse()))
                 .ToArray();
         }
+
+        public List<string> TopOfMostUsedWords(int n)
+        {
+            string[] words = text.Split(' ');
+            var top = words.GroupBy(x => x).OrderByDescending(x => x.Count()).Select(x => x.Key);
+            return top.Count() <= n ? top.ToList() : top.Take(n).ToList();
+        }
     }
 }
