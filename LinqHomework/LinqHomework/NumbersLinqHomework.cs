@@ -50,5 +50,41 @@ namespace LinqHomework
 
             return combinations.SelectMany(ramificationForCombinations).Distinct(comparer).Where(x => Math.Pow(x[0], 2) + Math.Pow(x[1], 2) == Math.Pow(x[2], 2)).ToList();
         }
+
+        public static bool ValidateSudoku(int[][] sudoku)
+        {
+            if(sudoku.Length != 9 || sudoku.Any(x => x.Count() != 9))
+            {
+                return false;
+            }
+
+            int[] validate = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            if(validate.Any(x => sudoku.Any(y => !y.Contains(x))))
+            {
+                return false;
+            }
+
+            for(int i = 0; i < 9; i++)
+            {
+                var obj = sudoku.Select(x => x[i]);
+                if(validate.Any(x => !obj.Contains(x)))
+                {
+                    return false;
+                }
+            }
+
+            for(int i = 0; i < 9; i = i + 3)
+            {
+                var first = Enumerable.Range(i, 3).SelectMany(x => sudoku[x].Take(3));
+                var second = Enumerable.Range(i, 3).SelectMany(x => sudoku[x].Skip(3).Take(3));
+                var third = Enumerable.Range(i, 3).SelectMany(x => sudoku[x].Skip(6));
+                if (validate.Any(y => !first.Contains(y) || !second.Contains(y) || !third.Contains(y)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

@@ -18,7 +18,9 @@ namespace LinqHomework
         {
             Func<IGrouping<string, TestResults>, TestResults> func = y =>
             {
-                return y.OrderByDescending(x => x.Score).First();
+                var max = y.Max(x => x.Score);
+                var ret = y.First(x => x.Score == max);
+                return ret;
             };
 
             var list = allTestResults.GroupBy(x => x.FamilyId).Select(func).ToList();
