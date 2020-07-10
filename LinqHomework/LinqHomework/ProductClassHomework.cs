@@ -30,7 +30,7 @@ namespace LinqHomework
             Func<ProductWithFeatures, bool> doesItHaveAllTheFeatures = x =>
             {
                 FeatureComparer comparer = new FeatureComparer();
-                bool b = features.Aggregate(0, (total, y) => x.Features.Contains(y, comparer) == true ? total + 1 : total) == features.Count;
+                bool b = features.All(y => x.Features.Contains(y, comparer));
                 return b;
             };
 
@@ -42,11 +42,12 @@ namespace LinqHomework
             Func<ProductWithFeatures, bool> doesItHaveAllTheFeatures = x =>
             {
                 FeatureComparer comparer = new FeatureComparer();
-                bool b = features.Aggregate(0, (total, y) => x.Features.Contains(y, comparer) == true ? total + 1 : total) == 0;
+                bool b = features.All(y => !x.Features.Contains(y, comparer));
                 return b;
             };
 
-            return products.Where(doesItHaveAllTheFeatures).ToList();
+            var z = products.Where(doesItHaveAllTheFeatures).ToList();
+            return z;
         }
     }
 
