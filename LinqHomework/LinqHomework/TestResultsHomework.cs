@@ -22,18 +22,7 @@ namespace LinqHomework
 
         public TestResults Max(IGrouping<string, TestResults> group)
         {
-            int max = 0;
-            TestResults person = null;
-            foreach(var obj in group)
-            {
-                if(obj.Score > max)
-                {
-                    person = obj;
-                    max = obj.Score;
-                }
-            }
-
-            return person;
+            return group.Aggregate(group.First(), (maxPerson, next) => maxPerson.Score < next.Score ? next : maxPerson);
         }
     }
 

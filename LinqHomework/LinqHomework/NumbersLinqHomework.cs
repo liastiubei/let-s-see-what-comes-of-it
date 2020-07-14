@@ -60,10 +60,18 @@ namespace LinqHomework
 
             List<int[]> listOfLinesColumnsAndSquares = sudoku.ToList();
 
-            var columns = listOfLinesColumnsAndSquares.SelectMany(x => x.Select((a, num) => (num, a).ToTuple())).GroupBy(x => x.Item1).Select(x => x.AsEnumerable().Select(y => y.Item2).ToArray()).ToArray();
+            var columns = listOfLinesColumnsAndSquares.SelectMany(x => x.Select((a, num) => (num, a).ToTuple()))
+                                    .GroupBy(x => x.Item1)
+                                    .Select(x => x.AsEnumerable().Select(y => y.Item2).ToArray())
+                                    .ToArray();
             listOfLinesColumnsAndSquares.AddRange(columns);
 
-            var squares = Enumerable.Range(1, 3).SelectMany(i => Enumerable.Range(1, 3).Select(z => sudoku.Take(i * 3).Skip((i - 1) * 3).SelectMany(y => y.Take(z * 3).Skip((z - 1) * 3)).ToArray())).ToArray();
+            var squares = Enumerable.Range(1, 3)
+                            .SelectMany(i => Enumerable.Range(1, 3)
+                                    .Select(z => sudoku.Take(i * 3).Skip((i - 1) * 3)
+                                                    .SelectMany(y => y.Take(z * 3).Skip((z - 1) * 3))
+                                                    .ToArray()))
+                            .ToArray();
             listOfLinesColumnsAndSquares.AddRange(squares);
 
             int[] validate = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
