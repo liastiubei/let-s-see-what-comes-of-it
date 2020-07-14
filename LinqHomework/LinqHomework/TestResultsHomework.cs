@@ -16,15 +16,24 @@ namespace LinqHomework
 
         public List<TestResults> HighestScorePerFamily()
         {
-            Func<IGrouping<string, TestResults>, TestResults> func = y =>
-            {
-                var max = y.Max(x => x.Score);
-                var ret = y.First(x => x.Score == max);
-                return ret;
-            };
-
-            var list = allTestResults.GroupBy(x => x.FamilyId).Select(func).ToList();
+            var list = allTestResults.GroupBy(x => x.FamilyId).Select(x => Max(x)).ToList();
             return list;
+        }
+
+        public TestResults Max(IGrouping<string, TestResults> group)
+        {
+            int max = 0;
+            TestResults person = null;
+            foreach(var obj in group)
+            {
+                if(obj.Score > max)
+                {
+                    person = obj;
+                    max = obj.Score;
+                }
+            }
+
+            return person;
         }
     }
 

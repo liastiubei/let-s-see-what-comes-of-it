@@ -58,33 +58,55 @@ namespace LinqHomework
                 return false;
             }
 
+            List<int[]> listOfLinesColumnsAndSquares = sudoku.ToList();
+
+            var columns = listOfLinesColumnsAndSquares.SelectMany(x => x.Select((a, num) => (num, a).ToTuple())).GroupBy(x => x.Item1).Select(x => x.AsEnumerable().Select(y => y.Item2).ToArray()).ToArray();
+            listOfLinesColumnsAndSquares.AddRange(columns);
+
+            var squares = Enumerable.Range(1, 3).SelectMany(i => Enumerable.Range(1, 3).Select(z => sudoku.Take(i * 3).Skip((i - 1) * 3).SelectMany(y => y.Take(z * 3).Skip((z - 1) * 3)).ToArray())).ToArray();
+            listOfLinesColumnsAndSquares.AddRange(squares);
+
             int[] validate = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-            if(validate.Any(x => sudoku.Any(y => !y.Contains(x))))
+            return !validate.Any(x => listOfLinesColumnsAndSquares.Any(y => !y.Contains(x)));
+        }
+
+        public static double ResultOfPostfixExpression(string postfixExpression)
+        {
+            List<string> numbersAndSigns = postfixExpression.Split(' ').ToList();
+            Func<IEnumerable<double>, string, IEnumerable<double>> calculator = (expression, next) =>
             {
-                return false;
+                var x = double.TryParse(next, out double num) ? expression.Append(num)
+                    : expression.SkipLast(2).Append(SmallArithmeticOperationBetweenTwo(expression.TakeLast(2), next));
+                return x;
+            };
+            var result = numbersAndSigns.Aggregate(Enumerable.Empty<double>(), (expression, next) => calculator(expression, next));
+            return result.First();
+
+        }
+
+        public static double SmallArithmeticOperationBetweenTwo(IEnumerable<double> theTwoNumbers, string sign)
+        {
+            if (sign == "+")
+            {
+                return theTwoNumbers.First() + theTwoNumbers.Last();
             }
 
-            for(int i = 0; i < 9; i++)
+            if (sign == "-")
             {
-                var obj = sudoku.Select(x => x[i]);
-                if(validate.Any(x => !obj.Contains(x)))
-                {
-                    return false;
-                }
+                return theTwoNumbers.First() - theTwoNumbers.Last();
             }
 
-            for(int i = 0; i < 9; i = i + 3)
+            if (sign == "*")
             {
-                var first = Enumerable.Range(i, 3).SelectMany(x => sudoku[x].Take(3));
-                var second = Enumerable.Range(i, 3).SelectMany(x => sudoku[x].Skip(3).Take(3));
-                var third = Enumerable.Range(i, 3).SelectMany(x => sudoku[x].Skip(6));
-                if (validate.Any(y => !first.Contains(y) || !second.Contains(y) || !third.Contains(y)))
-                {
-                    return false;
-                }
+                return theTwoNumbers.First() * theTwoNumbers.Last();
             }
 
-            return true;
+            if (sign == "/")
+            {
+                return theTwoNumbers.First() / theTwoNumbers.Last();
+            }
+
+            return 0;
         }
     }
 }

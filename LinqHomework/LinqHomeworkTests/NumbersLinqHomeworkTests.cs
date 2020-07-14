@@ -73,5 +73,12 @@ namespace LinqHomeworkTests
             int[][] sudoku = { s1, s2, s3, s4, s5, s6, s7, s8, s9 };
             Assert.False(LinqHomework.NumbersLinqHomework.ValidateSudoku(sudoku));
         }
+
+        [Fact]
+        public void CheckIfResultOfPostfixExpressionWorksCorrectly()
+        {
+            string expression = "5 7 4 8 + * -";
+            Assert.Equal(-79, LinqHomework.NumbersLinqHomework.ResultOfPostfixExpression(expression));
+        }
     }
 }
